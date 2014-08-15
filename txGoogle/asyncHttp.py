@@ -63,7 +63,7 @@ class ResponseReceiver(Protocol):
 
     def dataReceived(self, data):
         self.strIoBuff.write(data)
-        
+
     def _handleJson(self, data, dfd):
         dfd.callback(json.loads(data))
 
@@ -90,10 +90,9 @@ class ResponseReceiver(Protocol):
 
 
 class AsyncHttp(object):
-    
+
     def __init__(self, jsonHandleFun=None):
         self._jsonHandleFun = jsonHandleFun
-    
 
     def _handleResponse(self, response=None, *args, **kwargs):
         if response.code == 204:

@@ -45,24 +45,14 @@ def mapFunToItemsSequentially(items, fun, *args, **kwargs):
         print fun, args, kwargs
         funRes = fun(item, *args, **kwargs)
         results.append(funRes)
-    return results  
-    
+    return results
+
 
 def addPrintCbs(dfds):
     for df in dfds:
         df.addCallback(printCb)
         df.addErrback(printCb)
 
+
 def ignoreFirstArg(dummy, fun, *args, **kwargs):
     return fun(*args, **kwargs)
-
-
-def leaveOutNulls(dct):
-    for a, b in dct.items():
-        if isinstance(b, dict):
-            leaveOutNulls(b)
-            if len(b) == 0:
-                del dct[a]
-        elif b == None:
-            del dct[a]
-    return dct

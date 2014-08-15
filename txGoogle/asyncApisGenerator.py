@@ -1,8 +1,15 @@
 import json
 # from subprocess import Popen
 from txGoogle.asyncBase import AsyncBase
-from twisted.internet import reactor
 import collections
+import os
+import jinja2
+
+CURRENT_DIR = os.path.dirname(__file__)
+templatesDir = os.path.join(CURRENT_DIR, 'templates')
+fsLoader = jinja2.FileSystemLoader(templatesDir)
+JINJA_ENVIRONMENT = jinja2.Environment(loader=fsLoader, extensions=['jinja2.ext.autoescape'])
+
 
 '''deDuplicationRules = {
     'bigQuery': {
@@ -11,6 +18,11 @@ import collections
         }
     }
 }'''
+
+
+def render(templateName, values):
+    template = JINJA_ENVIRONMENT.get_template(templateName)
+    return template.render(values)
 
 
 def capitalizeFirstChar(inp):
@@ -57,13 +69,13 @@ def extractSchema(schemaName, apiDict):
 
 
 def createMethod(conn, methodName, methodDict, apiDict):
-    
+
     queryParams = {
         'url': apiDict['baseUrl'] + methodDict['path'],
         'method': str(methodDict['httpMethod']),
         'resultType': 'empty',
         'httpBodyParams': {},
-        'httpUrlParams': {'prettyPrint': False}, #TODO fix
+        'httpUrlParams': {'prettyPrint': False},  #TODO fix
     }
 
     if 'response' in methodDict:
@@ -71,13 +83,13 @@ def createMethod(conn, methodName, methodDict, apiDict):
             queryParams['resultType'] = 'multi'
         else:
             queryParams['resultType'] = methodDict['response']['$ref']
-    
+
     def _buildQueryParams(*args, **kwargs):
         #TODO walk kwargs for nameerror notification???
         assert len(args) == len(methodDict.get('parameterOrder', []))
         for i, paramName in enumerate(methodDict.get('parameterOrder', [])):
             queryParams[paramName] = args[i]
-        
+
         for paramName, paramProperties in methodDict.get('parameters', {}).iteritems():
             if paramProperties['location'] == 'query':
                 if 'required' in paramProperties:
@@ -86,23 +98,23 @@ def createMethod(conn, methodName, methodDict, apiDict):
                     queryParams['httpUrlParams'][paramName] = kwargs[paramName]
             if paramName in kwargs:
                 queryParams['httpUrlParams'][paramName] = kwargs[paramName]
-            
+
         if 'request' in methodDict:
             schemaName = methodDict['request']['$ref']
-            
+
             if 'fields' in kwargs:
                 if 'nextPageToken' in apiDict['schemas'][schemaName]['properties']:
                     queryParams['httpUrlParams']['fields'] = 'nextPageToken,' + kwargs['fields']
                 else:
                     queryParams['httpUrlParams']['fields'] = kwargs['fields']
-                    
+
             for paramName, paramProperties in apiDict['schemas'][schemaName]['properties'].iteritems():
                 if paramName in kwargs:
                     queryParams['httpBodyParams'][paramName] = kwargs[paramName]
                 elif paramProperties['description'].startswith('[Required]'):
                     assert paramName in kwargs
                     queryParams['httpBodyParams'][paramName] = kwargs[paramName]
-            
+
         print json.dumps(queryParams, indent=2)
         return queryParams
 
@@ -116,27 +128,27 @@ class Resource():
     def __init__(self, api, resourceName, resourceDict, apiDict):
         for methodName, methodDict in resourceDict.get('methods', {}).iteritems():
             setattr(self, methodName, createMethod(api, methodName, methodDict, apiDict))
-        
-        
+
+
 class Schema():
     def __init__(self, schemaName, extractSchema):
         pass
-    
+
 
 class Api():
     def __init__(self, apis, apiName, apiDict):
-        
+
         for resourceName, resourceDict in apiDict.get('resources', {}).iteritems():
             assert not hasattr(self, resourceName), 'resourceName {} was already defined.'.format(resourceDict)
             setattr(self, resourceName, Resource(apis, resourceName, resourceDict, apiDict))
             #print '', resourceName
-            
+
         for schemaName, schemaDict in apiDict.get('schemas', {}).iteritems():
-            assert not hasattr(self, '_'+schemaName), 'schemaName _{} was already defined.'.format(schemaName)
-            setattr(self, '_'+schemaName, Schema(schemaName, schemaDict))
+            assert not hasattr(self, '_' + schemaName), 'schemaName _{} was already defined.'.format(schemaName)
+            setattr(self, '_' + schemaName, Schema(schemaName, schemaDict))
             #print 's', schemaName#, v#['properties']#['kind']['default']
-        
-              
+
+
 class AsyncApis(AsyncBase):
     _SCOPE = 'https://www.googleapis.com/auth/cloud-platform https://www.googleapis.com/auth/devstorage.full_control'
 
@@ -145,24 +157,24 @@ class AsyncApis(AsyncBase):
 
     def _multipleResultsPossible(self, resultType):
         return resultType in ('multi')
-        
+
     def _loadResults_multi(self, loaded):
         for value in loaded.itervalues():
             if isinstance(value, list):
                 for item in value:
-                    yield item            
+                    yield item
 
     def loadServices(self, apiNames):
         for apiName, apiDict in loadApiDict(apiNames):
             setattr(self, apiName, Api(self, apiName, apiDict))
-            
-            
+
+
 def generatePyCode(apiName, apiDict):
-    
+
     def generateMethodCode(resourceName, methodName, methodDict):
         if methodName == 'import':
             methodName = 'import_'
-        
+
         queryParams = {
             'url': apiDict['baseUrl'] + methodDict['path'],
             'method': str(methodDict['httpMethod']),
@@ -170,16 +182,16 @@ def generatePyCode(apiName, apiDict):
             'httpBodyParams': {},
             'httpUrlParams': {},
         }
-        
+
         apiParams = apiDict['parameters'].keys()
         for paramName in apiParams:
             queryParams['httpUrlParams'][paramName] = '---' + paramName + '---'
-        
+
         pathParams = []
         for paramName in methodDict.get('parameterOrder', []):
             pathParams.append(paramName)
             queryParams[paramName] = '---' + paramName + '---'
-        
+
         urlParams = []
         optionalUrlParams = []
         for paramName, paramProperties in methodDict.get('parameters', {}).iteritems():
@@ -189,75 +201,82 @@ def generatePyCode(apiName, apiDict):
                 else:
                     optionalUrlParams.append(paramName)
                 queryParams['httpUrlParams'][paramName] = '---' + paramName + '---'
-                    
+
         bodyParamsFlat = {}
         if 'request' in methodDict:
             schemaName = methodDict['request']['$ref']
-        
+
             bodyParams, bodyParamsFlat = extractSchema(schemaName, apiDict)
             queryParams['httpBodyParams'] = bodyParams
-        
+
         if 'response' in methodDict:
             if 'nextPageToken' in apiDict['schemas'][methodDict['response']['$ref']]['properties']:
                 queryParams['resultType'] = 'multi'
             else:
                 queryParams['resultType'] = methodDict['response']['$ref']
-                                        
+
         duplicates = [x for x, y in collections.Counter(urlParams).items() if y > 1]
         if len(duplicates) > 0:
             raise Exception('Add some deduplication rules for {}'.format(duplicates))
-        
+
         requiredParams = pathParams + [paramName for paramName in urlParams if not paramName in pathParams] + [paramName for paramName, param in bodyParamsFlat.iteritems() if param and not paramName in pathParams and not paramName in urlParams]
         optionalParams = [paramName for paramName in optionalUrlParams + bodyParamsFlat.keys() if not paramName in requiredParams]
-        params = [paramName for paramName in requiredParams] + [paramName+'=None' for paramName in apiParams] + [paramName+'=None' for paramName in optionalParams if not paramName in apiParams]
-        
+        params = [paramName for paramName in requiredParams] + [paramName + '=None' for paramName in apiParams] + [paramName + '=None' for paramName in optionalParams if not paramName in apiParams]
+
         functionCode = '\n\n\tdef {}({}):'.format(methodName, ', '.join(['self'] + params))
         functionCode += '\n\t\t"{}"'.format(methodDict['description'])
-        functionCode += '\n\t\tqueryParams = ' + '\n\t\t'.join(json.dumps(queryParams, indent=4).replace('"---', '').replace('---"', '').split('\n'))
+        requestCode = json.dumps(queryParams, indent=4).replace('"---', '').replace('---"', '').replace(' \n', '\n').split('\n')
+        functionCode += '\n\t\tqueryParams = ' + '\n\t\t'.join(requestCode)
         functionCode += '\n\t\treturn self._conn._asyncHttpRequest(leaveOutNulls(queryParams))'
-        
+
         functionCodeCallCode = '\n#aApi.{}.{}.{}({}),'.format(capitalizeFirstChar(apiDict['name']), resourceName, methodName, ', '.join(requiredParams))
         return functionCode, functionCodeCallCode
 
-    
-    def exploreApis(resourceName, resource):
+    def exploreApis(resourceNameIn, resource):
+        if 'auth' in resource and 'oath2' in resource['auth'] and 'scopes' in resource['auth']['oauth2']:
+            scopes = resource['auth']['oauth2']
+        else:
+            scopes = None
+
         functionCode = ''
         functionCodeCallCode = ''
-    
-        capResourceName = capitalizeFirstChar(resourceName)
+        resourcesLst = []
+
+        for resourceName, resource_ in resource.get('resources', {}).iteritems():
+            functionCode_, functionCodeCallCode_, subLst = exploreApis(resourceName, resource_)
+            resourcesLst.extend(subLst)
+            resourcesLst.append({'name': resourceName, 'capName': capitalizeFirstChar(resourceName)})
+            functionCode += functionCode_
+            functionCodeCallCode += functionCodeCallCode_
+
+        capResourceName = capitalizeFirstChar(resourceNameIn)
         functionCode += '\n\n\nclass {}(object):'.format(capResourceName)
         functionCode += '\n\tdef __init__(self, connection, *args, **kwargs):'
         functionCode += '\n\t\tself._conn = connection'
 
-        
         for resourceName, resource_ in resource.get('resources', {}).iteritems():
             functionCode += '\n\t\tself.{0} = {1}(connection)'.format(resourceName, capitalizeFirstChar(resourceName))
-            
+
         for methodName, method in resource.get('methods', {}).iteritems():
-            functionCode_, functionCodeCallCode_ = generateMethodCode(resourceName, methodName, method)
+            functionCode_, functionCodeCallCode_ = generateMethodCode(resourceNameIn, methodName, method)
             functionCode += functionCode_
             functionCodeCallCode += functionCodeCallCode_
-        
-        for resourceName, resource_ in resource.get('resources', {}).iteritems():
-            functionCode_, functionCodeCallCode_ = exploreApis(resourceName, resource_)
-            functionCode += functionCode_
-            functionCodeCallCode += functionCodeCallCode_
-            
-        return functionCode, functionCodeCallCode
-    
-    functionCode = 'from txGoogle.asyncUtils import leaveOutNulls'
+
+        return functionCode, functionCodeCallCode, resourcesLst
+
     functionCodeCallCode = ''
-    functionCode_, functionCodeCallCode_ = exploreApis(apiName, apiDict)
-    functionCode += functionCode_
+    functionCode_, functionCodeCallCode_, resourcesLst = exploreApis(apiName, apiDict)
+    functionCode = render('services.py', {'resources': resourcesLst})
+    #functionCode += functionCode_
     functionCodeCallCode += functionCodeCallCode_
 
-    return functionCode, functionCodeCallCode 
+    return functionCode, functionCodeCallCode
 
 
 def generateCode(apiNames):
     for apiName, apiDict in loadApiDict(apiNames):
         code, tests = generatePyCode(apiName, apiDict)
-        open('services/{}.py'.format(apiName + '_'), 'wb').write(code)
+        open('services/{}.py'.format(apiName + '_'), 'wb').write(code.replace('\t', '    '))
         print tests
         #open('AsyncApis.py'.format(apiName), 'a').write(tests)
 

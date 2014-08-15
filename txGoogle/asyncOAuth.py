@@ -8,7 +8,7 @@ from asyncHttp import AsyncHttp
 from twisted.internet.defer import Deferred
 from twisted.internet.defer import succeed
 from twisted.internet.defer import fail
-from generic.compat import json
+import simplejson as json
 from twisted.python import log
 from urllib import urlencode
 import webbrowser
