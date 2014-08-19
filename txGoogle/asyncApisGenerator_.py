@@ -10,157 +10,6 @@ fsLoader = jinja2.FileSystemLoader(templatesDir)
 JINJA_ENVIRONMENT = jinja2.Environment(loader=fsLoader, extensions=['jinja2.ext.autoescape'], lstrip_blocks=True, trim_blocks=True)
 
 
-paramNamesNewDict = {'gmail.users.messages.attachments.get': {
-    },
-    'gmail.users.messages.insert': {
-    },
-    'gmail.users.messages.untrash': {
-    },
-    'gmail.users.messages.get': {
-    },
-    'gmail.users.messages.list': {
-    },
-    'gmail.users.messages.modify': {
-    },
-    'gmail.users.messages.send': {
-    },
-    'gmail.users.messages.import': {
-    },
-    'gmail.users.messages.trash': {
-    },
-    'gmail.users.messages.delete': {
-    },
-    'gmail.users.labels.get': {
-    },
-    'gmail.users.labels.create': {
-    },
-    'gmail.users.labels.list': {
-    },
-    'gmail.users.labels.update': {
-        'id': 'id',
-    },
-    'gmail.users.labels.patch': {
-        'id': 'id',
-    },
-    'gmail.users.labels.delete': {
-    },
-    'gmail.users.threads.untrash': {
-    },
-    'gmail.users.threads.get': {
-    },
-    'gmail.users.threads.list': {
-    },
-    'gmail.users.threads.modify': {
-    },
-    'gmail.users.threads.trash': {
-    },
-    'gmail.users.threads.delete': {
-    },
-    'gmail.users.drafts.get': {
-    },
-    'gmail.users.drafts.create': {
-        'id': 'id',
-    },
-    'gmail.users.drafts.list': {
-    },
-    'gmail.users.drafts.update': {
-        'id': 'message_id',
-        'id': 'id',
-    },
-    'gmail.users.drafts.send': {
-        'id': 'id',
-    },
-    'gmail.users.drafts.delete': {
-    },
-    'gmail.users.history.list': {
-    },
-    'bigquery.tables.insert': {
-        'fields': 'schema_fields',
-        'projectId': 'tableReference_projectId',
-        'datasetId': 'tableReference_datasetId',
-    },
-    'bigquery.tables.get': {
-    },
-    'bigquery.tables.list': {
-    },
-    'bigquery.tables.update': {
-        'fields': 'schema_fields',
-        'projectId': 'tableReference_projectId',
-        'tableId': 'tableReference_tableId',
-        'datasetId': 'tableReference_datasetId',
-    },
-    'bigquery.tables.patch': {
-        'fields': 'schema_fields',
-        'projectId': 'tableReference_projectId',
-        'tableId': 'tableReference_tableId',
-        'datasetId': 'tableReference_datasetId',
-    },
-    'bigquery.tables.delete': {
-    },
-    'bigquery.datasets.insert': {
-        'projectId': 'datasetReference_projectId',
-    },
-    'bigquery.datasets.get': {
-    },
-    'bigquery.datasets.list': {
-    },
-    'bigquery.datasets.update': {
-        'projectId': 'datasetReference_projectId',
-        'datasetId': 'datasetReference_datasetId',
-    },
-    'bigquery.datasets.patch': {
-        'projectId': 'datasetReference_projectId',
-        'datasetId': 'datasetReference_datasetId',
-    },
-    'bigquery.datasets.delete': {
-    },
-    'bigquery.jobs.insert': {
-        'totalBytesProcessed': 'statistics_query_totalBytesProcessed',
-        'projectId': 'jobReference_projectId',
-        'projectId': 'configuration_load_destinationTable_projectId',
-        'fields': 'configuration_load_schema_fields',
-        'createDisposition': 'configuration_link_createDisposition',
-        'writeDisposition': 'configuration_link_writeDisposition',
-        'projectId': 'configuration_link_destinationTable_projectId',
-        'tableId': 'configuration_link_destinationTable_tableId',
-        'datasetId': 'configuration_link_destinationTable_datasetId',
-        'projectId': 'configuration_query_defaultDataset_projectId',
-        'datasetId': 'configuration_query_defaultDataset_datasetId',
-        'projectId': 'configuration_query_destinationTable_projectId',
-        'tableId': 'configuration_query_destinationTable_tableId',
-        'datasetId': 'configuration_query_destinationTable_datasetId',
-        'writeDisposition': 'configuration_query_writeDisposition',
-        'createDisposition': 'configuration_query_createDisposition',
-        'createDisposition': 'configuration_copy_createDisposition',
-        'writeDisposition': 'configuration_copy_writeDisposition',
-        'projectId': 'configuration_copy_destinationTable_projectId',
-        'tableId': 'configuration_copy_destinationTable_tableId',
-        'datasetId': 'configuration_copy_destinationTable_datasetId',
-        'projectId': 'configuration_copy_sourceTable_projectId',
-        'tableId': 'configuration_copy_sourceTable_tableId',
-        'datasetId': 'configuration_copy_sourceTable_datasetId',
-        'fieldDelimiter': 'configuration_extract_fieldDelimiter',
-        'projectId': 'configuration_extract_sourceTable_projectId',
-        'tableId': 'configuration_extract_sourceTable_tableId',
-        'datasetId': 'configuration_extract_sourceTable_datasetId',
-    },
-    'bigquery.jobs.get': {
-    },
-    'bigquery.jobs.list': {
-    },
-    'bigquery.jobs.getQueryResults': {
-    },
-    'bigquery.jobs.query': {
-        'projectId': 'defaultDataset_projectId',
-    },
-    'bigquery.tabledata.list': {
-    },
-    'bigquery.tabledata.insertAll': {
-    },
-    'bigquery.projects.list': {
-    },
-}
-
 
 def render(templateName, **kwargs):
     template = JINJA_ENVIRONMENT.get_template(templateName)
@@ -230,8 +79,7 @@ def generatePyCode(apiName, apiDict):
                                                    methodDict=method, 
                                                    bodyParams=bodyParams, 
                                                    rParams=rParams, 
-                                                   oParams=oParams,
-                                                   paramNamesNewDict=paramNamesNewDict)
+                                                   oParams=oParams)
         return methodLines
     
         
@@ -279,6 +127,6 @@ if __name__ == '__main__':
     # dfds = [aApis.bigquery.tables.list('over-sight', 'testdataset', fields='tables')]
     # reactor.run()
 
-    generateCode(['discovery', 'gmail', 'bigquery'])
+    generateCode(['gmail', 'bigquery'])
     #Popen('python generated.py').communicate()
     pass
