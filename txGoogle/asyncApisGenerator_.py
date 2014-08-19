@@ -10,7 +10,7 @@ fsLoader = jinja2.FileSystemLoader(templatesDir)
 JINJA_ENVIRONMENT = jinja2.Environment(loader=fsLoader, extensions=['jinja2.ext.autoescape'], lstrip_blocks=True, trim_blocks=True)
 
 _APIDOCS_PATH = 'wrappers/apiFiles/apiDocs/'
-    
+
 
 def render(templateName, **kwargs):
     template = JINJA_ENVIRONMENT.get_template(templateName)
@@ -32,7 +32,6 @@ def loadApiDict(apiNames):
             yield apiName, apiDescription
         else:
             print filename
-        
 
 
 def generatePyCode(apiName, apiDict):
@@ -89,11 +88,12 @@ def generatePyCode(apiName, apiDict):
         return methodLines
 
     def generateResourceCode(resourceName, resource, scopes=None):
+        print 'res: {}'.format(resourceName)
         functionCode = ''
 
         for resourceName_, resourceDict_ in resource.get('resources', {}).iteritems():
             functionCode += generateResourceCode(resourceName_, resourceDict_)
-            
+
         methodsDict = defaultdict(dict)
         for methodName, methodDict in resource.get('methods', {}).iteritems():
             methodsDict[methodName] = generateMethodCode(methodName, methodDict)
@@ -104,7 +104,6 @@ def generatePyCode(apiName, apiDict):
         methodsDict = defaultdict(dict)
         for k, v in resource.get('methods', {}).iteritems():
             methodsDict[k] = generateMethodCode(k, v)
-
 
         if scopes:
             resourceLines = render('template_api.py', resourceName=resourceName,

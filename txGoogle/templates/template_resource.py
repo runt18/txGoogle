@@ -2,6 +2,7 @@
 {{line[0].upper() + line[1:]}}
 {%- endmacro %}
 
+
 class {{capFirst(resourceName)}}():
     def __init__(self, conn):
         self._conn = conn
