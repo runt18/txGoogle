@@ -1,4 +1,7 @@
 import json
+from jinja2 import Template
+from collections import defaultdict
+import json
 # from subprocess import Popen
 from txGoogle.asyncBase import AsyncBase
 import collections
@@ -263,11 +266,16 @@ def generatePyCode(apiName, apiDict):
             functionCodeCallCode += functionCodeCallCode_
 
         return functionCode, functionCodeCallCode, resourcesLst
-
+    
+    functionCode = 'from txGoogle.utils import leaveOutNulls'
     functionCodeCallCode = ''
     functionCode_, functionCodeCallCode_, resourcesLst = exploreApis(apiName, apiDict)
-    functionCode = render('services.py', {'resources': resourcesLst})
-    #functionCode += functionCode_
+    print functionCode_
+    print resourcesLst
+    #functionCode = render('services.py', {'resources': resourcesLst})
+    #functionCode = render('services.py', {'apiDict': {'resources': {'a': {'resources': {'a': []}},'b': []}}})
+    
+    functionCode += functionCode_
     functionCodeCallCode += functionCodeCallCode_
 
     return functionCode, functionCodeCallCode
@@ -277,7 +285,7 @@ def generateCode(apiNames):
     for apiName, apiDict in loadApiDict(apiNames):
         code, tests = generatePyCode(apiName, apiDict)
         open('services/{}.py'.format(apiName + '_'), 'wb').write(code.replace('\t', '    '))
-        print tests
+        #print tests
         #open('AsyncApis.py'.format(apiName), 'a').write(tests)
 
 
