@@ -14,7 +14,11 @@
         queryParams = {
             'url': '{{apiDict['baseUrl']}}{{methodDict['path']}}',
             'method': '{{methodDict['httpMethod']}}',
-            'resultType': 'dummy',
+            {%if 'request' in methodDict%}
+            'resultType': '{{methodDict['request']['$ref']}}',
+            {%else%}
+            'resultType': 'empty',
+            {%endif%}
             'httpUrlParams': {
                 {%for k in apiDict.get('parameters', {})%}
                 '{{k}}': {{k}},

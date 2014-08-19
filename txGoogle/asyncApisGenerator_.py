@@ -48,8 +48,8 @@ def generatePyCode(apiName, apiDict):
                 key = newKey
 
             if key in rParams or key in oParams:
-                print "        '{}': '{}',".format(newKey, k)
-                #key = newKey
+                #print "        '{}': '{}',".format(newKey, k)
+                key = newKey
             #if key in rParams or key in oParams:
             #    key += '_'
             ################################################
@@ -74,12 +74,12 @@ def generatePyCode(apiName, apiDict):
 
         if 'request' in method:
             schema = apiDict['schemas'][method['request']['$ref']]
-            print "    '{}': ".format(method['id']) + '{'
+            #print "    '{}': ".format(method['id']) + '{'
             bodyParams, rParams, oParams = schemaFun(schema, rParams, oParams)
-            print '    },'
+            #print '    },'
         else:
             bodyParams = {}
-
+        
         methodLines = render('template_method.py', apiDict=apiDict,
                                                    methodName=methodName,
                                                    methodDict=method,
@@ -97,14 +97,6 @@ def generatePyCode(apiName, apiDict):
         methodsDict = defaultdict(dict)
         for methodName, methodDict in resource.get('methods', {}).iteritems():
             methodsDict[methodName] = generateMethodCode(methodName, methodDict)
-
-        for k, v in resource.get('resources', {}).iteritems():
-            functionCode += generateResourceCode(k, v)
-
-        methodsDict = defaultdict(dict)
-        for k, v in resource.get('methods', {}).iteritems():
-            methodsDict[k] = generateMethodCode(k, v)
-
 
         if scopes:
             resourceLines = render('template_api.py', resourceName=resourceName,
@@ -142,6 +134,6 @@ if __name__ == '__main__':
     # dfds = [aApis.bigquery.tables.list('over-sight', 'testdataset', fields='tables')]
     # reactor.run()
 
-    generateCode(['gmail', 'bigquery'])
+    generateCode(['bigquery'])
     #Popen('python generated.py').communicate()
     pass
