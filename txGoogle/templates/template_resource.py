@@ -3,7 +3,7 @@
 {%- endmacro %}
 
 
-class {{capFirst(resourceName)}}():
+class {{capFirst(resourceName)}}(object):
     def __init__(self, conn):
         self._conn = conn
         {%for k in resourceDict.get('resources', {}).keys()%}

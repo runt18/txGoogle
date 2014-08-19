@@ -35,7 +35,7 @@ class DiscoveryWrapper(Discovery):
         return dfd
     
     def download(self, apiName, version):
-        dfd = self.apis.getRest('gmail', 'v1')
+        dfd = self.apis.getRest(apiName, version)
         @dfd.addCallback
         def fun(contents):
             filePath = '{}/{}.json'.format(self._APIDOCS_PATH, apiName)

@@ -47,8 +47,8 @@ def generatePyCode(apiName, apiDict):
                 key = newKey
 
             if key in rParams or key in oParams:
-                print "        '{}': '{}',".format(newKey, k)
-                #key = newKey
+                #print "        '{}': '{}',".format(newKey, k)
+                key = newKey
             #if key in rParams or key in oParams:
             #    key += '_'
             ################################################
@@ -73,9 +73,9 @@ def generatePyCode(apiName, apiDict):
 
         if 'request' in method:
             schema = apiDict['schemas'][method['request']['$ref']]
-            print "    '{}': ".format(method['id']) + '{'
+            #print "    '{}': ".format(method['id']) + '{'
             bodyParams, rParams, oParams = schemaFun(schema, rParams, oParams)
-            print '    },'
+            #print '    },'
         else:
             bodyParams = {}
 
@@ -87,23 +87,21 @@ def generatePyCode(apiName, apiDict):
                                                    oParams=oParams)
         return methodLines
 
-    def generateResourceCode(resourceName, resource, scopes=None):
-        print 'res: {}'.format(resourceName)
+    def generateResourceCode(resourceName, resource, scopes=None, existingResources=None):
+        if existingResources is None:
+            existingResources = set()
         functionCode = ''
+        existingResources.add(resourceName)
 
         for resourceName_, resourceDict_ in resource.get('resources', {}).iteritems():
-            functionCode += generateResourceCode(resourceName_, resourceDict_)
+            if resourceName_ not in existingResources:
+                functionCode += generateResourceCode(resourceName_, resourceDict_, existingResources=existingResources)
+            else:
+                print 'skipping {}'.format(resourceName_)
 
         methodsDict = defaultdict(dict)
         for methodName, methodDict in resource.get('methods', {}).iteritems():
             methodsDict[methodName] = generateMethodCode(methodName, methodDict)
-
-        for k, v in resource.get('resources', {}).iteritems():
-            functionCode += generateResourceCode(k, v)
-
-        methodsDict = defaultdict(dict)
-        for k, v in resource.get('methods', {}).iteritems():
-            methodsDict[k] = generateMethodCode(k, v)
 
         if scopes:
             resourceLines = render('template_api.py', resourceName=resourceName,
@@ -116,7 +114,6 @@ def generatePyCode(apiName, apiDict):
                                                            methodsDict=methodsDict)
 
         functionCode += resourceLines
-
         return functionCode
 
     functionCode = 'from txGoogle.utils import leaveOutNulls\n'

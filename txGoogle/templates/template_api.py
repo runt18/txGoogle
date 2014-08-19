@@ -2,10 +2,11 @@
 {{line[0].upper() + line[1:]}}
 {%- endmacro %}
 
-class {{capFirst(resourceName)}}():
+
+class {{capFirst(resourceName)}}(object):
     '''{{resourceDict.get('description', '')}}'''
     _DEFAULT_SCOPES = {{scopes}}
-    
+
     def __init__(self, conn=None, scopes=None):
         if scopes is not None:
             self._scopes = scopes
