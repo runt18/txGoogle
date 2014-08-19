@@ -67,7 +67,8 @@ class AsyncBase(object):
             queryParams['dfdDone'] = Deferred()
         if len(self._runningReqs) < self.MAX_CONCURRENT_QUERIES:
             dfdRequest = self._connHandler.httpRequest(
-                url=queryParams['url'].format(**queryParams),
+                #url=queryParams['url'].format(**queryParams),
+                url=queryParams['url'].format(**queryParams.get('httpUrlParams', {})),
                 urlParams=queryParams.get('httpUrlParams', {}),
                 bodyParams=queryParams.get('httpBodyParams', {}),
                 headers=queryParams.get('httpHeaders', {}),
@@ -79,7 +80,6 @@ class AsyncBase(object):
             self._runningReqs.append(queryParams)
             dfdRequest.addCallback(self._handleResponse, queryParams)
             dfdRequest.addErrback(self._handleFailed, queryParams)
-            print queryParams['url'].format(**queryParams), '....'
         else:
             reactor.callLater(self.REQUEST_RESEND_CHECK_INTERVAL, self._asyncHttpRequest, queryParams)
         return queryParams['dfdDone']

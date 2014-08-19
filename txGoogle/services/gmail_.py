@@ -8,7 +8,8 @@ class Attachments():
         '''Gets the specified message attachment.'''
         queryParams = {
             'url': 'https://www.googleapis.com/gmail/v1/users/{userId}/messages/{messageId}/attachments/{id}',
-            'httpMethod': 'GET',
+            'method': 'GET',
+            'resultType': 'dummy',
             'httpUrlParams': {
                 'prettyPrint': prettyPrint,
                 'fields': fields,
@@ -35,7 +36,8 @@ class Messages():
         '''Directly inserts a message into only this user's mailbox. Does not send a message.'''
         queryParams = {
             'url': 'https://www.googleapis.com/gmail/v1/users/{userId}/messages',
-            'httpMethod': 'POST',
+            'method': 'POST',
+            'resultType': 'dummy',
             'httpUrlParams': {
                 'prettyPrint': prettyPrint,
                 'fields': fields,
@@ -74,7 +76,8 @@ class Messages():
         '''Removes the specified message from the trash.'''
         queryParams = {
             'url': 'https://www.googleapis.com/gmail/v1/users/{userId}/messages/{id}/untrash',
-            'httpMethod': 'POST',
+            'method': 'POST',
+            'resultType': 'dummy',
             'httpUrlParams': {
                 'prettyPrint': prettyPrint,
                 'fields': fields,
@@ -95,7 +98,8 @@ class Messages():
         '''Gets the specified message.'''
         queryParams = {
             'url': 'https://www.googleapis.com/gmail/v1/users/{userId}/messages/{id}',
-            'httpMethod': 'GET',
+            'method': 'GET',
+            'resultType': 'dummy',
             'httpUrlParams': {
                 'prettyPrint': prettyPrint,
                 'fields': fields,
@@ -117,7 +121,8 @@ class Messages():
         '''Lists the messages in the user's mailbox.'''
         queryParams = {
             'url': 'https://www.googleapis.com/gmail/v1/users/{userId}/messages',
-            'httpMethod': 'GET',
+            'method': 'GET',
+            'resultType': 'dummy',
             'httpUrlParams': {
                 'prettyPrint': prettyPrint,
                 'fields': fields,
@@ -142,7 +147,8 @@ class Messages():
         '''Modifies the labels on the specified message.'''
         queryParams = {
             'url': 'https://www.googleapis.com/gmail/v1/users/{userId}/messages/{id}/modify',
-            'httpMethod': 'POST',
+            'method': 'POST',
+            'resultType': 'dummy',
             'httpUrlParams': {
                 'prettyPrint': prettyPrint,
                 'fields': fields,
@@ -165,7 +171,8 @@ class Messages():
         '''Sends the specified message to the recipients in the To, Cc, and Bcc headers.'''
         queryParams = {
             'url': 'https://www.googleapis.com/gmail/v1/users/{userId}/messages/send',
-            'httpMethod': 'POST',
+            'method': 'POST',
+            'resultType': 'dummy',
             'httpUrlParams': {
                 'prettyPrint': prettyPrint,
                 'fields': fields,
@@ -204,7 +211,8 @@ class Messages():
         '''Directly imports a message into only this user's mailbox, similar to receiving via SMTP. Does not send a message.'''
         queryParams = {
             'url': 'https://www.googleapis.com/gmail/v1/users/{userId}/messages/import',
-            'httpMethod': 'POST',
+            'method': 'POST',
+            'resultType': 'dummy',
             'httpUrlParams': {
                 'prettyPrint': prettyPrint,
                 'fields': fields,
@@ -243,7 +251,8 @@ class Messages():
         '''Moves the specified message to the trash.'''
         queryParams = {
             'url': 'https://www.googleapis.com/gmail/v1/users/{userId}/messages/{id}/trash',
-            'httpMethod': 'POST',
+            'method': 'POST',
+            'resultType': 'dummy',
             'httpUrlParams': {
                 'prettyPrint': prettyPrint,
                 'fields': fields,
@@ -264,7 +273,8 @@ class Messages():
         '''Immediately and permanently deletes the specified message. This operation cannot be undone. Prefer messages.trash instead.'''
         queryParams = {
             'url': 'https://www.googleapis.com/gmail/v1/users/{userId}/messages/{id}',
-            'httpMethod': 'DELETE',
+            'method': 'DELETE',
+            'resultType': 'dummy',
             'httpUrlParams': {
                 'prettyPrint': prettyPrint,
                 'fields': fields,
@@ -289,7 +299,8 @@ class Labels():
         '''Gets the specified label.'''
         queryParams = {
             'url': 'https://www.googleapis.com/gmail/v1/users/{userId}/labels/{id}',
-            'httpMethod': 'GET',
+            'method': 'GET',
+            'resultType': 'dummy',
             'httpUrlParams': {
                 'prettyPrint': prettyPrint,
                 'fields': fields,
@@ -310,7 +321,8 @@ class Labels():
         '''Creates a new label.'''
         queryParams = {
             'url': 'https://www.googleapis.com/gmail/v1/users/{userId}/labels',
-            'httpMethod': 'POST',
+            'method': 'POST',
+            'resultType': 'dummy',
             'httpUrlParams': {
                 'prettyPrint': prettyPrint,
                 'fields': fields,
@@ -335,7 +347,8 @@ class Labels():
         '''Lists all labels in the user's mailbox.'''
         queryParams = {
             'url': 'https://www.googleapis.com/gmail/v1/users/{userId}/labels',
-            'httpMethod': 'GET',
+            'method': 'GET',
+            'resultType': 'dummy',
             'httpUrlParams': {
                 'prettyPrint': prettyPrint,
                 'fields': fields,
@@ -351,11 +364,12 @@ class Labels():
         }
         return self._conn._asyncHttpRequest(leaveOutNulls(queryParams))
 
-    def update(self, userId, id, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, id_=None, messageListVisibility=None, type=None, labelListVisibility=None, name=None):
+    def update(self, userId, id, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, id=None, messageListVisibility=None, type=None, labelListVisibility=None, name=None):
         '''Updates the specified label.'''
         queryParams = {
             'url': 'https://www.googleapis.com/gmail/v1/users/{userId}/labels/{id}',
-            'httpMethod': 'PUT',
+            'method': 'PUT',
+            'resultType': 'dummy',
             'httpUrlParams': {
                 'prettyPrint': prettyPrint,
                 'fields': fields,
@@ -370,18 +384,19 @@ class Labels():
             'httpBodyParams': {
                 'type': type,
                 'messageListVisibility': messageListVisibility,
-                'id': id_,
+                'id': id,
                 'name': name,
                 'labelListVisibility': labelListVisibility,
             },
         }
         return self._conn._asyncHttpRequest(leaveOutNulls(queryParams))
 
-    def patch(self, userId, id, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, id_=None, messageListVisibility=None, type=None, labelListVisibility=None, name=None):
+    def patch(self, userId, id, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, id=None, messageListVisibility=None, type=None, labelListVisibility=None, name=None):
         '''Updates the specified label. This method supports patch semantics.'''
         queryParams = {
             'url': 'https://www.googleapis.com/gmail/v1/users/{userId}/labels/{id}',
-            'httpMethod': 'PATCH',
+            'method': 'PATCH',
+            'resultType': 'dummy',
             'httpUrlParams': {
                 'prettyPrint': prettyPrint,
                 'fields': fields,
@@ -396,7 +411,7 @@ class Labels():
             'httpBodyParams': {
                 'type': type,
                 'messageListVisibility': messageListVisibility,
-                'id': id_,
+                'id': id,
                 'name': name,
                 'labelListVisibility': labelListVisibility,
             },
@@ -407,7 +422,8 @@ class Labels():
         '''Immediately and permanently deletes the specified label and removes it from any messages and threads that it is applied to.'''
         queryParams = {
             'url': 'https://www.googleapis.com/gmail/v1/users/{userId}/labels/{id}',
-            'httpMethod': 'DELETE',
+            'method': 'DELETE',
+            'resultType': 'dummy',
             'httpUrlParams': {
                 'prettyPrint': prettyPrint,
                 'fields': fields,
@@ -432,7 +448,8 @@ class Threads():
         '''Removes the specified thread from the trash.'''
         queryParams = {
             'url': 'https://www.googleapis.com/gmail/v1/users/{userId}/threads/{id}/untrash',
-            'httpMethod': 'POST',
+            'method': 'POST',
+            'resultType': 'dummy',
             'httpUrlParams': {
                 'prettyPrint': prettyPrint,
                 'fields': fields,
@@ -453,7 +470,8 @@ class Threads():
         '''Gets the specified thread.'''
         queryParams = {
             'url': 'https://www.googleapis.com/gmail/v1/users/{userId}/threads/{id}',
-            'httpMethod': 'GET',
+            'method': 'GET',
+            'resultType': 'dummy',
             'httpUrlParams': {
                 'prettyPrint': prettyPrint,
                 'fields': fields,
@@ -474,7 +492,8 @@ class Threads():
         '''Lists the threads in the user's mailbox.'''
         queryParams = {
             'url': 'https://www.googleapis.com/gmail/v1/users/{userId}/threads',
-            'httpMethod': 'GET',
+            'method': 'GET',
+            'resultType': 'dummy',
             'httpUrlParams': {
                 'prettyPrint': prettyPrint,
                 'fields': fields,
@@ -499,7 +518,8 @@ class Threads():
         '''Modifies the labels applied to the thread. This applies to all messages in the thread.'''
         queryParams = {
             'url': 'https://www.googleapis.com/gmail/v1/users/{userId}/threads/{id}/modify',
-            'httpMethod': 'POST',
+            'method': 'POST',
+            'resultType': 'dummy',
             'httpUrlParams': {
                 'prettyPrint': prettyPrint,
                 'fields': fields,
@@ -522,7 +542,8 @@ class Threads():
         '''Moves the specified thread to the trash.'''
         queryParams = {
             'url': 'https://www.googleapis.com/gmail/v1/users/{userId}/threads/{id}/trash',
-            'httpMethod': 'POST',
+            'method': 'POST',
+            'resultType': 'dummy',
             'httpUrlParams': {
                 'prettyPrint': prettyPrint,
                 'fields': fields,
@@ -543,7 +564,8 @@ class Threads():
         '''Immediately and permanently deletes the specified thread. This operation cannot be undone. Prefer threads.trash instead.'''
         queryParams = {
             'url': 'https://www.googleapis.com/gmail/v1/users/{userId}/threads/{id}',
-            'httpMethod': 'DELETE',
+            'method': 'DELETE',
+            'resultType': 'dummy',
             'httpUrlParams': {
                 'prettyPrint': prettyPrint,
                 'fields': fields,
@@ -568,7 +590,8 @@ class Drafts():
         '''Gets the specified draft.'''
         queryParams = {
             'url': 'https://www.googleapis.com/gmail/v1/users/{userId}/drafts/{id}',
-            'httpMethod': 'GET',
+            'method': 'GET',
+            'resultType': 'dummy',
             'httpUrlParams': {
                 'prettyPrint': prettyPrint,
                 'fields': fields,
@@ -586,11 +609,12 @@ class Drafts():
         }
         return self._conn._asyncHttpRequest(leaveOutNulls(queryParams))
 
-    def create(self, userId, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, historyId=None, id=None, snippet=None, raw=None, sizeEstimate=None, threadId=None, labelIds=None, attachmentId=None, data=None, size=None, mimeType=None, partId=None, filename=None, headers=None, parts=None, id_=None):
+    def create(self, userId, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, historyId=None, id=None, snippet=None, raw=None, sizeEstimate=None, threadId=None, labelIds=None, attachmentId=None, data=None, size=None, mimeType=None, partId=None, filename=None, headers=None, parts=None, id=None):
         '''Creates a new draft with the DRAFT label.'''
         queryParams = {
             'url': 'https://www.googleapis.com/gmail/v1/users/{userId}/drafts',
-            'httpMethod': 'POST',
+            'method': 'POST',
+            'resultType': 'dummy',
             'httpUrlParams': {
                 'prettyPrint': prettyPrint,
                 'fields': fields,
@@ -623,7 +647,7 @@ class Drafts():
                     'labelIds': labelIds,
                     'id': id,
                 },
-                'id': id_,
+                'id': id,
             },
         }
         return self._conn._asyncHttpRequest(leaveOutNulls(queryParams))
@@ -632,7 +656,8 @@ class Drafts():
         '''Lists the drafts in the user's mailbox.'''
         queryParams = {
             'url': 'https://www.googleapis.com/gmail/v1/users/{userId}/drafts',
-            'httpMethod': 'GET',
+            'method': 'GET',
+            'resultType': 'dummy',
             'httpUrlParams': {
                 'prettyPrint': prettyPrint,
                 'fields': fields,
@@ -650,11 +675,12 @@ class Drafts():
         }
         return self._conn._asyncHttpRequest(leaveOutNulls(queryParams))
 
-    def update(self, userId, id, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, historyId=None, message_id=None, snippet=None, raw=None, sizeEstimate=None, threadId=None, labelIds=None, attachmentId=None, data=None, size=None, mimeType=None, partId=None, filename=None, headers=None, parts=None, id_=None):
+    def update(self, userId, id, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, historyId=None, id=None, snippet=None, raw=None, sizeEstimate=None, threadId=None, labelIds=None, attachmentId=None, data=None, size=None, mimeType=None, partId=None, filename=None, headers=None, parts=None, id=None):
         '''Replaces a draft's content.'''
         queryParams = {
             'url': 'https://www.googleapis.com/gmail/v1/users/{userId}/drafts/{id}',
-            'httpMethod': 'PUT',
+            'method': 'PUT',
+            'resultType': 'dummy',
             'httpUrlParams': {
                 'prettyPrint': prettyPrint,
                 'fields': fields,
@@ -686,18 +712,19 @@ class Drafts():
                     'sizeEstimate': sizeEstimate,
                     'threadId': threadId,
                     'labelIds': labelIds,
-                    'id': message_id,
+                    'id': id,
                 },
-                'id': id_,
+                'id': id,
             },
         }
         return self._conn._asyncHttpRequest(leaveOutNulls(queryParams))
 
-    def send(self, userId, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, historyId=None, id=None, snippet=None, raw=None, sizeEstimate=None, threadId=None, labelIds=None, attachmentId=None, data=None, size=None, mimeType=None, partId=None, filename=None, headers=None, parts=None, id_=None):
+    def send(self, userId, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, historyId=None, id=None, snippet=None, raw=None, sizeEstimate=None, threadId=None, labelIds=None, attachmentId=None, data=None, size=None, mimeType=None, partId=None, filename=None, headers=None, parts=None, id=None):
         '''Sends the specified, existing draft to the recipients in the To, Cc, and Bcc headers.'''
         queryParams = {
             'url': 'https://www.googleapis.com/gmail/v1/users/{userId}/drafts/send',
-            'httpMethod': 'POST',
+            'method': 'POST',
+            'resultType': 'dummy',
             'httpUrlParams': {
                 'prettyPrint': prettyPrint,
                 'fields': fields,
@@ -730,7 +757,7 @@ class Drafts():
                     'labelIds': labelIds,
                     'id': id,
                 },
-                'id': id_,
+                'id': id,
             },
         }
         return self._conn._asyncHttpRequest(leaveOutNulls(queryParams))
@@ -739,7 +766,8 @@ class Drafts():
         '''Immediately and permanently deletes the specified draft. Does not simply trash it.'''
         queryParams = {
             'url': 'https://www.googleapis.com/gmail/v1/users/{userId}/drafts/{id}',
-            'httpMethod': 'DELETE',
+            'method': 'DELETE',
+            'resultType': 'dummy',
             'httpUrlParams': {
                 'prettyPrint': prettyPrint,
                 'fields': fields,
@@ -764,7 +792,8 @@ class History():
         '''Lists the history of all changes to the given mailbox. History results are returned in chronological order (increasing historyId).'''
         queryParams = {
             'url': 'https://www.googleapis.com/gmail/v1/users/{userId}/history',
-            'httpMethod': 'GET',
+            'method': 'GET',
+            'resultType': 'dummy',
             'httpUrlParams': {
                 'prettyPrint': prettyPrint,
                 'fields': fields,
