@@ -9,7 +9,8 @@ templatesDir = os.path.join(CURRENT_DIR, 'templates')
 fsLoader = jinja2.FileSystemLoader(templatesDir)
 JINJA_ENVIRONMENT = jinja2.Environment(loader=fsLoader, extensions=['jinja2.ext.autoescape'], lstrip_blocks=True, trim_blocks=True)
 
-
+_APIDOCS_PATH = 'wrappers/apiFiles/apiDocs/'
+    
 
 def render(templateName, **kwargs):
     template = JINJA_ENVIRONMENT.get_template(templateName)
@@ -24,12 +25,14 @@ def capitalizeFirstChar(inp):
 
 
 def loadApiDict(apiNames):
-    names = []
-    for apiDescription in json.load(open('apis.json'))[::-1]:
-        if apiDescription['name'] not in names:
-            names.append(apiDescription['name'])
-            if apiDescription['name'] in apiNames:
-                yield apiDescription['name'], apiDescription
+    for apiName in apiNames:
+        filename = os.path.join(_APIDOCS_PATH, apiName) + '.json'
+        if os.path.exists(filename):
+            apiDescription = json.load(open(filename))
+            yield apiName, apiDescription
+        else:
+            print filename
+        
 
 
 def generatePyCode(apiName, apiDict):

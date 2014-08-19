@@ -11,6 +11,7 @@ import json
 
 
 class DiscoveryWrapper(Discovery):
+    _APIDOCS_PATH = 'apiFiles/apiDocs'
     
     def getList(self):
         return self.apis.list(preferred=True)
@@ -29,16 +30,15 @@ class DiscoveryWrapper(Discovery):
                 if apiNames:
                     if not discoveryItem['name'] in apiNames:
                         continue
-                self.download(discoveryItem['name'], discoveryItem['version'], 'apiFiles/apiDocs/{}.json'.format(discoveryItem['name']))
+                self.download(discoveryItem['name'], discoveryItem['version'])
         
         return dfd
     
-    def download(self, apiName, version, filePath):
+    def download(self, apiName, version):
         dfd = self.apis.getRest('gmail', 'v1')
-        print apiName
         @dfd.addCallback
         def fun(contents):
-            print type(contents), filePath
+            filePath = '{}/{}.json'.format(self._APIDOCS_PATH, apiName)
             json.dump(contents, open(filePath, 'w'))
         return dfd
             
@@ -47,8 +47,8 @@ if __name__ == '__main__':
     from twisted.internet import reactor
     conn = AsyncBase('785509043543.apps.googleusercontent.com', 'Mhx2IjJLk78U9VyErHHIVbnw', 'apiFiles/AsyncAllCredentials.json')
     downloader = DiscoveryWrapper(conn)
-    #dfd = downloader.download('gmail', 'v1', 'apiFiles/apiDocs/gmail.json')
+    #dfd = downloader.download('gmail', 'v1')
     #dfd = downloader.getList()
-    dfd = downloader.downloadPreferred(['gmail', 'bigquery'])
+    dfd = downloader.downloadPreferred(['gmail', 'bigquery', 'storage', 'pubsub', 'cloudmonitoring', 'datastore'])
     dfd.addCallback(printCb)
     reactor.run()
