@@ -36,20 +36,24 @@ def loadApiDict(apiNames):
 
 
 def generatePyCode(apiName, apiDict):
-    
+
     def schemaFun(schemaDict, rParams=[], oParams=[], parentKeyIsRequired=True, parentKey='', sep='_'):
         bodyParams = {}
         for k, v in schemaDict.get('properties', {}).iteritems():
             ############DUPLICATE NAME HANDLING#############
             key = k
             newKey = parentKey + sep + k if parentKey else k
+
+            if key in rParams or key in oParams:
+                key = newKey
+
             if key in rParams or key in oParams:
                 print "        '{}': '{}',".format(newKey, k)
                 #key = newKey
             #if key in rParams or key in oParams:
             #    key += '_'
             ################################################
-            
+
             isRequired = 'Required' in v.get('description', '')
             if '$ref' in v:
                 bodyParams[k], rParams, oParams = schemaFun(apiDict['schemas'][v['$ref']], rParams, oParams, isRequired, newKey)
@@ -57,7 +61,7 @@ def generatePyCode(apiName, apiDict):
                 bodyParams[k] = key
                 if parentKeyIsRequired and isRequired:
                     rParams.append(key)
-                else:    
+                else:
                     oParams.append(key)
         return bodyParams, rParams, oParams
 
@@ -67,8 +71,7 @@ def generatePyCode(apiName, apiDict):
 
         rParams = [k for k, v in method.get('parameters', {}).iteritems() if 'required' in v]
         oParams = apiDict.get('parameters', {}).keys() + [k for k, v in method.get('parameters', {}).iteritems() if not 'required' in v]
-        
-        
+
         if 'request' in method:
             schema = apiDict['schemas'][method['request']['$ref']]
             print "    '{}': ".format(method['id']) + '{'
@@ -76,34 +79,43 @@ def generatePyCode(apiName, apiDict):
             print '    },'
         else:
             bodyParams = {}
-        
-        methodLines = render('template_method.py', apiDict=apiDict, 
-                                                   methodName=methodName, 
-                                                   methodDict=method, 
-                                                   bodyParams=bodyParams, 
-                                                   rParams=rParams, 
+
+        methodLines = render('template_method.py', apiDict=apiDict,
+                                                   methodName=methodName,
+                                                   methodDict=method,
+                                                   bodyParams=bodyParams,
+                                                   rParams=rParams,
                                                    oParams=oParams)
         return methodLines
-    
-        
+
     def generateResourceCode(resourceName, resource, scopes=None):
         functionCode = ''
+
         for resourceName_, resourceDict_ in resource.get('resources', {}).iteritems():
             functionCode += generateResourceCode(resourceName_, resourceDict_)
             
         methodsDict = defaultdict(dict)
         for methodName, methodDict in resource.get('methods', {}).iteritems():
             methodsDict[methodName] = generateMethodCode(methodName, methodDict)
+
+        for k, v in resource.get('resources', {}).iteritems():
+            functionCode += generateResourceCode(k, v)
+
+        methodsDict = defaultdict(dict)
+        for k, v in resource.get('methods', {}).iteritems():
+            methodsDict[k] = generateMethodCode(k, v)
+
+
         if scopes:
-            resourceLines = render('template_api.py', resourceName=resourceName, 
-                                                           resourceDict=resource, 
+            resourceLines = render('template_api.py', resourceName=resourceName,
+                                                           resourceDict=resource,
                                                            methodsDict=methodsDict,
                                                            scopes=scopes)
         else:
-            resourceLines = render('template_resource.py', resourceName=resourceName, 
-                                                           resourceDict=resource, 
+            resourceLines = render('template_resource.py', resourceName=resourceName,
+                                                           resourceDict=resource,
                                                            methodsDict=methodsDict)
-            
+
         functionCode += resourceLines
 
         return functionCode
@@ -115,7 +127,7 @@ def generatePyCode(apiName, apiDict):
         scopes = ['']
     functionCode += generateResourceCode(apiDict['name'], apiDict, scopes)
     return functionCode, None
-    
+
 
 def generateCode(apiNames):
     for apiName, apiDict in loadApiDict(apiNames):
