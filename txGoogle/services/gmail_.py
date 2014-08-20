@@ -367,7 +367,7 @@ class Labels(object):
         }
         return self._conn._asyncHttpRequest(leaveOutNulls(queryParams))
 
-    def update(self, userId, id, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, messageListVisibility=None, labelListVisibility=None, type=None, id=None, name=None):
+    """def update(self, userId, id, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, messageListVisibility=None, labelListVisibility=None, type=None, id=None, name=None):
         '''Updates the specified label.'''
         queryParams = {
             'url': 'https://www.googleapis.com/gmail/v1/users/{userId}/labels/{id}',
@@ -419,7 +419,7 @@ class Labels(object):
                 'id': id,
             },
         }
-        return self._conn._asyncHttpRequest(leaveOutNulls(queryParams))
+        return self._conn._asyncHttpRequest(leaveOutNulls(queryParams))"""
 
     def delete(self, userId, id, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None):
         '''Immediately and permanently deletes the specified label and removes it from any messages and threads that it is applied to.'''
@@ -614,7 +614,7 @@ class Drafts(object):
         }
         return self._conn._asyncHttpRequest(leaveOutNulls(queryParams))
 
-    def create(self, userId, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, historyId=None, id=None, snippet=None, raw=None, sizeEstimate=None, threadId=None, labelIds=None, attachmentId=None, data=None, size=None, mimeType=None, partId=None, filename=None, headers=None, parts=None, id=None):
+    """def create(self, userId, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, historyId=None, id=None, snippet=None, raw=None, sizeEstimate=None, threadId=None, labelIds=None, attachmentId=None, data=None, size=None, mimeType=None, partId=None, filename=None, headers=None, parts=None, id=None):
         '''Creates a new draft with the DRAFT label.'''
         queryParams = {
             'url': 'https://www.googleapis.com/gmail/v1/users/{userId}/drafts',
@@ -655,7 +655,7 @@ class Drafts(object):
                 'id': id,
             },
         }
-        return self._conn._asyncHttpRequest(leaveOutNulls(queryParams))
+        return self._conn._asyncHttpRequest(leaveOutNulls(queryParams))"""
 
     def list(self, userId, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, pageToken=None, maxResults=None):
         '''Lists the drafts in the user's mailbox.'''
@@ -680,7 +680,7 @@ class Drafts(object):
         }
         return self._conn._asyncHttpRequest(leaveOutNulls(queryParams))
 
-    def update(self, userId, id, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, historyId=None, message_id=None, snippet=None, raw=None, sizeEstimate=None, threadId=None, labelIds=None, attachmentId=None, data=None, size=None, mimeType=None, partId=None, filename=None, headers=None, parts=None, id=None):
+    """def update(self, userId, id, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, historyId=None, message_id=None, snippet=None, raw=None, sizeEstimate=None, threadId=None, labelIds=None, attachmentId=None, data=None, size=None, mimeType=None, partId=None, filename=None, headers=None, parts=None, id=None):
         '''Replaces a draft's content.'''
         queryParams = {
             'url': 'https://www.googleapis.com/gmail/v1/users/{userId}/drafts/{id}',
@@ -722,7 +722,7 @@ class Drafts(object):
                 'id': id,
             },
         }
-        return self._conn._asyncHttpRequest(leaveOutNulls(queryParams))
+        return self._conn._asyncHttpRequest(leaveOutNulls(queryParams))"""
 
     def send(self, userId, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, historyId=None, id=None, snippet=None, raw=None, sizeEstimate=None, threadId=None, labelIds=None, attachmentId=None, data=None, size=None, mimeType=None, partId=None, filename=None, headers=None, parts=None, id=None):
         '''Sends the specified, existing draft to the recipients in the To, Cc, and Bcc headers.'''
