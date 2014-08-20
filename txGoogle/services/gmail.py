@@ -1,4 +1,4 @@
-from txGoogle.asyncUtils import leaveOutNulls
+from txGoogle.utils import leaveOutNulls
 
 
 class Threads(object):
@@ -453,7 +453,8 @@ class Messages(object):
                 "oauth_token": oauth_token,
                 "key": key,
                 "userIp": userIp,
-                "alt": alt
+                "alt": alt,
+                "userId": userId
             },
             "url": "https://www.googleapis.com/gmail/v1/users/{userId}/messages/send",
             "userId": userId,

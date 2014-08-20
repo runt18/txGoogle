@@ -9,7 +9,7 @@ templatesDir = os.path.join(CURRENT_DIR, 'templates')
 fsLoader = jinja2.FileSystemLoader(templatesDir)
 JINJA_ENVIRONMENT = jinja2.Environment(loader=fsLoader, extensions=['jinja2.ext.autoescape'], lstrip_blocks=True, trim_blocks=True)
 
-_APIDOCS_PATH = 'apiDocs/'
+_APIDOCS_PATH = 'wrappers/apiFiles/apiDocs/'
 
 
 def render(templateName, **kwargs):
@@ -32,7 +32,6 @@ def loadApiDict(apiNames):
             yield apiName, apiDescription
         else:
             print filename
-        
 
 
 def generatePyCode(apiName, apiDict):
@@ -75,7 +74,7 @@ def generatePyCode(apiName, apiDict):
             bodyParams, rParams, oParams = schemaFun(schema, rParams, oParams)
         else:
             bodyParams = {}
-        
+
         methodLines = render('template_method.py', apiDict=apiDict,
                                                    methodName=methodName,
                                                    methodDict=method,
@@ -84,12 +83,18 @@ def generatePyCode(apiName, apiDict):
                                                    oParams=oParams)
         return methodLines
 
-    def generateResourceCode(resourceName, resource, scopes=None):
+    def generateResourceCode(resourceName, resource, scopes=None, existingResources=None):
+        if existingResources is None:
+            existingResources = set()
         functionCode = ''
+        existingResources.add(resourceName)
 
         for resourceName_, resourceDict_ in resource.get('resources', {}).iteritems():
-            functionCode += generateResourceCode(resourceName_, resourceDict_)
-            
+            if resourceName_ not in existingResources:
+                functionCode += generateResourceCode(resourceName_, resourceDict_, existingResources=existingResources)
+            else:
+                print 'skipping {}'.format(resourceName_)
+
         methodsDict = defaultdict(dict)
         for methodName, methodDict in resource.get('methods', {}).iteritems():
             methodsDict[methodName] = generateMethodCode(methodName, methodDict)
@@ -104,7 +109,6 @@ def generatePyCode(apiName, apiDict):
                                                            resourceDict=resource,
                                                            methodsDict=methodsDict)
         functionCode += resourceLines
-
         return functionCode
 
     functionCode = 'from txGoogle.utils import leaveOutNulls\n'

@@ -1,6 +1,11 @@
 from txGoogle.utils import leaveOutNulls
 
+<<<<<<< HEAD
 class Attachments():
+=======
+
+class Attachments(object):
+>>>>>>> 3e4c01ad69130bfadef5284b3445bed259348cb0
     def __init__(self, conn):
         self._conn = conn
 
@@ -27,7 +32,12 @@ class Attachments():
         }
         return self._conn._asyncHttpRequest(leaveOutNulls(queryParams))
 
+<<<<<<< HEAD
 class Messages():
+=======
+
+class Messages(object):
+>>>>>>> 3e4c01ad69130bfadef5284b3445bed259348cb0
     def __init__(self, conn):
         self._conn = conn
         self.attachments = Attachments(conn)
@@ -291,7 +301,8 @@ class Messages():
         }
         return self._conn._asyncHttpRequest(leaveOutNulls(queryParams))
 
-class Labels():
+
+class Labels(object):
     def __init__(self, conn):
         self._conn = conn
 
@@ -364,7 +375,11 @@ class Labels():
         }
         return self._conn._asyncHttpRequest(leaveOutNulls(queryParams))
 
+<<<<<<< HEAD
     def update(self, userId, id, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, messageListVisibility=None, labelListVisibility=None, type=None, id_=None, name=None):
+=======
+    """def update(self, userId, id, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, messageListVisibility=None, labelListVisibility=None, type=None, id=None, name=None):
+>>>>>>> 3e4c01ad69130bfadef5284b3445bed259348cb0
         '''Updates the specified label.'''
         queryParams = {
             'url': 'https://www.googleapis.com/gmail/v1/users/{userId}/labels/{id}',
@@ -416,7 +431,7 @@ class Labels():
                 'id': id_,
             },
         }
-        return self._conn._asyncHttpRequest(leaveOutNulls(queryParams))
+        return self._conn._asyncHttpRequest(leaveOutNulls(queryParams))"""
 
     def delete(self, userId, id, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None):
         '''Immediately and permanently deletes the specified label and removes it from any messages and threads that it is applied to.'''
@@ -440,7 +455,8 @@ class Labels():
         }
         return self._conn._asyncHttpRequest(leaveOutNulls(queryParams))
 
-class Threads():
+
+class Threads(object):
     def __init__(self, conn):
         self._conn = conn
 
@@ -582,7 +598,8 @@ class Threads():
         }
         return self._conn._asyncHttpRequest(leaveOutNulls(queryParams))
 
-class Drafts():
+
+class Drafts(object):
     def __init__(self, conn):
         self._conn = conn
 
@@ -609,7 +626,11 @@ class Drafts():
         }
         return self._conn._asyncHttpRequest(leaveOutNulls(queryParams))
 
+<<<<<<< HEAD
     def create(self, userId, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, historyId=None, id=None, snippet=None, raw=None, sizeEstimate=None, threadId=None, labelIds=None, attachmentId=None, data=None, size=None, mimeType=None, partId=None, filename=None, headers=None, parts=None, id_=None):
+=======
+    """def create(self, userId, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, historyId=None, id=None, snippet=None, raw=None, sizeEstimate=None, threadId=None, labelIds=None, attachmentId=None, data=None, size=None, mimeType=None, partId=None, filename=None, headers=None, parts=None, id=None):
+>>>>>>> 3e4c01ad69130bfadef5284b3445bed259348cb0
         '''Creates a new draft with the DRAFT label.'''
         queryParams = {
             'url': 'https://www.googleapis.com/gmail/v1/users/{userId}/drafts',
@@ -650,7 +671,7 @@ class Drafts():
                 'id': id_,
             },
         }
-        return self._conn._asyncHttpRequest(leaveOutNulls(queryParams))
+        return self._conn._asyncHttpRequest(leaveOutNulls(queryParams))"""
 
     def list(self, userId, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, pageToken=None, maxResults=None):
         '''Lists the drafts in the user's mailbox.'''
@@ -675,7 +696,11 @@ class Drafts():
         }
         return self._conn._asyncHttpRequest(leaveOutNulls(queryParams))
 
+<<<<<<< HEAD
     def update(self, userId, id, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, historyId=None, id_=None, snippet=None, raw=None, sizeEstimate=None, threadId=None, labelIds=None, attachmentId=None, data=None, size=None, mimeType=None, partId=None, filename=None, headers=None, parts=None, updateId=None):
+=======
+    """def update(self, userId, id, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, historyId=None, message_id=None, snippet=None, raw=None, sizeEstimate=None, threadId=None, labelIds=None, attachmentId=None, data=None, size=None, mimeType=None, partId=None, filename=None, headers=None, parts=None, id=None):
+>>>>>>> 3e4c01ad69130bfadef5284b3445bed259348cb0
         '''Replaces a draft's content.'''
         queryParams = {
             'url': 'https://www.googleapis.com/gmail/v1/users/{userId}/drafts/{id}',
@@ -717,7 +742,7 @@ class Drafts():
                 'id': updateId,
             },
         }
-        return self._conn._asyncHttpRequest(leaveOutNulls(queryParams))
+        return self._conn._asyncHttpRequest(leaveOutNulls(queryParams))"""
 
     def send(self, userId, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, historyId=None, id=None, snippet=None, raw=None, sizeEstimate=None, threadId=None, labelIds=None, attachmentId=None, data=None, size=None, mimeType=None, partId=None, filename=None, headers=None, parts=None, id_=None):
         '''Sends the specified, existing draft to the recipients in the To, Cc, and Bcc headers.'''
@@ -784,7 +809,8 @@ class Drafts():
         }
         return self._conn._asyncHttpRequest(leaveOutNulls(queryParams))
 
-class History():
+
+class History(object):
     def __init__(self, conn):
         self._conn = conn
 
@@ -813,7 +839,8 @@ class History():
         }
         return self._conn._asyncHttpRequest(leaveOutNulls(queryParams))
 
-class Users():
+
+class Users(object):
     def __init__(self, conn):
         self._conn = conn
         self.messages = Messages(conn)
@@ -822,10 +849,11 @@ class Users():
         self.drafts = Drafts(conn)
         self.history = History(conn)
 
-class Gmail():
+
+class Gmail(object):
     '''The Gmail REST API.'''
     _DEFAULT_SCOPES = [u'https://www.googleapis.com/auth/gmail.compose', u'https://mail.google.com/', u'https://www.googleapis.com/auth/gmail.modify', u'https://www.googleapis.com/auth/gmail.readonly']
-    
+
     def __init__(self, conn=None, scopes=None):
         if scopes is not None:
             self._scopes = scopes
