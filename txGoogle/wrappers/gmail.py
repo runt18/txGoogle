@@ -4,7 +4,7 @@ Created on 15 aug. 2014
 @author: sjuul
 '''
 
-from txGoogle.services.gmail import Gmail
+from txGoogle.services.gmail_ import Gmail
 from txGoogle.asyncBase import AsyncBase
 from email.mime.text import MIMEText
 import base64
@@ -25,7 +25,7 @@ class GmailWrapper(Gmail):
         if bcc is not None:
             message['bcc'] = bcc
         raw = base64.urlsafe_b64encode(message.as_string())
-        return self.messages.send(userId=userId, raw=raw)
+        return self.users.messages.send(userId=userId, raw=raw)
 
 
 if __name__ == '__main__':
@@ -34,6 +34,6 @@ if __name__ == '__main__':
     gmail = GmailWrapper(conn)
     conn.connect()
     for i in range(10):
-        dfd = gmail.sendMail('sjuul.janssen@transceptor-technology.com', 'jvdheijden@insign.it', 'test', 'Dit is een test {}'.format(i))
+        dfd = gmail.sendMail('sjuul.janssen@transceptor-technology.com', 'sjanssen@insign.it', 'test', 'Dit is een test {}'.format(i))
         dfd.addCallback(printCb)
     reactor.run()
