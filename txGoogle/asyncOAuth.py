@@ -43,6 +43,7 @@ class AsyncOAuthConnectionHandler(AsyncHttp):
         self._grantKwargs['redirect_uri'] = redirect_uri
         self._grantKwargs['client_id'] = clientId
         self._grantKwargs['scope'] = scope
+        self._hasScopes = not (scope is None or len(scope) == 0)
         self._credentialsFileName = credentialsFileName
         if credentialsFileName is None:
             raise Exception('No credentialsFileName is specified')
@@ -55,6 +56,8 @@ class AsyncOAuthConnectionHandler(AsyncHttp):
             self._getAccessCredsDfd = Deferred()
         else:
             return self._getAccessCredsDfd
+        if not self._hasScopes:
+            return self._getAccessCredsDfd.callback('Ok')
         if refreshToken:
             tokenParams = {
                 'client_id': self._clientId,
@@ -124,9 +127,10 @@ class AsyncOAuthConnectionHandler(AsyncHttp):
         if not urlParams:
             urlParams = {}
 
-        @dfd.addCallback
-        def injectAccesToken(dummy):
-            urlParams['access_token'] = self._credentialsDct['access_token']
+        if self._hasScopes:
+            @dfd.addCallback
+            def injectAccesToken(dummy):
+                urlParams['access_token'] = self._credentialsDct['access_token']
 
         dfd.addCallback(ignoreFirstArg, super(AsyncOAuthConnectionHandler, self).httpRequest, url, urlParams=urlParams, bodyParams=bodyParams, headers=headers, method=method, formEncode=formEncode)
         return dfd

@@ -3,6 +3,7 @@ Created on 15 aug. 2014
 
 @author: sjuul
 '''
+import os
 
 
 def dictGet(dct, keys, default):
@@ -26,3 +27,9 @@ def leaveOutNulls(dct):
         elif b == None:
             del dct[a]
     return dct
+
+
+def preparePathForFile(filePathName):
+    destFolder = os.path.dirname(filePathName)
+    if not os.path.exists(destFolder):
+        os.makedirs(destFolder, 0755)
