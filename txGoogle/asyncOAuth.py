@@ -102,7 +102,8 @@ class AsyncOAuthConnectionHandler(AsyncHttp):
         if 'expirationTimestamp' not in self._credentialsDct or 'refresh_token' not in self._credentialsDct:
             log.msg('Missing expirationTimestamp or refresh_token', logLevel=logging.INFO)
             return self._getAccessCredentials()
-        elif self._credentialsDct['expirationTimestamp'] < int(time.time() - 10):
+        elif self._credentialsDct['expirationTimestamp'] < int(time.time() - 60):
+            self._getAccessCredsDfd = None
             log.msg('Grant expired, refreshing', logLevel=logging.INFO)
             return self._getAccessCredentials(refreshToken=self._credentialsDct['refresh_token'])
         else:
@@ -114,11 +115,11 @@ class AsyncOAuthConnectionHandler(AsyncHttp):
         elif self._getAccessCredsDfd:
             return self._getAccessCredsDfd
         elif os.path.exists(self._credentialsFileName):
-                credsFile = open(self._credentialsFileName, 'r')
-                creds = json.load(credsFile)
-                credsFile.close()
-                self._credentialsDct = creds
-                return self._checkCredentialsDct()
+            credsFile = open(self._credentialsFileName, 'r')
+            creds = json.load(credsFile)
+            credsFile.close()
+            self._credentialsDct = creds
+            return self._checkCredentialsDct()
         else:
             return self._getAccessCredentials()
 
