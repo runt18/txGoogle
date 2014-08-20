@@ -33,7 +33,7 @@ if __name__ == '__main__':
     conn = AsyncBase('785509043543.apps.googleusercontent.com', 'Mhx2IjJLk78U9VyErHHIVbnw', 'apiFiles/AsyncAllCredentials.json')
     gmail = GmailWrapper(conn)
     conn.connect()
-    for i in range(10):
+    for i in range(1):
         dfd = gmail.sendMail('sjuul.janssen@transceptor-technology.com', 'sjanssen@insign.it', 'test', 'Dit is een test {}'.format(i))
         dfd.addCallback(printCb)
     reactor.run()
