@@ -1,16 +1,16 @@
 from collections import defaultdict
 import json
-# from subprocess import Popen
 import os
 import jinja2
+from txGoogle.duplicateParams import duplicateDict
 
 CURRENT_DIR = os.path.dirname(__file__)
 templatesDir = os.path.join(CURRENT_DIR, 'templates')
 fsLoader = jinja2.FileSystemLoader(templatesDir)
 JINJA_ENVIRONMENT = jinja2.Environment(loader=fsLoader, extensions=['jinja2.ext.autoescape'], lstrip_blocks=True, trim_blocks=True)
 
-_APIDOCS_PATH = 'wrappers/apiFiles/apiDocs/'
-    
+_APIDOCS_PATH = 'apiDocs/'
+
 
 def render(templateName, **kwargs):
     template = JINJA_ENVIRONMENT.get_template(templateName)
@@ -37,34 +37,7 @@ def loadApiDict(apiNames):
 
 def generatePyCode(apiName, apiDict):
 
-    def schemaFun(schemaDict, rParams=[], oParams=[], parentKeyIsRequired=True, parentKey='', sep='_'):
-        bodyParams = {}
-        for k, v in schemaDict.get('properties', {}).iteritems():
-            ############DUPLICATE NAME HANDLING#############
-            key = k
-            newKey = parentKey + sep + k if parentKey else k
-
-            if key in rParams or key in oParams:
-                key = newKey
-
-            if key in rParams or key in oParams:
-                #print "        '{}': '{}',".format(newKey, k)
-                key = newKey
-            #if key in rParams or key in oParams:
-            #    key += '_'
-            ################################################
-
-            isRequired = 'Required' in v.get('description', '')
-            if '$ref' in v:
-                bodyParams[k], rParams, oParams = schemaFun(apiDict['schemas'][v['$ref']], rParams, oParams, isRequired, newKey)
-            else:
-                bodyParams[k] = key
-                if parentKeyIsRequired and isRequired:
-                    rParams.append(key)
-                else:
-                    oParams.append(key)
-        return bodyParams, rParams, oParams
-
+    
     def generateMethodCode(methodName, method):
         if methodName == 'import':
             methodName = 'import_'
@@ -73,10 +46,33 @@ def generatePyCode(apiName, apiDict):
         oParams = apiDict.get('parameters', {}).keys() + [k for k, v in method.get('parameters', {}).iteritems() if not 'required' in v]
 
         if 'request' in method:
+            def schemaFun(schemaDict, rParams=[], oParams=[], parentKeyIsRequired=True, parentKey='', sep='_'):
+                bodyParams = {}
+                for k, v in schemaDict.get('properties', {}).iteritems():
+                    key = k
+                    newKey = parentKey + sep + k if parentKey else k
+        
+                    paramKey = '{}:{}:{}'.format(apiDict['id'], method['id'], newKey)
+                    key = duplicateDict.get(paramKey, key)
+                    if key in rParams or key in oParams:
+                        print method['id'], newKey
+                        
+                    description = v.get('description', '')
+                    isRequired = 'Required' in description
+                    if 'Output-only' in description:
+                        continue
+                    if '$ref' in v:
+                        bodyParams[k], rParams, oParams = schemaFun(apiDict['schemas'][v['$ref']], rParams, oParams, isRequired, newKey)
+                    else:
+                        bodyParams[k] = key
+                        if parentKeyIsRequired and isRequired:
+                            rParams.append(key)
+                        else:
+                            oParams.append(key)
+                return bodyParams, rParams, oParams
+
             schema = apiDict['schemas'][method['request']['$ref']]
-            #print "    '{}': ".format(method['id']) + '{'
             bodyParams, rParams, oParams = schemaFun(schema, rParams, oParams)
-            #print '    },'
         else:
             bodyParams = {}
         
@@ -107,7 +103,6 @@ def generatePyCode(apiName, apiDict):
             resourceLines = render('template_resource.py', resourceName=resourceName,
                                                            resourceDict=resource,
                                                            methodsDict=methodsDict)
-
         functionCode += resourceLines
 
         return functionCode
@@ -123,6 +118,7 @@ def generatePyCode(apiName, apiDict):
 
 def generateCode(apiNames):
     for apiName, apiDict in loadApiDict(apiNames):
+        print apiName
         code, tests = generatePyCode(apiName, apiDict)
         open('services/{}.py'.format(apiName + '_'), 'wb').write(code.replace('\t', '    '))
         #print tests
@@ -134,6 +130,6 @@ if __name__ == '__main__':
     # dfds = [aApis.bigquery.tables.list('over-sight', 'testdataset', fields='tables')]
     # reactor.run()
 
-    generateCode(['bigquery'])
+    generateCode(['bigquery', 'cloudmonitoring', 'datastore', 'gmail', 'pubsub', 'storage'])
     #Popen('python generated.py').communicate()
     pass

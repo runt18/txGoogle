@@ -11,7 +11,7 @@ import json
 
 
 class DiscoveryWrapper(Discovery):
-    _APIDOCS_PATH = 'apiFiles/apiDocs'
+    _APIDOCS_PATH = '../apiDocs'
     
     def getList(self):
         return self.apis.list(preferred=True)
