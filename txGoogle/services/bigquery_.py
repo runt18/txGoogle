@@ -5,7 +5,7 @@ class Tables(object):
     def __init__(self, conn):
         self._conn = conn
 
-    def insert(self, projectId, datasetId, tableReference_projectId, tableId, tableReference_datasetId, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, kind=None, expirationTime=None, description=None, creationTime=None, id=None, numRows=None, numBytes=None, etag=None, friendlyName=None, lastModifiedTime=None, schema_fields=None, type=None, selfLink=None, query=None):
+    def insert(self, projectId, datasetId, projectId_, tableId, datasetId_, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, expirationTime=None, description=None, friendlyName=None, fields_=None, query=None):
         '''Creates a new, empty table in the dataset.'''
         queryParams = {
             'url': 'https://www.googleapis.com/bigquery/v2/projects/{projectId}/datasets/{datasetId}/tables',
@@ -23,28 +23,19 @@ class Tables(object):
                 'datasetId': datasetId,
             },
             'httpBodyParams': {
-                'kind': kind,
-                'lastModifiedTime': lastModifiedTime,
                 'description': description,
-                'creationTime': creationTime,
-                'tableReference': {
-                    'projectId': tableReference_projectId,
-                    'tableId': tableId,
-                    'datasetId': tableReference_datasetId,
-                },
-                'numRows': numRows,
-                'numBytes': numBytes,
-                'etag': etag,
                 'friendlyName': friendlyName,
                 'expirationTime': expirationTime,
+                'schema': {
+                    'fields': fields_,
+                },
+                'tableReference': {
+                    'projectId': projectId_,
+                    'tableId': tableId,
+                    'datasetId': datasetId_,
+                },
                 'view': {
                     'query': query,
-                },
-                'type': type,
-                'id': id,
-                'selfLink': selfLink,
-                'schema': {
-                    'fields': schema_fields,
                 },
             },
         }
@@ -97,7 +88,7 @@ class Tables(object):
         }
         return self._conn._asyncHttpRequest(leaveOutNulls(queryParams))
 
-    def update(self, projectId, tableId, datasetId, tableReference_projectId, tableReference_tableId, tableReference_datasetId, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, kind=None, expirationTime=None, description=None, creationTime=None, id=None, numRows=None, numBytes=None, etag=None, friendlyName=None, lastModifiedTime=None, schema_fields=None, type=None, selfLink=None, query=None):
+    def update(self, projectId, tableId, datasetId, projectId_, tableId_, datasetId_, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, expirationTime=None, description=None, friendlyName=None, fields_=None, query=None):
         '''Updates information in an existing table. The update method replaces the entire table resource, whereas the patch method only replaces fields that are provided in the submitted table resource.'''
         queryParams = {
             'url': 'https://www.googleapis.com/bigquery/v2/projects/{projectId}/datasets/{datasetId}/tables/{tableId}',
@@ -116,34 +107,25 @@ class Tables(object):
                 'datasetId': datasetId,
             },
             'httpBodyParams': {
-                'kind': kind,
-                'lastModifiedTime': lastModifiedTime,
                 'description': description,
-                'creationTime': creationTime,
-                'tableReference': {
-                    'projectId': tableReference_projectId,
-                    'tableId': tableReference_tableId,
-                    'datasetId': tableReference_datasetId,
-                },
-                'numRows': numRows,
-                'numBytes': numBytes,
-                'etag': etag,
                 'friendlyName': friendlyName,
                 'expirationTime': expirationTime,
+                'schema': {
+                    'fields': fields_,
+                },
+                'tableReference': {
+                    'projectId': projectId_,
+                    'tableId': tableId_,
+                    'datasetId': datasetId_,
+                },
                 'view': {
                     'query': query,
-                },
-                'type': type,
-                'id': id,
-                'selfLink': selfLink,
-                'schema': {
-                    'fields': schema_fields,
                 },
             },
         }
         return self._conn._asyncHttpRequest(leaveOutNulls(queryParams))
 
-    def patch(self, projectId, tableId, datasetId, tableReference_projectId, tableReference_tableId, tableReference_datasetId, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, kind=None, expirationTime=None, description=None, creationTime=None, id=None, numRows=None, numBytes=None, etag=None, friendlyName=None, lastModifiedTime=None, schema_fields=None, type=None, selfLink=None, query=None):
+    def patch(self, projectId, tableId, datasetId, projectId_, tableId_, datasetId_, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, expirationTime=None, description=None, friendlyName=None, fields_=None, query=None):
         '''Updates information in an existing table. The update method replaces the entire table resource, whereas the patch method only replaces fields that are provided in the submitted table resource. This method supports patch semantics.'''
         queryParams = {
             'url': 'https://www.googleapis.com/bigquery/v2/projects/{projectId}/datasets/{datasetId}/tables/{tableId}',
@@ -162,28 +144,19 @@ class Tables(object):
                 'datasetId': datasetId,
             },
             'httpBodyParams': {
-                'kind': kind,
-                'lastModifiedTime': lastModifiedTime,
                 'description': description,
-                'creationTime': creationTime,
-                'tableReference': {
-                    'projectId': tableReference_projectId,
-                    'tableId': tableReference_tableId,
-                    'datasetId': tableReference_datasetId,
-                },
-                'numRows': numRows,
-                'numBytes': numBytes,
-                'etag': etag,
                 'friendlyName': friendlyName,
                 'expirationTime': expirationTime,
+                'schema': {
+                    'fields': fields_,
+                },
+                'tableReference': {
+                    'projectId': projectId_,
+                    'tableId': tableId_,
+                    'datasetId': datasetId_,
+                },
                 'view': {
                     'query': query,
-                },
-                'type': type,
-                'id': id,
-                'selfLink': selfLink,
-                'schema': {
-                    'fields': schema_fields,
                 },
             },
         }
@@ -217,7 +190,7 @@ class Datasets(object):
     def __init__(self, conn):
         self._conn = conn
 
-    def insert(self, projectId, datasetId, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, kind=None, description=None, datasetReference_projectId=None, creationTime=None, access=None, etag=None, friendlyName=None, lastModifiedTime=None, id=None, selfLink=None):
+    def insert(self, projectId, datasetId, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, description=None, projectId_=None, access=None, friendlyName=None):
         '''Creates a new empty dataset.'''
         queryParams = {
             'url': 'https://www.googleapis.com/bigquery/v2/projects/{projectId}/datasets',
@@ -234,19 +207,13 @@ class Datasets(object):
                 'projectId': projectId,
             },
             'httpBodyParams': {
-                'kind': kind,
+                'access': access,
+                'friendlyName': friendlyName,
                 'description': description,
                 'datasetReference': {
-                    'projectId': datasetReference_projectId,
+                    'projectId': projectId_,
                     'datasetId': datasetId,
                 },
-                'creationTime': creationTime,
-                'access': access,
-                'etag': etag,
-                'friendlyName': friendlyName,
-                'lastModifiedTime': lastModifiedTime,
-                'id': id,
-                'selfLink': selfLink,
             },
         }
         return self._conn._asyncHttpRequest(leaveOutNulls(queryParams))
@@ -297,7 +264,7 @@ class Datasets(object):
         }
         return self._conn._asyncHttpRequest(leaveOutNulls(queryParams))
 
-    def update(self, projectId, datasetId, datasetReference_datasetId, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, kind=None, description=None, datasetReference_projectId=None, creationTime=None, access=None, etag=None, friendlyName=None, lastModifiedTime=None, id=None, selfLink=None):
+    def update(self, projectId, datasetId, datasetId_, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, description=None, projectId_=None, access=None, friendlyName=None):
         '''Updates information in an existing dataset. The update method replaces the entire dataset resource, whereas the patch method only replaces fields that are provided in the submitted dataset resource.'''
         queryParams = {
             'url': 'https://www.googleapis.com/bigquery/v2/projects/{projectId}/datasets/{datasetId}',
@@ -315,24 +282,18 @@ class Datasets(object):
                 'datasetId': datasetId,
             },
             'httpBodyParams': {
-                'kind': kind,
+                'access': access,
+                'friendlyName': friendlyName,
                 'description': description,
                 'datasetReference': {
-                    'projectId': datasetReference_projectId,
-                    'datasetId': datasetReference_datasetId,
+                    'projectId': projectId_,
+                    'datasetId': datasetId_,
                 },
-                'creationTime': creationTime,
-                'access': access,
-                'etag': etag,
-                'friendlyName': friendlyName,
-                'lastModifiedTime': lastModifiedTime,
-                'id': id,
-                'selfLink': selfLink,
             },
         }
         return self._conn._asyncHttpRequest(leaveOutNulls(queryParams))
 
-    def patch(self, projectId, datasetId, datasetReference_datasetId, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, kind=None, description=None, datasetReference_projectId=None, creationTime=None, access=None, etag=None, friendlyName=None, lastModifiedTime=None, id=None, selfLink=None):
+    def patch(self, projectId, datasetId, datasetId_, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, description=None, projectId_=None, access=None, friendlyName=None):
         '''Updates information in an existing dataset. The update method replaces the entire dataset resource, whereas the patch method only replaces fields that are provided in the submitted dataset resource. This method supports patch semantics.'''
         queryParams = {
             'url': 'https://www.googleapis.com/bigquery/v2/projects/{projectId}/datasets/{datasetId}',
@@ -350,19 +311,13 @@ class Datasets(object):
                 'datasetId': datasetId,
             },
             'httpBodyParams': {
-                'kind': kind,
+                'access': access,
+                'friendlyName': friendlyName,
                 'description': description,
                 'datasetReference': {
-                    'projectId': datasetReference_projectId,
-                    'datasetId': datasetReference_datasetId,
+                    'projectId': projectId_,
+                    'datasetId': datasetId_,
                 },
-                'creationTime': creationTime,
-                'access': access,
-                'etag': etag,
-                'friendlyName': friendlyName,
-                'lastModifiedTime': lastModifiedTime,
-                'id': id,
-                'selfLink': selfLink,
             },
         }
         return self._conn._asyncHttpRequest(leaveOutNulls(queryParams))
@@ -395,7 +350,7 @@ class Jobs(object):
     def __init__(self, conn):
         self._conn = conn
 
-    def insert(self, projectId, configuration_load_destinationTable_projectId, tableId, datasetId, configuration_link_destinationTable_projectId, configuration_link_destinationTable_tableId, configuration_link_destinationTable_datasetId, configuration_copy_destinationTable_projectId, configuration_copy_destinationTable_tableId, configuration_copy_destinationTable_datasetId, configuration_extract_sourceTable_projectId, configuration_extract_sourceTable_tableId, configuration_extract_sourceTable_datasetId, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, state=None, errors=None, debugInfo=None, message=None, reason=None, location=None, kind=None, outputRows=None, inputFiles=None, inputFileBytes=None, outputBytes=None, creationTime=None, totalBytesProcessed=None, startTime=None, cacheHit=None, statistics_query_totalBytesProcessed=None, endTime=None, jobReference_projectId=None, jobId=None, etag=None, quote=None, encoding=None, fieldDelimiter=None, sourceFormat=None, maxBadRecords=None, allowJaggedRows=None, writeDisposition=None, sourceUris=None, skipLeadingRows=None, createDisposition=None, schemaInlineFormat=None, schemaInline=None, allowQuotedNewlines=None, ignoreUnknownValues=None, configuration_load_schema_fields=None, dryRun=None, configuration_link_createDisposition=None, configuration_link_writeDisposition=None, sourceUri=None, flattenResults=None, useQueryCache=None, configuration_query_defaultDataset_projectId=None, configuration_query_defaultDataset_datasetId=None, configuration_query_destinationTable_projectId=None, configuration_query_destinationTable_tableId=None, configuration_query_destinationTable_datasetId=None, priority=None, configuration_query_writeDisposition=None, allowLargeResults=None, configuration_query_createDisposition=None, query=None, preserveNulls=None, configuration_copy_createDisposition=None, sourceTables=None, configuration_copy_writeDisposition=None, configuration_copy_sourceTable_projectId=None, configuration_copy_sourceTable_tableId=None, configuration_copy_sourceTable_datasetId=None, destinationUri=None, compression=None, configuration_extract_fieldDelimiter=None, destinationFormat=None, printHeader=None, destinationUris=None, id=None, selfLink=None):
+    def insert(self, projectId, load_destinationTable_projectId, tableId, datasetId, link_destinationTable_projectId, link_destinationTable_tableId, link_destinationTable_datasetId, copy_destinationTable_projectId, copy_destinationTable_tableId, copy_destinationTable_datasetId, extract_sourceTable_projectId, extract_sourceTable_tableId, extract_sourceTable_datasetId, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, projectId_=None, jobId=None, quote=None, encoding=None, fieldDelimiter=None, sourceFormat=None, maxBadRecords=None, allowJaggedRows=None, writeDisposition=None, sourceUris=None, skipLeadingRows=None, createDisposition=None, schemaInlineFormat=None, schemaInline=None, allowQuotedNewlines=None, ignoreUnknownValues=None, fields_=None, dryRun=None, createDisposition_=None, writeDisposition_=None, sourceUri=None, flattenResults=None, useQueryCache=None, projectIdQuery=None, datasetIdQuery=None, query_destinationTable_projectId=None, query_destinationTable_tableId=None, query_destinationTable_datasetId=None, priority=None, query_writeDisposition=None, allowLargeResults=None, query_createDisposition=None, query=None, preserveNulls=None, copy_createDisposition=None, sourceTables=None, copy_writeDisposition=None, copy_sourceTable_projectId=None, copy_sourceTable_tableId=None, copy_sourceTable_datasetId=None, destinationUri=None, compression=None, fieldDelimiter_=None, destinationFormat=None, printHeader=None, destinationUris=None):
         '''Starts a new asynchronous job.'''
         queryParams = {
             'url': 'https://www.googleapis.com/bigquery/v2/projects/{projectId}/jobs',
@@ -412,38 +367,6 @@ class Jobs(object):
                 'projectId': projectId,
             },
             'httpBodyParams': {
-                'status': {
-                    'state': state,
-                    'errors': errors,
-                    'errorResult': {
-                        'debugInfo': debugInfo,
-                        'message': message,
-                        'reason': reason,
-                        'location': location,
-                    },
-                },
-                'kind': kind,
-                'statistics': {
-                    'load': {
-                        'outputRows': outputRows,
-                        'inputFiles': inputFiles,
-                        'inputFileBytes': inputFileBytes,
-                        'outputBytes': outputBytes,
-                    },
-                    'creationTime': creationTime,
-                    'totalBytesProcessed': totalBytesProcessed,
-                    'startTime': startTime,
-                    'query': {
-                        'cacheHit': cacheHit,
-                        'totalBytesProcessed': statistics_query_totalBytesProcessed,
-                    },
-                    'endTime': endTime,
-                },
-                'jobReference': {
-                    'projectId': jobReference_projectId,
-                    'jobId': jobId,
-                },
-                'etag': etag,
                 'configuration': {
                     'load': {
                         'encoding': encoding,
@@ -451,7 +374,7 @@ class Jobs(object):
                         'quote': quote,
                         'sourceFormat': sourceFormat,
                         'destinationTable': {
-                            'projectId': configuration_load_destinationTable_projectId,
+                            'projectId': load_destinationTable_projectId,
                             'tableId': tableId,
                             'datasetId': datasetId,
                         },
@@ -466,17 +389,17 @@ class Jobs(object):
                         'allowQuotedNewlines': allowQuotedNewlines,
                         'ignoreUnknownValues': ignoreUnknownValues,
                         'schema': {
-                            'fields': configuration_load_schema_fields,
+                            'fields': fields_,
                         },
                     },
                     'dryRun': dryRun,
                     'link': {
-                        'createDisposition': configuration_link_createDisposition,
-                        'writeDisposition': configuration_link_writeDisposition,
+                        'createDisposition': createDisposition_,
+                        'writeDisposition': writeDisposition_,
                         'destinationTable': {
-                            'projectId': configuration_link_destinationTable_projectId,
-                            'tableId': configuration_link_destinationTable_tableId,
-                            'datasetId': configuration_link_destinationTable_datasetId,
+                            'projectId': link_destinationTable_projectId,
+                            'tableId': link_destinationTable_tableId,
+                            'datasetId': link_destinationTable_datasetId,
                         },
                         'sourceUri': sourceUri,
                     },
@@ -484,57 +407,59 @@ class Jobs(object):
                         'flattenResults': flattenResults,
                         'useQueryCache': useQueryCache,
                         'defaultDataset': {
-                            'projectId': configuration_query_defaultDataset_projectId,
-                            'datasetId': configuration_query_defaultDataset_datasetId,
+                            'projectId': projectIdQuery,
+                            'datasetId': datasetIdQuery,
                         },
                         'destinationTable': {
-                            'projectId': configuration_query_destinationTable_projectId,
-                            'tableId': configuration_query_destinationTable_tableId,
-                            'datasetId': configuration_query_destinationTable_datasetId,
+                            'projectId': query_destinationTable_projectId,
+                            'tableId': query_destinationTable_tableId,
+                            'datasetId': query_destinationTable_datasetId,
                         },
                         'priority': priority,
-                        'writeDisposition': configuration_query_writeDisposition,
+                        'writeDisposition': query_writeDisposition,
                         'allowLargeResults': allowLargeResults,
-                        'createDisposition': configuration_query_createDisposition,
+                        'createDisposition': query_createDisposition,
                         'query': query,
                         'preserveNulls': preserveNulls,
                     },
                     'copy': {
-                        'createDisposition': configuration_copy_createDisposition,
+                        'createDisposition': copy_createDisposition,
                         'sourceTables': sourceTables,
-                        'writeDisposition': configuration_copy_writeDisposition,
+                        'writeDisposition': copy_writeDisposition,
                         'destinationTable': {
-                            'projectId': configuration_copy_destinationTable_projectId,
-                            'tableId': configuration_copy_destinationTable_tableId,
-                            'datasetId': configuration_copy_destinationTable_datasetId,
+                            'projectId': copy_destinationTable_projectId,
+                            'tableId': copy_destinationTable_tableId,
+                            'datasetId': copy_destinationTable_datasetId,
                         },
                         'sourceTable': {
-                            'projectId': configuration_copy_sourceTable_projectId,
-                            'tableId': configuration_copy_sourceTable_tableId,
-                            'datasetId': configuration_copy_sourceTable_datasetId,
+                            'projectId': copy_sourceTable_projectId,
+                            'tableId': copy_sourceTable_tableId,
+                            'datasetId': copy_sourceTable_datasetId,
                         },
                     },
                     'extract': {
                         'destinationUri': destinationUri,
                         'compression': compression,
-                        'fieldDelimiter': configuration_extract_fieldDelimiter,
+                        'fieldDelimiter': fieldDelimiter_,
                         'destinationFormat': destinationFormat,
                         'printHeader': printHeader,
                         'destinationUris': destinationUris,
                         'sourceTable': {
-                            'projectId': configuration_extract_sourceTable_projectId,
-                            'tableId': configuration_extract_sourceTable_tableId,
-                            'datasetId': configuration_extract_sourceTable_datasetId,
+                            'projectId': extract_sourceTable_projectId,
+                            'tableId': extract_sourceTable_tableId,
+                            'datasetId': extract_sourceTable_datasetId,
                         },
                     },
                 },
-                'id': id,
-                'selfLink': selfLink,
+                'jobReference': {
+                    'projectId': projectId_,
+                    'jobId': jobId,
+                },
             },
         }
         return self._conn._asyncHttpRequest(leaveOutNulls(queryParams))
 
-    def query(self, projectId, query, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, timeoutMs=None, kind=None, dryRun=None, useQueryCache=None, defaultDataset_projectId=None, datasetId=None, maxResults=None, preserveNulls=None):
+    def query(self, projectId, query, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, timeoutMs=None, kind=None, dryRun=None, useQueryCache=None, projectId_=None, datasetId=None, maxResults=None, preserveNulls=None):
         '''Runs a BigQuery SQL query synchronously and returns query results if the query completes within a specified timeout.'''
         queryParams = {
             'url': 'https://www.googleapis.com/bigquery/v2/projects/{projectId}/queries',
@@ -556,7 +481,7 @@ class Jobs(object):
                 'dryRun': dryRun,
                 'useQueryCache': useQueryCache,
                 'defaultDataset': {
-                    'projectId': defaultDataset_projectId,
+                    'projectId': projectId_,
                     'datasetId': datasetId,
                 },
                 'maxResults': maxResults,

@@ -22,8 +22,7 @@ def printCb(result, *args, **kwargs):
     if isinstance(result, types.GeneratorType):
         for item in result:
             print item
-    else:
-        #print result
+    elif result is not None:
         print json.dumps(result, indent=2)
 
 
@@ -56,3 +55,7 @@ def addPrintCbs(dfds):
 
 def ignoreFirstArg(dummy, fun, *args, **kwargs):
     return fun(*args, **kwargs)
+
+
+def ignoreAllArgs(dummy, fun, *args, **kwargs):
+    return fun()
