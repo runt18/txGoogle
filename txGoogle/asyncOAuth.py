@@ -3,13 +3,14 @@ Created on 14 jul. 2014
 
 @author: sjuul
 '''
-from asyncUtils import ignoreFirstArg
-from asyncHttp import AsyncHttp
 from twisted.internet.defer import Deferred
 from twisted.internet.defer import succeed
-import simplejson as json
+from asyncUtils import ignoreFirstArg
+from txGoogle.request import Request
+from asyncHttp import AsyncHttp
 from twisted.python import log
 from urllib import urlencode
+import simplejson as json
 import webbrowser
 import logging
 import time
@@ -27,10 +28,6 @@ Playground: https://developers.google.com/oauthplayground/
 
 If you want to understand the "flow" of oauth the playground will take you through the steps
 '''
-
-
-class TokenResponseHandler(object):
-    pass
 
 
 class AsyncOAuthConnectionHandler(AsyncHttp):
@@ -81,14 +78,14 @@ class AsyncOAuthConnectionHandler(AsyncHttp):
                 'client_secret': self._clientSecret,
                 'grant_type': 'authorization_code'
             }
-
-        dfd = self.httpRequest(self._tokenUrl, urlParams=tokenParams, method='POST', formEncode=True)
-        dfd.addCallback(self.loadTokenDict, refreshToken=refreshToken)
+        req = Request(url=self._tokenUrl, urlParams=tokenParams, method='POST', formEncode=True)
+        dfd = self.asyncHttpRequest(req)
+        dfd.addCallback(self.handleToken, refreshToken=refreshToken)
         return self._getAccessCredsDfd
 
-    def loadTokenDict(self, tokenDct, refreshToken):
+    def handleToken(self, tokenStr, refreshToken):
         log.msg('Received token dict', logLevel=logging.INFO)
-        self._credentialsDct = tokenDct
+        self._credentialsDct = json.loads(tokenStr)
         self._credentialsDct['expirationTimestamp'] = int(time.time()) + self._credentialsDct['expires_in']
         if refreshToken and 'refresh_token' not in self._credentialsDct:
             self._credentialsDct['refresh_token'] = refreshToken
