@@ -3,9 +3,9 @@
 {%- endmacro %}
 
 
-class {{capFirst(resourceName)}}(object):
-    def __init__(self, conn):
-        self._conn = conn
+class {{capFirst(resourceName)}}(Service):
+    def __init__(self, conn, *args, **kwargs):
+        super({{capFirst(resourceName)}}, self).__init__(conn, *args, **kwargs)
         {%for k in resourceDict.get('resources', {}).keys()%}
         self.{{k}} = {{capFirst(k)}}(conn)
         {%endfor%}

@@ -3,7 +3,7 @@
 {%- endmacro %}
 
 
-class {{capFirst(resourceName)}}(object):
+class {{capFirst(resourceName)}}(Service):
     '''{{resourceDict.get('description', '')}}'''
     _DEFAULT_SCOPES = {{scopes}}
 
@@ -13,6 +13,7 @@ class {{capFirst(resourceName)}}(object):
         else:
             self._scopes = self._DEFAULT_SCOPES
         conn.registerScopes(self._scopes)
+        super({{capFirst(resourceName)}}, self).__init__(conn, *args, **kwargs)
         {%for k in resourceDict.get('resources', {}).keys()%}
         self.{{k}} = {{capFirst(k)}}(conn)
         {%endfor%}

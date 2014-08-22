@@ -7,7 +7,6 @@ from asyncUtils import ignoreFirstArg
 from asyncHttp import AsyncHttp
 from twisted.internet.defer import Deferred
 from twisted.internet.defer import succeed
-from twisted.internet.defer import fail
 import simplejson as json
 from twisted.python import log
 from urllib import urlencode
@@ -30,10 +29,14 @@ If you want to understand the "flow" of oauth the playground will take you throu
 '''
 
 
+class TokenResponseHandler(object):
+    pass
+
+
 class AsyncOAuthConnectionHandler(AsyncHttp):
 
-    def __init__(self, authUrl, tokenUrl, scope, clientId=None, clientSecret=None, credentialsFileName=None, redirect_uri='urn:ietf:wg:oauth:2.0:oob', jsonHandleFun=None, **grantKwargs):
-        super(AsyncOAuthConnectionHandler, self).__init__(jsonHandleFun)
+    def __init__(self, authUrl, tokenUrl, scope, clientId=None, clientSecret=None, credentialsFileName=None, redirect_uri='urn:ietf:wg:oauth:2.0:oob', **grantKwargs):
+        super(AsyncOAuthConnectionHandler, self).__init__()
         self._grantUrl = authUrl
         self._tokenUrl = tokenUrl
         self._clientId = clientId
@@ -79,7 +82,7 @@ class AsyncOAuthConnectionHandler(AsyncHttp):
                 'grant_type': 'authorization_code'
             }
 
-        dfd = super(AsyncOAuthConnectionHandler, self).httpRequest(self._tokenUrl, urlParams=tokenParams, method='POST', formEncode=True)
+        dfd = self.httpRequest(self._tokenUrl, urlParams=tokenParams, method='POST', formEncode=True)
         dfd.addCallback(self.loadTokenDict, refreshToken=refreshToken)
         return self._getAccessCredsDfd
 
@@ -123,15 +126,12 @@ class AsyncOAuthConnectionHandler(AsyncHttp):
         else:
             return self._getAccessCredentials()
 
-    def httpRequest(self, url, urlParams=None, bodyParams=None, headers=None, method='POST', formEncode=False):
+    def request(self, requestObj):
         dfd = self._loadCredentials()
-        if not urlParams:
-            urlParams = {}
-
         if self._hasScopes:
             @dfd.addCallback
             def injectAccesToken(dummy):
-                urlParams['access_token'] = self._credentialsDct['access_token']
+                requestObj.setToken(self._credentialsDct['access_token'])
 
-        dfd.addCallback(ignoreFirstArg, super(AsyncOAuthConnectionHandler, self).httpRequest, url, urlParams=urlParams, bodyParams=bodyParams, headers=headers, method=method, formEncode=formEncode)
+        dfd.addCallback(ignoreFirstArg, self.asyncHttpRequest, requestObj)
         return dfd

@@ -17,7 +17,7 @@ class GmailWrapper(Gmail):
         if userId is None:
             userId = fromAddress
         message = MIMEText(body)
-        message['to'] = toAddress
+        message['to'] = ', '.join(toAddress)
         message['from'] = fromAddress
         message['subject'] = subject
         if cc is not None:
@@ -25,6 +25,7 @@ class GmailWrapper(Gmail):
         if bcc is not None:
             message['bcc'] = bcc
         raw = base64.urlsafe_b64encode(message.as_string())
+        print raw
         return self.users.messages.send(userId=userId, raw=raw)
 
 
@@ -34,6 +35,6 @@ if __name__ == '__main__':
     gmail = GmailWrapper(conn)
     conn.connect()
     for i in range(1):
-        dfd = gmail.sendMail('sjuul.janssen@transceptor-technology.com', 'sjanssen@insign.it', 'test', 'Dit is een test {}'.format(i))
+        dfd = gmail.sendMail('sjuul.janssen@transceptor-technology.com', ['sjuulj@hotmail.com', 'sjanssen@insign.it'], 'test', 'Dit is een test {}'.format(i))  #; sjanssen@insign.it
         dfd.addCallback(printCb)
     reactor.run()
