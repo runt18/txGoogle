@@ -4,7 +4,7 @@ Created on 22 aug. 2014
 @author: sjuul
 '''
 from txGoogle.utils import leaveOutNulls
-from txGoogle.request import Request
+from txGoogle.googleServiceRequest import GoogleServiceRequest
 
 
 class Service(object):
@@ -14,7 +14,7 @@ class Service(object):
         if 'requestCls' in kwargs:
             self._requestCls = kwargs['requestCls']
         else:
-            self._requestCls = Request
+            self._requestCls = GoogleServiceRequest
         if 'responseCls' in kwargs:
             self._responseCls = kwargs['resonseCls']
         else:

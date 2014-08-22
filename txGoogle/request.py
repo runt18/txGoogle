@@ -11,6 +11,7 @@ from twisted.internet.defer import Deferred
 from urllib import urlencode
 import simplejson as json
 import time
+from txGoogle.utils import simpleDeepCopy
 
 
 class StringProducer(object):
@@ -61,34 +62,41 @@ class Request(object):
     def run(self, agent):
         self._startTs = time.time()
         self._dfd = Deferred()
+        #make sure we don't edit the original request properties
+        headers = simpleDeepCopy(self._headers)
+        bodyParams = simpleDeepCopy(self._bodyParams)
+        urlParams = simpleDeepCopy(self._urlParams)
+        return self._run(agent, headers, self._method, bodyParams, urlParams, self._url)
+
+    def setAcceptGzip(self):
+        self.setHeaderField('Accept-Encoding', ['gzip'])
+
+    def _run(self, agent, headers, method, bodyParams, urlParams, url):
         dataProducer = None
-        if self._headers is None:
-            headers = {}
-        headers['Accept-Encoding'] = ['gzip']
-        if self._method in ('POST'):
-            if self._jsonEncode and isinstance(self._bodyParams, dict) and len(self._bodyParams) > 0:
+        if method in ('POST'):
+            if self._jsonEncode and isinstance(bodyParams, dict) and len(bodyParams) > 0:
                 self._upsertContentType(headers, 'application/json')
-                data = json.dumps(self._bodyParams).encode('ascii', 'ignore')
+                data = json.dumps(bodyParams).encode('ascii', 'ignore')
                 dataProducer = StringProducer(data)
-            elif isinstance(self._bodyParams, basestring):
-                dataProducer = StringProducer(self._bodyParams)
-        if not self._urlParams:
+            elif isinstance(bodyParams, basestring):
+                dataProducer = StringProducer(bodyParams)
+        if not urlParams:
             urlParams = {}
         if len(urlParams) > 0:
             encoded = urlencode(urlParams)
-            self._url += '?' + encoded
+            url += '?' + encoded
             if self._formEncode:
                 self._upsertContentType(headers, 'application/x-www-form-urlencoded')
                 headers['Content-Length'] = [len(encoded)]
                 dataProducer = StringProducer(encoded)
-        elif len(self._bodyParams) > 0 and self._formEncode:
-            encoded = urlencode(self._bodyParams).encode('ascii', 'ignore')
+        elif len(bodyParams) > 0 and self._formEncode:
+            encoded = urlencode(bodyParams).encode('ascii', 'ignore')
             if self._formEncode:
                 self._upsertContentType(headers, 'application/x-www-form-urlencoded')
                 # headers['Content-Length'] = [len(encoded)]
                 dataProducer = StringProducer(encoded)
-        self._url = self._url.encode('ascii', 'ignore')
-        return agent.request(self._method, self._url, Headers(headers), dataProducer)
+        url = url.encode('ascii', 'ignore')
+        return agent.request(method, url, Headers(headers), dataProducer)
 
     def _upsertContentType(self, headers, contentType):
         if 'Content-Type' not in headers:

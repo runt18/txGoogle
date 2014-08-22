@@ -33,3 +33,31 @@ def preparePathForFile(filePathName):
     destFolder = os.path.dirname(filePathName)
     if not os.path.exists(destFolder):
         os.makedirs(destFolder, 0755)
+
+
+def deepCopyList(inp):
+    for vl in inp:
+        if isinstance(vl, list):
+            yield list(deepCopyList(vl))
+        elif isinstance(vl, dict):
+            yield deepCopyDict(vl)
+        else:
+            yield vl
+
+
+def deepCopyDict(inp):
+    outp = inp.copy()
+    for ky, vl in outp.iteritems():
+        if isinstance(vl, dict):
+            outp[ky] = deepCopyDict(vl)
+        elif isinstance(vl, list):
+            outp[ky] = list(deepCopyList(vl))
+    return outp
+
+
+def simpleDeepCopy(inp):
+    if isinstance(inp, dict):
+        return deepCopyDict(inp)
+    elif isinstance(inp, list):
+        return deepCopyList(inp)
+    return inp
