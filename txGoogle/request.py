@@ -109,3 +109,9 @@ class Request(object):
 
     def setHeaderField(self, fieldName, fieldValue):
         self._headers[fieldName] = fieldValue
+
+    def setUrlParam(self, key, value):
+        self._urlParams[key] = value
+
+    def setBodyParm(self, key, value):
+        self._bodyParams[key] = value

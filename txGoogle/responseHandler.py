@@ -44,6 +44,10 @@ class ResponseHandler(object):
 
 class GoogleResponseHandler(ResponseHandler):
 
+    def __init__(self, *args, **kwargs):
+        super(GoogleResponseHandler, self).__init__(*args, **kwargs)
+        self._result = None
+
     def handleLoaded(self, loaded, requestObj):
         if 'error' in loaded:
             if 'errors' in loaded['error']:
@@ -55,47 +59,25 @@ class GoogleResponseHandler(ResponseHandler):
             self._onResponse(loaded, requestObj)
 
     def _onResponse(self, loaded, requestObj):
+        self._loadResults(loaded, requestObj)
         if 'nextPageToken' in loaded:
-            if 'httpUrlParams' not in queryParams:
-                queryParams['httpUrlParams'] = {}
-            queryParams['httpUrlParams']['pageToken'] = unquote(loaded['nextPageToken'])
-            self._asyncHttpRequest(queryParams)
+            requestObj.setUrlParam('pageToken', unquote(loaded['nextPageToken']))
+            self._connection.request(requestObj, self)
         else:
-            self._finishUpResult(loaded, queryParams)
+            self._dfd.callback(self._result)
 
-    def _loadResults(self, loaded, queryParams):
-        resultType = queryParams['resultType']
-        loadFunName = '_loadResults_' + resultType
+    def _loadResults(self, loaded, requestObj):
+        loadFunName = '_loadResults_' + self._resultType
         if hasattr(self, loadFunName):
             loadFun = getattr(self, loadFunName)
+            loadFun(loaded)
         else:
-            loadFun = None
-        if self._multipleResultsPossible(resultType):
-            print loadFunName
-            if hasattr(self, loadFunName)  and 'results' not in queryParams:
-                queryParams['results'] = []
-            if not loadFun:
-                raise Exception('No load fun for')
-            results = queryParams['results']
-            results.extend(loadFun(loaded))
-        else:
-            if loadFun:
-                queryParams['results'] = loadFun(loaded)
-            else:
-                queryParams['results'] = loaded
-
-    def _finishUpResult(self, loaded, queryParams):
-        if 'results' in queryParams:
-            queryParams['dfdDone'].callback(queryParams['results'])
-        else:
-            queryParams['dfdDone'].callback(loaded)
-
-    def _multipleResultsPossible(self, resultType):
-        return resultType in ('multi')
+            self._result = loaded
 
     def _loadResults_multi(self, loaded):
+        if self._result is None:
+            self._result = []
         if loaded != 'Not Found':
-            for k, v in loaded.iteritems():
+            for v in loaded.itervalues():
                 if isinstance(v, list):
-                    for item in v:
-                        yield item
+                    self._result.extend(v)
