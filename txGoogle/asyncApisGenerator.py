@@ -42,9 +42,9 @@ def generatePyCode(apiName, apiDict):
 
                     paramKey = '{}:{}:{}'.format(apiDict['id'], method['id'], newKey)
                     key = duplicateDict.get(paramKey, key)
-                    if key in rParams or key in oParams:
-                        print method['id'], newKey
-
+                    if (key in rParams or key in oParams) and not paramKey in duplicateDict:
+                        pass#raise Exception('Duplicate key {} found. Try adding\n"{}": <NEW_KEY_ALIAS>,\nto duplicateParams.py'.format(key, paramKey))
+                     
                     description = v.get('description', '')
                     isRequired = 'Required' in description
                     if 'Output-only' in description:
@@ -57,10 +57,22 @@ def generatePyCode(apiName, apiDict):
                             rParams.append(key)
                         else:
                             oParams.append(key)
+                
                 return bodyParams, rParams, oParams
 
             schema = apiDict['schemas'][method['request']['$ref']]
             bodyParams, rParams, oParams = schemaFun(schema, rParams, oParams)
+            
+            rParamsSet = []
+            for itm in rParams:
+                if not itm in rParamsSet:
+                    rParamsSet.append(itm)
+            rParams = rParamsSet
+            for key in oParams:
+                if key in rParams:
+                    oParams.pop(key)
+            
+            
         else:
             bodyParams = {}
 

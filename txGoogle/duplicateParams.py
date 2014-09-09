@@ -5,8 +5,8 @@ Created on 20 aug. 2014
 '''
 duplicateDict = {
     'bigquery:v2:bigquery.tables.insert:schema_fields': 'fields_',
-    'bigquery:v2:bigquery.tables.insert:tableReference_projectId': 'projectId_',
-    'bigquery:v2:bigquery.tables.insert:tableReference_datasetId': 'datasetId_',
+    'bigquery:v2:bigquery.tables.insert:tableReference_projectId': 'projectId',
+    #'bigquery:v2:bigquery.tables.insert:tableReference_datasetId': 'datasetId_',
     'bigquery:v2:bigquery.tables.update:schema_fields': 'fields_',
     'bigquery:v2:bigquery.tables.update:tableReference_projectId': 'projectId_',
     'bigquery:v2:bigquery.tables.update:tableReference_tableId': 'tableId_',

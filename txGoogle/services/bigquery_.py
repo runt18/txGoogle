@@ -5,7 +5,7 @@ class Tables(Service):
     def __init__(self, conn, *args, **kwargs):
         super(Tables, self).__init__(conn, *args, **kwargs)
 
-    def insert(self, projectId, datasetId, projectId_, tableId, datasetId_, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, expirationTime=None, description=None, friendlyName=None, fields_=None, query=None):
+    def insert(self, projectId, datasetId, tableId, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, expirationTime=None, description=None, friendlyName=None, fields_=None, query=None):
         '''Creates a new, empty table in the dataset.'''
         queryParams = {
             'url': 'https://www.googleapis.com/bigquery/v2/projects/{projectId}/datasets/{datasetId}/tables',
@@ -30,9 +30,9 @@ class Tables(Service):
                     'fields': fields_,
                 },
                 'tableReference': {
-                    'projectId': projectId_,
+                    'projectId': projectId,
                     'tableId': tableId,
-                    'datasetId': datasetId_,
+                    'datasetId': datasetId,
                 },
                 'view': {
                     'query': query,
