@@ -43,7 +43,7 @@ class Request(object):
     - method: http method; POST / GET / UPDATE ...
     '''
 
-    def __init__(self, url, httpUrlParams=None, httpBodyParams=None, httpHeaders=None, method=None, formEncode=False, jsonEncode=True, * args, **kwargs):
+    def __init__(self, url, httpUrlParams=None, httpBodyParams=None, httpHeaders=None, method=None, formEncode=False, jsonEncode=True, *args, **kwargs):
         if httpUrlParams is None:
             httpUrlParams = {}
         if httpBodyParams is None:
@@ -113,5 +113,11 @@ class Request(object):
     def setUrlParam(self, key, value):
         self._urlParams[key] = value
 
+    def setUrlParams(self, urlParams):
+        self._urlParams = urlParams
+
     def setBodyParm(self, key, value):
         self._bodyParams[key] = value
+
+    def getUrlParam(self, key):
+        return self._urlParams.get(key)

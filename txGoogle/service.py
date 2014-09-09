@@ -22,7 +22,7 @@ class Service(object):
             self._responseCls = GoogleResponseHandler
 
     def _request(self, requestParams):
-        respObj = self._responseCls(self._conn, requestParams.pop('resultType'))
+        responseHandler = self._responseCls(self._conn, requestParams.pop('resultType'))
         reqObj = self._requestCls(**leaveOutNulls(requestParams))
-        self._conn.request(reqObj, respObj)
-        return respObj.dfd
+        self._conn.request(reqObj, responseHandler)
+        return responseHandler.dfd
