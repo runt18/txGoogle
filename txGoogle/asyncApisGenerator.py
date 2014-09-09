@@ -24,16 +24,6 @@ def capitalizeFirstChar(inp):
         return inp
 
 
-def loadApiDict(apiNames):
-    for apiName in apiNames:
-        filename = os.path.join(_APIDOCS_PATH, apiName) + '.json'
-        if os.path.exists(filename):
-            apiDescription = json.load(open(filename))
-            yield apiName, apiDescription
-        else:
-            print '{} does not exist'.format(filename)
-
-
 def generatePyCode(apiName, apiDict):
 
     def generateMethodCode(methodName, method):
@@ -52,9 +42,9 @@ def generatePyCode(apiName, apiDict):
 
                     paramKey = '{}:{}:{}'.format(apiDict['id'], method['id'], newKey)
                     key = duplicateDict.get(paramKey, key)
-                    if key in rParams or key in oParams:
-                        print method['id'], newKey
-
+                    if (key in rParams or key in oParams) and not paramKey in duplicateDict:
+                        pass#raise Exception('Duplicate key {} found. Try adding\n"{}": <NEW_KEY_ALIAS>,\nto duplicateParams.py'.format(key, paramKey))
+                     
                     description = v.get('description', '')
                     isRequired = 'Required' in description
                     if 'Output-only' in description:
@@ -67,10 +57,22 @@ def generatePyCode(apiName, apiDict):
                             rParams.append(key)
                         else:
                             oParams.append(key)
+                
                 return bodyParams, rParams, oParams
 
             schema = apiDict['schemas'][method['request']['$ref']]
             bodyParams, rParams, oParams = schemaFun(schema, rParams, oParams)
+            
+            rParamsSet = []
+            for itm in rParams:
+                if not itm in rParamsSet:
+                    rParamsSet.append(itm)
+            rParams = rParamsSet
+            for key in oParams:
+                if key in rParams:
+                    oParams.pop(key)
+            
+            
         else:
             bodyParams = {}
 
@@ -120,13 +122,16 @@ def generatePyCode(apiName, apiDict):
 
 
 def generateCode(apiNames):
-    for apiName, apiDict in loadApiDict(apiNames):
-        code, tests = generatePyCode(apiName, apiDict)
-        fileName = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'services/{}.py'.format(apiName + '_'))
-        fl = open(fileName, 'wb')
-        fl.write(code.replace('\t', '    '))
-        fl.close()
-        print 'generated {}'.format(fileName)
+    for apiName in apiNames:
+        apiFilename = 'apiFiles/{}.json'.format(apiName)
+        if not os.path.exists(apiFilename):
+            print 'Api description file ({}) does not exist. Try downloading it with discovery service wrapper'.format(apiFilename)
+        else:
+            apiDict = json.load(open(apiFilename))
+                
+            code, tests = generatePyCode(apiName, apiDict)
+            open('services/{}.py'.format(apiName + '_'), 'wb').write(code)
+    #open('AsyncApis.py'.format(apiName), 'a').write(tests)
 
 
 if __name__ == '__main__':

@@ -5,7 +5,7 @@ class Tables(Service):
     def __init__(self, conn, *args, **kwargs):
         super(Tables, self).__init__(conn, *args, **kwargs)
 
-    def insert(self, projectId, datasetId, projectId, tableId, datasetId, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, expirationTime=None, description=None, friendlyName=None, fields_=None, query=None):
+    def insert(self, projectId, datasetId, tableId, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, expirationTime=None, description=None, friendlyName=None, fields_=None, query=None):
         '''Creates a new, empty table in the dataset.'''
         queryParams = {
             'url': 'https://www.googleapis.com/bigquery/v2/projects/{projectId}/datasets/{datasetId}/tables',
@@ -492,7 +492,7 @@ class Jobs(Service):
         return self._request(queryParams)
 
     def list(self, projectId, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, projection=None, stateFilter=None, allUsers=None, maxResults=None, pageToken=None):
-        '''Lists all the Jobs in the specified project that were started by the user.'''
+        '''Lists all the Jobs in the specified project that were started by the user. The job list returns in reverse chronological order of when the jobs were created, starting with the most recent job created.'''
         queryParams = {
             'url': 'https://www.googleapis.com/bigquery/v2/projects/{projectId}/jobs',
             'method': 'GET',
