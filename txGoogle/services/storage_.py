@@ -1,9 +1,9 @@
-from txGoogle.utils import leaveOutNulls
+from txGoogle.service import Service
 
 
-class DefaultObjectAccessControls(object):
-    def __init__(self, conn):
-        self._conn = conn
+class DefaultObjectAccessControls(Service):
+    def __init__(self, conn, *args, **kwargs):
+        super(DefaultObjectAccessControls, self).__init__(conn, *args, **kwargs)
 
     def insert(self, bucket, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, domain=None, generation=None, object=None, bucket_=None, kind=None, entity=None, email=None, etag=None, role=None, entityId=None, projectTeam=None, id=None, selfLink=None):
         '''Creates a new default object ACL entry on the specified bucket.'''
@@ -37,7 +37,7 @@ class DefaultObjectAccessControls(object):
                 'selfLink': selfLink,
             },
         }
-        return self._conn._asyncHttpRequest(leaveOutNulls(queryParams))
+        return self._request(queryParams)
 
     def get(self, bucket, entity, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None):
         '''Returns the default object ACL entry for the specified entity on the specified bucket.'''
@@ -59,7 +59,7 @@ class DefaultObjectAccessControls(object):
             'httpBodyParams': {
             },
         }
-        return self._conn._asyncHttpRequest(leaveOutNulls(queryParams))
+        return self._request(queryParams)
 
     def list(self, bucket, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, ifMetagenerationMatch=None, ifMetagenerationNotMatch=None):
         '''Retrieves default object ACL entries on the specified bucket.'''
@@ -82,7 +82,7 @@ class DefaultObjectAccessControls(object):
             'httpBodyParams': {
             },
         }
-        return self._conn._asyncHttpRequest(leaveOutNulls(queryParams))
+        return self._request(queryParams)
 
     def update(self, bucket, entity, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, domain=None, generation=None, object=None, bucket_=None, kind=None, entity_=None, email=None, etag=None, role=None, entityId=None, projectTeam=None, id=None, selfLink=None):
         '''Updates a default object ACL entry on the specified bucket.'''
@@ -117,7 +117,7 @@ class DefaultObjectAccessControls(object):
                 'selfLink': selfLink,
             },
         }
-        return self._conn._asyncHttpRequest(leaveOutNulls(queryParams))
+        return self._request(queryParams)
 
     def patch(self, bucket, entity, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, domain=None, generation=None, object=None, bucket_=None, kind=None, entity_=None, email=None, etag=None, role=None, entityId=None, projectTeam=None, id=None, selfLink=None):
         '''Updates a default object ACL entry on the specified bucket. This method supports patch semantics.'''
@@ -152,7 +152,7 @@ class DefaultObjectAccessControls(object):
                 'selfLink': selfLink,
             },
         }
-        return self._conn._asyncHttpRequest(leaveOutNulls(queryParams))
+        return self._request(queryParams)
 
     def delete(self, bucket, entity, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None):
         '''Permanently deletes the default object ACL entry for the specified entity on the specified bucket.'''
@@ -174,12 +174,12 @@ class DefaultObjectAccessControls(object):
             'httpBodyParams': {
             },
         }
-        return self._conn._asyncHttpRequest(leaveOutNulls(queryParams))
+        return self._request(queryParams)
 
 
-class BucketAccessControls(object):
-    def __init__(self, conn):
-        self._conn = conn
+class BucketAccessControls(Service):
+    def __init__(self, conn, *args, **kwargs):
+        super(BucketAccessControls, self).__init__(conn, *args, **kwargs)
 
     def insert(self, bucket, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, domain=None, bucket_=None, kind=None, entity=None, email=None, etag=None, role=None, entityId=None, projectTeam=None, id=None, selfLink=None):
         '''Creates a new ACL entry on the specified bucket.'''
@@ -211,7 +211,7 @@ class BucketAccessControls(object):
                 'selfLink': selfLink,
             },
         }
-        return self._conn._asyncHttpRequest(leaveOutNulls(queryParams))
+        return self._request(queryParams)
 
     def get(self, bucket, entity, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None):
         '''Returns the ACL entry for the specified entity on the specified bucket.'''
@@ -233,7 +233,7 @@ class BucketAccessControls(object):
             'httpBodyParams': {
             },
         }
-        return self._conn._asyncHttpRequest(leaveOutNulls(queryParams))
+        return self._request(queryParams)
 
     def list(self, bucket, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None):
         '''Retrieves ACL entries on the specified bucket.'''
@@ -254,7 +254,7 @@ class BucketAccessControls(object):
             'httpBodyParams': {
             },
         }
-        return self._conn._asyncHttpRequest(leaveOutNulls(queryParams))
+        return self._request(queryParams)
 
     def update(self, bucket, entity, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, domain=None, bucket_=None, kind=None, entity_=None, email=None, etag=None, role=None, entityId=None, projectTeam=None, id=None, selfLink=None):
         '''Updates an ACL entry on the specified bucket.'''
@@ -287,7 +287,7 @@ class BucketAccessControls(object):
                 'selfLink': selfLink,
             },
         }
-        return self._conn._asyncHttpRequest(leaveOutNulls(queryParams))
+        return self._request(queryParams)
 
     def patch(self, bucket, entity, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, domain=None, bucket_=None, kind=None, entity_=None, email=None, etag=None, role=None, entityId=None, projectTeam=None, id=None, selfLink=None):
         '''Updates an ACL entry on the specified bucket. This method supports patch semantics.'''
@@ -320,7 +320,7 @@ class BucketAccessControls(object):
                 'selfLink': selfLink,
             },
         }
-        return self._conn._asyncHttpRequest(leaveOutNulls(queryParams))
+        return self._request(queryParams)
 
     def delete(self, bucket, entity, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None):
         '''Permanently deletes the ACL entry for the specified entity on the specified bucket.'''
@@ -342,12 +342,12 @@ class BucketAccessControls(object):
             'httpBodyParams': {
             },
         }
-        return self._conn._asyncHttpRequest(leaveOutNulls(queryParams))
+        return self._request(queryParams)
 
 
-class Channels(object):
-    def __init__(self, conn):
-        self._conn = conn
+class Channels(Service):
+    def __init__(self, conn, *args, **kwargs):
+        super(Channels, self).__init__(conn, *args, **kwargs)
 
     def stop(self, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, resourceUri=None, kind=None, resourceId=None, id=None, token=None, params=None, expiration=None, address=None, type=None, payload=None):
         '''Stop watching resources through this channel'''
@@ -377,12 +377,12 @@ class Channels(object):
                 'id': id,
             },
         }
-        return self._conn._asyncHttpRequest(leaveOutNulls(queryParams))
+        return self._request(queryParams)
 
 
-class Objects(object):
-    def __init__(self, conn):
-        self._conn = conn
+class Objects(Service):
+    def __init__(self, conn, *args, **kwargs):
+        super(Objects, self).__init__(conn, *args, **kwargs)
 
     def insert(self, bucket, name_, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, ifGenerationMatch=None, projection=None, name=None, ifMetagenerationMatch=None, contentEncoding=None, predefinedAcl=None, ifMetagenerationNotMatch=None, ifGenerationNotMatch=None, selfLink=None, generation=None, componentCount=None, mediaLink=None, owner=None, cacheControl=None, acl=None, id=None, size=None, timeDeleted=None, md5Hash=None, crc32c=None, etag=None, metadata=None, updated=None, contentType=None, contentLanguage=None, metageneration=None, kind=None, bucket_=None, contentEncoding_=None, storageClass=None, contentDisposition=None):
         '''Stores a new object and metadata.'''
@@ -435,7 +435,7 @@ class Objects(object):
                 'selfLink': selfLink,
             },
         }
-        return self._conn._asyncHttpRequest(leaveOutNulls(queryParams))
+        return self._request(queryParams)
 
     def watchAll(self, bucket, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, projection=None, versions=None, delimiter=None, maxResults=None, pageToken=None, prefix=None, resourceUri=None, kind=None, resourceId=None, id=None, token=None, params=None, expiration=None, address=None, type=None, payload=None):
         '''Watch for changes on all objects in a bucket.'''
@@ -472,7 +472,7 @@ class Objects(object):
                 'id': id,
             },
         }
-        return self._conn._asyncHttpRequest(leaveOutNulls(queryParams))
+        return self._request(queryParams)
 
     def compose(self, destinationBucket, destinationObject, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, ifMetagenerationMatch=None, ifGenerationMatch=None, destinationPredefinedAcl=None, kind=None, selfLink=None, generation=None, componentCount=None, mediaLink=None, owner=None, cacheControl=None, acl=None, id=None, size=None, timeDeleted=None, md5Hash=None, crc32c=None, etag=None, metadata=None, updated=None, contentType=None, contentLanguage=None, metageneration=None, kind_=None, name=None, bucket=None, contentEncoding=None, storageClass=None, contentDisposition=None, sourceObjects=None):
         '''Concatenates a list of existing objects into a new object in the same bucket.'''
@@ -525,7 +525,7 @@ class Objects(object):
                 'sourceObjects': sourceObjects,
             },
         }
-        return self._conn._asyncHttpRequest(leaveOutNulls(queryParams))
+        return self._request(queryParams)
 
     def get(self, object, bucket, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, ifGenerationNotMatch=None, generation=None, ifMetagenerationMatch=None, ifGenerationMatch=None, ifMetagenerationNotMatch=None, projection=None):
         '''Retrieves objects or their metadata.'''
@@ -553,7 +553,7 @@ class Objects(object):
             'httpBodyParams': {
             },
         }
-        return self._conn._asyncHttpRequest(leaveOutNulls(queryParams))
+        return self._request(queryParams)
 
     def list(self, bucket, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, projection=None, versions=None, delimiter=None, maxResults=None, pageToken=None, prefix=None):
         '''Retrieves a list of objects matching the criteria.'''
@@ -580,7 +580,7 @@ class Objects(object):
             'httpBodyParams': {
             },
         }
-        return self._conn._asyncHttpRequest(leaveOutNulls(queryParams))
+        return self._request(queryParams)
 
     def update(self, object, bucket, name, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, ifGenerationMatch=None, ifGenerationNotMatch=None, generation=None, ifMetagenerationMatch=None, predefinedAcl=None, ifMetagenerationNotMatch=None, projection=None, selfLink=None, generation_=None, componentCount=None, mediaLink=None, owner=None, cacheControl=None, acl=None, id=None, size=None, timeDeleted=None, md5Hash=None, crc32c=None, etag=None, metadata=None, updated=None, contentType=None, contentLanguage=None, metageneration=None, kind=None, bucket_=None, contentEncoding=None, storageClass=None, contentDisposition=None):
         '''Updates an object's metadata.'''
@@ -633,7 +633,7 @@ class Objects(object):
                 'selfLink': selfLink,
             },
         }
-        return self._conn._asyncHttpRequest(leaveOutNulls(queryParams))
+        return self._request(queryParams)
 
     def patch(self, object, bucket, name, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, ifGenerationMatch=None, ifGenerationNotMatch=None, generation=None, ifMetagenerationMatch=None, predefinedAcl=None, ifMetagenerationNotMatch=None, projection=None, selfLink=None, generation_=None, componentCount=None, mediaLink=None, owner=None, cacheControl=None, acl=None, id=None, size=None, timeDeleted=None, md5Hash=None, crc32c=None, etag=None, metadata=None, updated=None, contentType=None, contentLanguage=None, metageneration=None, kind=None, bucket_=None, contentEncoding=None, storageClass=None, contentDisposition=None):
         '''Updates an object's metadata. This method supports patch semantics.'''
@@ -686,7 +686,7 @@ class Objects(object):
                 'selfLink': selfLink,
             },
         }
-        return self._conn._asyncHttpRequest(leaveOutNulls(queryParams))
+        return self._request(queryParams)
 
     def copy(self, sourceObject, sourceBucket, destinationBucket, destinationObject, name, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, ifSourceGenerationMatch=None, ifGenerationMatch=None, ifGenerationNotMatch=None, ifSourceMetagenerationNotMatch=None, ifMetagenerationMatch=None, sourceGeneration=None, destinationPredefinedAcl=None, ifSourceGenerationNotMatch=None, ifSourceMetagenerationMatch=None, ifMetagenerationNotMatch=None, projection=None, selfLink=None, generation=None, componentCount=None, mediaLink=None, owner=None, cacheControl=None, acl=None, id=None, size=None, timeDeleted=None, md5Hash=None, crc32c=None, etag=None, metadata=None, updated=None, contentType=None, contentLanguage=None, metageneration=None, kind=None, bucket=None, contentEncoding=None, storageClass=None, contentDisposition=None):
         '''Copies an object to a specified location. Optionally overrides metadata.'''
@@ -745,7 +745,7 @@ class Objects(object):
                 'selfLink': selfLink,
             },
         }
-        return self._conn._asyncHttpRequest(leaveOutNulls(queryParams))
+        return self._request(queryParams)
 
     def delete(self, object, bucket, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, ifGenerationNotMatch=None, generation=None, ifMetagenerationMatch=None, ifGenerationMatch=None, ifMetagenerationNotMatch=None):
         '''Deletes an object and its metadata. Deletions are permanent if versioning is not enabled for the bucket, or if the generation parameter is used.'''
@@ -772,12 +772,12 @@ class Objects(object):
             'httpBodyParams': {
             },
         }
-        return self._conn._asyncHttpRequest(leaveOutNulls(queryParams))
+        return self._request(queryParams)
 
 
-class ObjectAccessControls(object):
-    def __init__(self, conn):
-        self._conn = conn
+class ObjectAccessControls(Service):
+    def __init__(self, conn, *args, **kwargs):
+        super(ObjectAccessControls, self).__init__(conn, *args, **kwargs)
 
     def insert(self, object, bucket, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, generation=None, domain=None, generation_=None, object_=None, bucket_=None, kind=None, entity=None, email=None, etag=None, role=None, entityId=None, projectTeam=None, id=None, selfLink=None):
         '''Creates a new ACL entry on the specified object.'''
@@ -813,7 +813,7 @@ class ObjectAccessControls(object):
                 'selfLink': selfLink,
             },
         }
-        return self._conn._asyncHttpRequest(leaveOutNulls(queryParams))
+        return self._request(queryParams)
 
     def get(self, object, bucket, entity, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, generation=None):
         '''Returns the ACL entry for the specified entity on the specified object.'''
@@ -837,7 +837,7 @@ class ObjectAccessControls(object):
             'httpBodyParams': {
             },
         }
-        return self._conn._asyncHttpRequest(leaveOutNulls(queryParams))
+        return self._request(queryParams)
 
     def list(self, object, bucket, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, generation=None):
         '''Retrieves ACL entries on the specified object.'''
@@ -860,7 +860,7 @@ class ObjectAccessControls(object):
             'httpBodyParams': {
             },
         }
-        return self._conn._asyncHttpRequest(leaveOutNulls(queryParams))
+        return self._request(queryParams)
 
     def update(self, object, bucket, entity, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, generation=None, domain=None, generation_=None, object_=None, bucket_=None, kind=None, entity_=None, email=None, etag=None, role=None, entityId=None, projectTeam=None, id=None, selfLink=None):
         '''Updates an ACL entry on the specified object.'''
@@ -897,7 +897,7 @@ class ObjectAccessControls(object):
                 'selfLink': selfLink,
             },
         }
-        return self._conn._asyncHttpRequest(leaveOutNulls(queryParams))
+        return self._request(queryParams)
 
     def patch(self, object, bucket, entity, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, generation=None, domain=None, generation_=None, object_=None, bucket_=None, kind=None, entity_=None, email=None, etag=None, role=None, entityId=None, projectTeam=None, id=None, selfLink=None):
         '''Updates an ACL entry on the specified object. This method supports patch semantics.'''
@@ -934,7 +934,7 @@ class ObjectAccessControls(object):
                 'selfLink': selfLink,
             },
         }
-        return self._conn._asyncHttpRequest(leaveOutNulls(queryParams))
+        return self._request(queryParams)
 
     def delete(self, object, bucket, entity, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, generation=None):
         '''Permanently deletes the ACL entry for the specified entity on the specified object.'''
@@ -958,12 +958,12 @@ class ObjectAccessControls(object):
             'httpBodyParams': {
             },
         }
-        return self._conn._asyncHttpRequest(leaveOutNulls(queryParams))
+        return self._request(queryParams)
 
 
-class Buckets(object):
-    def __init__(self, conn):
-        self._conn = conn
+class Buckets(Service):
+    def __init__(self, conn, *args, **kwargs):
+        super(Buckets, self).__init__(conn, *args, **kwargs)
 
     def insert(self, project, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, predefinedAcl=None, projection=None, website=None, kind=None, logging=None, name=None, timeCreated=None, id=None, storageClass=None, projectNumber=None, acl=None, defaultObjectAcl=None, metageneration=None, versioning=None, cors=None, owner=None, etag=None, lifecycle=None, selfLink=None, location=None):
         '''Creates a new bucket.'''
@@ -1004,7 +1004,7 @@ class Buckets(object):
                 'location': location,
             },
         }
-        return self._conn._asyncHttpRequest(leaveOutNulls(queryParams))
+        return self._request(queryParams)
 
     def get(self, bucket, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, ifMetagenerationMatch=None, ifMetagenerationNotMatch=None, projection=None):
         '''Returns metadata for the specified bucket.'''
@@ -1028,7 +1028,7 @@ class Buckets(object):
             'httpBodyParams': {
             },
         }
-        return self._conn._asyncHttpRequest(leaveOutNulls(queryParams))
+        return self._request(queryParams)
 
     def list(self, project, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, pageToken=None, projection=None, maxResults=None):
         '''Retrieves a list of buckets for a given project.'''
@@ -1052,7 +1052,7 @@ class Buckets(object):
             'httpBodyParams': {
             },
         }
-        return self._conn._asyncHttpRequest(leaveOutNulls(queryParams))
+        return self._request(queryParams)
 
     def update(self, bucket, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, ifMetagenerationMatch=None, predefinedAcl=None, ifMetagenerationNotMatch=None, projection=None, website=None, kind=None, logging=None, name=None, timeCreated=None, id=None, storageClass=None, projectNumber=None, acl=None, defaultObjectAcl=None, metageneration=None, versioning=None, cors=None, owner=None, etag=None, lifecycle=None, selfLink=None, location=None):
         '''Updates a bucket.'''
@@ -1095,7 +1095,7 @@ class Buckets(object):
                 'location': location,
             },
         }
-        return self._conn._asyncHttpRequest(leaveOutNulls(queryParams))
+        return self._request(queryParams)
 
     def patch(self, bucket, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, ifMetagenerationMatch=None, predefinedAcl=None, ifMetagenerationNotMatch=None, projection=None, website=None, kind=None, logging=None, name=None, timeCreated=None, id=None, storageClass=None, projectNumber=None, acl=None, defaultObjectAcl=None, metageneration=None, versioning=None, cors=None, owner=None, etag=None, lifecycle=None, selfLink=None, location=None):
         '''Updates a bucket. This method supports patch semantics.'''
@@ -1138,7 +1138,7 @@ class Buckets(object):
                 'location': location,
             },
         }
-        return self._conn._asyncHttpRequest(leaveOutNulls(queryParams))
+        return self._request(queryParams)
 
     def delete(self, bucket, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, ifMetagenerationMatch=None, ifMetagenerationNotMatch=None):
         '''Permanently deletes an empty bucket.'''
@@ -1161,19 +1161,20 @@ class Buckets(object):
             'httpBodyParams': {
             },
         }
-        return self._conn._asyncHttpRequest(leaveOutNulls(queryParams))
+        return self._request(queryParams)
 
 
-class Storage(object):
+class Storage(Service):
     '''Lets you store and retrieve potentially-large, immutable data objects.'''
     _DEFAULT_SCOPES = [u'https://www.googleapis.com/auth/devstorage.read_only', u'https://www.googleapis.com/auth/devstorage.read_write', u'https://www.googleapis.com/auth/devstorage.full_control']
 
-    def __init__(self, conn=None, scopes=None):
+    def __init__(self, conn=None, scopes=None, *args, **kwargs):
         if scopes is not None:
             self._scopes = scopes
         else:
             self._scopes = self._DEFAULT_SCOPES
         conn.registerScopes(self._scopes)
+        super(Storage, self).__init__(conn, *args, **kwargs)
         self.defaultObjectAccessControls = DefaultObjectAccessControls(conn)
         self.bucketAccessControls = BucketAccessControls(conn)
         self.channels = Channels(conn)

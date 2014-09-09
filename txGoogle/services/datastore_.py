@@ -1,9 +1,9 @@
-from txGoogle.utils import leaveOutNulls
+from txGoogle.service import Service
 
 
-class Datasets(object):
-    def __init__(self, conn):
-        self._conn = conn
+class Datasets(Service):
+    def __init__(self, conn, *args, **kwargs):
+        super(Datasets, self).__init__(conn, *args, **kwargs)
 
     def allocateIds(self, datasetId, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, keys=None):
         '''Allocate IDs for incomplete keys (useful for referencing an entity before it is inserted).'''
@@ -25,7 +25,7 @@ class Datasets(object):
                 'keys': keys,
             },
         }
-        return self._conn._asyncHttpRequest(leaveOutNulls(queryParams))
+        return self._request(queryParams)
 
     def rollback(self, datasetId, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, transaction=None):
         '''Roll back a transaction.'''
@@ -47,7 +47,7 @@ class Datasets(object):
                 'transaction': transaction,
             },
         }
-        return self._conn._asyncHttpRequest(leaveOutNulls(queryParams))
+        return self._request(queryParams)
 
     def beginTransaction(self, datasetId, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, isolationLevel=None):
         '''Begin a new transaction.'''
@@ -69,7 +69,7 @@ class Datasets(object):
                 'isolationLevel': isolationLevel,
             },
         }
-        return self._conn._asyncHttpRequest(leaveOutNulls(queryParams))
+        return self._request(queryParams)
 
     def lookup(self, datasetId, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, keys=None, transaction=None, readConsistency=None):
         '''Look up some entities by key.'''
@@ -95,7 +95,7 @@ class Datasets(object):
                 },
             },
         }
-        return self._conn._asyncHttpRequest(leaveOutNulls(queryParams))
+        return self._request(queryParams)
 
     def commit(self, datasetId, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, ignoreReadOnly=None, transaction=None, mode=None, insert=None, force=None, insertAutoId=None, update=None, delete=None, upsert=None):
         '''Commit a transaction, optionally creating, deleting or modifying some entities.'''
@@ -127,7 +127,7 @@ class Datasets(object):
                 },
             },
         }
-        return self._conn._asyncHttpRequest(leaveOutNulls(queryParams))
+        return self._request(queryParams)
 
     def runQuery(self, datasetId, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, startCursor=None, kinds=None, projection=None, groupBy=None, operator=None, filters=None, operator_=None, name=None, properties=None, path=None, namespace=None, key_partitionId_datasetId=None, doubleValue=None, blobKeyValue=None, meaning=None, dateTimeValue=None, path_=None, partitionId_namespace=None, partitionId_datasetId=None, blobValue=None, indexed=None, stringValue=None, listValue=None, booleanValue=None, integerValue=None, limit=None, offset=None, endCursor=None, order=None, namespace_=None, datasetId_=None, allowLiteral=None, nameArgs=None, queryString=None, numberArgs=None, transaction=None, readConsistency=None):
         '''Query for entities.'''
@@ -213,19 +213,18 @@ class Datasets(object):
                 },
             },
         }
-        return self._conn._asyncHttpRequest(leaveOutNulls(queryParams))
+        return self._request(queryParams)
 
 
-class Datastore(object):
+class Datastore(Service):
     '''API for accessing Google Cloud Datastore.'''
     _DEFAULT_SCOPES = [u'https://www.googleapis.com/auth/userinfo.email', u'https://www.googleapis.com/auth/datastore']
 
-    def __init__(self, conn=None, scopes=None):
+    def __init__(self, conn=None, scopes=None, *args, **kwargs):
         if scopes is not None:
             self._scopes = scopes
         else:
             self._scopes = self._DEFAULT_SCOPES
         conn.registerScopes(self._scopes)
+        super(Datastore, self).__init__(conn, *args, **kwargs)
         self.datasets = Datasets(conn)
-
-

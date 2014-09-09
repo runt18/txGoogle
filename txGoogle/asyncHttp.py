@@ -69,7 +69,7 @@ class AsyncHttp(object):
         else:
             dfdResponse = Deferred()
             headers = dict(response.headers.getAllRawHeaders())
-            receiver = ResponseReceiver(dfdResponse, headers, requestObj)
+            receiver = ResponseReceiver(dfdResponse, headers)
             response.deliverBody(receiver)
             return dfdResponse
 

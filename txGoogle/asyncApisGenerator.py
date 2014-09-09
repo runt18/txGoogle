@@ -9,7 +9,7 @@ templatesDir = os.path.join(CURRENT_DIR, 'templates')
 fsLoader = jinja2.FileSystemLoader(templatesDir)
 JINJA_ENVIRONMENT = jinja2.Environment(loader=fsLoader, extensions=['jinja2.ext.autoescape'], lstrip_blocks=True, trim_blocks=True)
 
-_APIDOCS_PATH = '../apiFiles/'
+_APIDOCS_PATH = 'apiFiles/'
 
 
 def render(templateName, **kwargs):
@@ -31,7 +31,7 @@ def loadApiDict(apiNames):
             apiDescription = json.load(open(filename))
             yield apiName, apiDescription
         else:
-            print filename
+            print '{} does not exist'.format(filename)
 
 
 def generatePyCode(apiName, apiDict):
@@ -74,7 +74,7 @@ def generatePyCode(apiName, apiDict):
         else:
             bodyParams = {}
 
-        methodLines = render('template_method.py', apiDict=apiDict,
+        methodLines = render('method.py', apiDict=apiDict,
                                                    methodName=methodName,
                                                    methodDict=method,
                                                    bodyParams=bodyParams,
@@ -99,18 +99,18 @@ def generatePyCode(apiName, apiDict):
             methodsDict[methodName] = generateMethodCode(methodName, methodDict)
 
         if scopes:
-            resourceLines = render('template_api.py', resourceName=resourceName,
+            resourceLines = render('service.py', resourceName=resourceName,
                                                            resourceDict=resource,
                                                            methodsDict=methodsDict,
                                                            scopes=scopes)
         else:
-            resourceLines = render('template_resource.py', resourceName=resourceName,
+            resourceLines = render('resource.py', resourceName=resourceName,
                                                            resourceDict=resource,
                                                            methodsDict=methodsDict)
         functionCode += resourceLines
         return functionCode
 
-    functionCode = 'from txGoogle.utils import leaveOutNulls\n'
+    functionCode = 'from txGoogle.service import Service\n'
     if 'auth' in apiDict:
         scopes = apiDict['auth']['oauth2']['scopes'].keys()
     else:

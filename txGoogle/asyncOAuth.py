@@ -78,14 +78,14 @@ class AsyncOAuthConnectionHandler(AsyncHttp):
                 'client_secret': self._clientSecret,
                 'grant_type': 'authorization_code'
             }
-        req = Request(url=self._tokenUrl, urlParams=tokenParams, method='POST', formEncode=True)
+        req = Request(url=self._tokenUrl, httpUrlParams=tokenParams, method='POST', formEncode=True)
         dfd = self.asyncHttpRequest(req)
         dfd.addCallback(self.handleToken, refreshToken=refreshToken)
         return self._getAccessCredsDfd
 
-    def handleToken(self, tokenStr, refreshToken):
+    def handleToken(self, responseObj, refreshToken):
         log.msg('Received token dict', logLevel=logging.INFO)
-        self._credentialsDct = json.loads(tokenStr)
+        self._credentialsDct = json.loads(responseObj.msg)
         self._credentialsDct['expirationTimestamp'] = int(time.time()) + self._credentialsDct['expires_in']
         if refreshToken and 'refresh_token' not in self._credentialsDct:
             self._credentialsDct['refresh_token'] = refreshToken
@@ -103,9 +103,12 @@ class AsyncOAuthConnectionHandler(AsyncHttp):
             log.msg('Missing expirationTimestamp or refresh_token', logLevel=logging.INFO)
             return self._getAccessCredentials()
         elif self._credentialsDct['expirationTimestamp'] < int(time.time() - 60):
-            self._getAccessCredsDfd = None
-            log.msg('Grant expired, refreshing', logLevel=logging.INFO)
-            return self._getAccessCredentials(refreshToken=self._credentialsDct['refresh_token'])
+            if self._getAccessCredsDfd is None or self._getAccessCredsDfd.called:
+                self._getAccessCredsDfd = None
+                log.msg('Grant expired, refreshing', logLevel=logging.INFO)
+                return self._getAccessCredentials(refreshToken=self._credentialsDct['refresh_token'])
+            else:
+                return self._getAccessCredsDfd
         else:
             return succeed('grant still valid')
 

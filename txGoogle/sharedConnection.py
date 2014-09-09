@@ -28,16 +28,16 @@ class SharedConnection(object):
             self._SCOPE = ' '.join(self._SCOPE.split(' ') + scopes)
 
     def connect(self):
-        self._connHandler = AsyncOAuthConnectionHandler(self.AUTH_URL, self.TOKEN_URL, clientId=self._clientId, clientSecret=self._clientSecret, credentialsFileName=self._credentialsFileName, jsonHandleFun=self._jsonHandleFun, scope=self._SCOPE, approval_prompt='force', access_type='offline', response_type='code')
+        self._connHandler = AsyncOAuthConnectionHandler(self.AUTH_URL, self.TOKEN_URL, clientId=self._clientId, clientSecret=self._clientSecret, credentialsFileName=self._credentialsFileName, scope=self._SCOPE, approval_prompt='force', access_type='offline', response_type='code')
 
     def request(self, requestObj, responseHandler):
         if self._connHandler is None:
             self.connect()
         if len(self._runningReqs) < self.MAX_CONCURRENT_QUERIES:
-            dfdRequest = self._connHandler.asyncHttpRequest(requestObj)
+            dfdRequest = self._connHandler.request(requestObj)
             self._runningReqs.append(requestObj)
-            dfdRequest.addCallback(self._handleResponse, requestObj)
-            dfdRequest.addErrback(self._handleFailed, requestObj)
+            dfdRequest.addCallback(self._handleResponse, requestObj, responseHandler)
+            dfdRequest.addErrback(self._handleFailed, requestObj, responseHandler)
         else:
             reactor.callLater(self.REQUEST_RESEND_CHECK_INTERVAL, self._asyncHttpRequest, requestObj, responseHandler)
         return responseHandler.dfd

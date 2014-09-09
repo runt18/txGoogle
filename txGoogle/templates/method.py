@@ -30,4 +30,4 @@
             'httpBodyParams': {
 {{methodFun(bodyParams)}}            },
         }
-        return self._conn._asyncHttpRequest(leaveOutNulls(queryParams))
+        return self._request(queryParams)

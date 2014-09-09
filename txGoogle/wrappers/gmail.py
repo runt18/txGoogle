@@ -5,10 +5,11 @@ Created on 15 aug. 2014
 '''
 
 from txGoogle.services.gmail_ import Gmail
-from txGoogle.asyncBase import AsyncBase
+
 from email.mime.text import MIMEText
 import base64
 from txGoogle.asyncUtils import printCb
+from txGoogle.sharedConnection import SharedConnection
 
 
 class GmailWrapper(Gmail):
@@ -31,10 +32,10 @@ class GmailWrapper(Gmail):
 
 if __name__ == '__main__':
     from twisted.internet import reactor
-    conn = AsyncBase('785509043543.apps.googleusercontent.com', 'Mhx2IjJLk78U9VyErHHIVbnw', 'apiFiles/AsyncAllCredentials.json')
+    conn = SharedConnection('785509043543.apps.googleusercontent.com', 'Mhx2IjJLk78U9VyErHHIVbnw', 'apiFiles/AsyncAllCredentials.json')
     gmail = GmailWrapper(conn)
     conn.connect()
     for i in range(1):
-        dfd = gmail.sendMail('sjuul.janssen@transceptor-technology.com', ['sjuulj@hotmail.com', 'sjanssen@insign.it'], 'test', 'Dit is een test {}'.format(i))  #; sjanssen@insign.it
+        dfd = gmail.sendMail('sjuul.janssen@transceptor-technology.com', ['sjuulj@hotmail.com'], 'test', 'Dit is een test {}'.format(i))  #; sjanssen@insign.it
         dfd.addCallback(printCb)
     reactor.run()

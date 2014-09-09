@@ -7,7 +7,7 @@ class {{capFirst(resourceName)}}(Service):
     '''{{resourceDict.get('description', '')}}'''
     _DEFAULT_SCOPES = {{scopes}}
 
-    def __init__(self, conn=None, scopes=None):
+    def __init__(self, conn=None, scopes=None, *args, **kwargs):
         if scopes is not None:
             self._scopes = scopes
         else:

@@ -1,9 +1,9 @@
-from txGoogle.utils import leaveOutNulls
+from txGoogle.service import Service
 
 
-class Attachments(object):
-    def __init__(self, conn):
-        self._conn = conn
+class Attachments(Service):
+    def __init__(self, conn, *args, **kwargs):
+        super(Attachments, self).__init__(conn, *args, **kwargs)
 
     def get(self, userId, id, messageId, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None):
         '''Gets the specified message attachment.'''
@@ -26,12 +26,12 @@ class Attachments(object):
             'httpBodyParams': {
             },
         }
-        return self._conn._asyncHttpRequest(leaveOutNulls(queryParams))
+        return self._request(queryParams)
 
 
-class Messages(object):
-    def __init__(self, conn):
-        self._conn = conn
+class Messages(Service):
+    def __init__(self, conn, *args, **kwargs):
+        super(Messages, self).__init__(conn, *args, **kwargs)
         self.attachments = Attachments(conn)
 
     def insert(self, userId, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, historyId=None, id=None, snippet=None, raw=None, sizeEstimate=None, threadId=None, labelIds=None, attachmentId=None, data=None, size=None, mimeType=None, partId=None, filename=None, headers=None, parts=None):
@@ -72,7 +72,7 @@ class Messages(object):
                 'id': id,
             },
         }
-        return self._conn._asyncHttpRequest(leaveOutNulls(queryParams))
+        return self._request(queryParams)
 
     def untrash(self, userId, id, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None):
         '''Removes the specified message from the trash.'''
@@ -94,7 +94,7 @@ class Messages(object):
             'httpBodyParams': {
             },
         }
-        return self._conn._asyncHttpRequest(leaveOutNulls(queryParams))
+        return self._request(queryParams)
 
     def get(self, userId, id, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, format=None):
         '''Gets the specified message.'''
@@ -117,7 +117,7 @@ class Messages(object):
             'httpBodyParams': {
             },
         }
-        return self._conn._asyncHttpRequest(leaveOutNulls(queryParams))
+        return self._request(queryParams)
 
     def list(self, userId, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, maxResults=None, q=None, pageToken=None, includeSpamTrash=None, labelIds=None):
         '''Lists the messages in the user's mailbox.'''
@@ -143,7 +143,7 @@ class Messages(object):
             'httpBodyParams': {
             },
         }
-        return self._conn._asyncHttpRequest(leaveOutNulls(queryParams))
+        return self._request(queryParams)
 
     def modify(self, userId, id, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, addLabelIds=None, removeLabelIds=None):
         '''Modifies the labels on the specified message.'''
@@ -167,7 +167,7 @@ class Messages(object):
                 'addLabelIds': addLabelIds,
             },
         }
-        return self._conn._asyncHttpRequest(leaveOutNulls(queryParams))
+        return self._request(queryParams)
 
     def send(self, userId, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, historyId=None, id=None, snippet=None, raw=None, sizeEstimate=None, threadId=None, labelIds=None, attachmentId=None, data=None, size=None, mimeType=None, partId=None, filename=None, headers=None, parts=None):
         '''Sends the specified message to the recipients in the To, Cc, and Bcc headers.'''
@@ -207,7 +207,7 @@ class Messages(object):
                 'id': id,
             },
         }
-        return self._conn._asyncHttpRequest(leaveOutNulls(queryParams))
+        return self._request(queryParams)
 
     def import_(self, userId, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, historyId=None, id=None, snippet=None, raw=None, sizeEstimate=None, threadId=None, labelIds=None, attachmentId=None, data=None, size=None, mimeType=None, partId=None, filename=None, headers=None, parts=None):
         '''Directly imports a message into only this user's mailbox, similar to receiving via SMTP. Does not send a message.'''
@@ -247,7 +247,7 @@ class Messages(object):
                 'id': id,
             },
         }
-        return self._conn._asyncHttpRequest(leaveOutNulls(queryParams))
+        return self._request(queryParams)
 
     def trash(self, userId, id, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None):
         '''Moves the specified message to the trash.'''
@@ -269,7 +269,7 @@ class Messages(object):
             'httpBodyParams': {
             },
         }
-        return self._conn._asyncHttpRequest(leaveOutNulls(queryParams))
+        return self._request(queryParams)
 
     def delete(self, userId, id, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None):
         '''Immediately and permanently deletes the specified message. This operation cannot be undone. Prefer messages.trash instead.'''
@@ -291,12 +291,12 @@ class Messages(object):
             'httpBodyParams': {
             },
         }
-        return self._conn._asyncHttpRequest(leaveOutNulls(queryParams))
+        return self._request(queryParams)
 
 
-class Labels(object):
-    def __init__(self, conn):
-        self._conn = conn
+class Labels(Service):
+    def __init__(self, conn, *args, **kwargs):
+        super(Labels, self).__init__(conn, *args, **kwargs)
 
     def get(self, userId, id, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None):
         '''Gets the specified label.'''
@@ -318,7 +318,7 @@ class Labels(object):
             'httpBodyParams': {
             },
         }
-        return self._conn._asyncHttpRequest(leaveOutNulls(queryParams))
+        return self._request(queryParams)
 
     def create(self, userId, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, messageListVisibility=None, labelListVisibility=None, type=None, id=None, name=None):
         '''Creates a new label.'''
@@ -344,7 +344,7 @@ class Labels(object):
                 'id': id,
             },
         }
-        return self._conn._asyncHttpRequest(leaveOutNulls(queryParams))
+        return self._request(queryParams)
 
     def list(self, userId, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None):
         '''Lists all labels in the user's mailbox.'''
@@ -365,7 +365,7 @@ class Labels(object):
             'httpBodyParams': {
             },
         }
-        return self._conn._asyncHttpRequest(leaveOutNulls(queryParams))
+        return self._request(queryParams)
 
     def update(self, userId, id, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, messageListVisibility=None, labelListVisibility=None, type=None, id_=None, name=None):
         '''Updates the specified label.'''
@@ -392,7 +392,7 @@ class Labels(object):
                 'id': id_,
             },
         }
-        return self._conn._asyncHttpRequest(leaveOutNulls(queryParams))
+        return self._request(queryParams)
 
     def patch(self, userId, id, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, messageListVisibility=None, labelListVisibility=None, type=None, id_=None, name=None):
         '''Updates the specified label. This method supports patch semantics.'''
@@ -419,7 +419,7 @@ class Labels(object):
                 'id': id_,
             },
         }
-        return self._conn._asyncHttpRequest(leaveOutNulls(queryParams))
+        return self._request(queryParams)
 
     def delete(self, userId, id, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None):
         '''Immediately and permanently deletes the specified label and removes it from any messages and threads that it is applied to.'''
@@ -441,12 +441,12 @@ class Labels(object):
             'httpBodyParams': {
             },
         }
-        return self._conn._asyncHttpRequest(leaveOutNulls(queryParams))
+        return self._request(queryParams)
 
 
-class Threads(object):
-    def __init__(self, conn):
-        self._conn = conn
+class Threads(Service):
+    def __init__(self, conn, *args, **kwargs):
+        super(Threads, self).__init__(conn, *args, **kwargs)
 
     def untrash(self, userId, id, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None):
         '''Removes the specified thread from the trash.'''
@@ -468,7 +468,7 @@ class Threads(object):
             'httpBodyParams': {
             },
         }
-        return self._conn._asyncHttpRequest(leaveOutNulls(queryParams))
+        return self._request(queryParams)
 
     def get(self, userId, id, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None):
         '''Gets the specified thread.'''
@@ -490,7 +490,7 @@ class Threads(object):
             'httpBodyParams': {
             },
         }
-        return self._conn._asyncHttpRequest(leaveOutNulls(queryParams))
+        return self._request(queryParams)
 
     def list(self, userId, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, maxResults=None, q=None, pageToken=None, includeSpamTrash=None, labelIds=None):
         '''Lists the threads in the user's mailbox.'''
@@ -516,7 +516,7 @@ class Threads(object):
             'httpBodyParams': {
             },
         }
-        return self._conn._asyncHttpRequest(leaveOutNulls(queryParams))
+        return self._request(queryParams)
 
     def modify(self, userId, id, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, addLabelIds=None, removeLabelIds=None):
         '''Modifies the labels applied to the thread. This applies to all messages in the thread.'''
@@ -540,7 +540,7 @@ class Threads(object):
                 'addLabelIds': addLabelIds,
             },
         }
-        return self._conn._asyncHttpRequest(leaveOutNulls(queryParams))
+        return self._request(queryParams)
 
     def trash(self, userId, id, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None):
         '''Moves the specified thread to the trash.'''
@@ -562,7 +562,7 @@ class Threads(object):
             'httpBodyParams': {
             },
         }
-        return self._conn._asyncHttpRequest(leaveOutNulls(queryParams))
+        return self._request(queryParams)
 
     def delete(self, userId, id, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None):
         '''Immediately and permanently deletes the specified thread. This operation cannot be undone. Prefer threads.trash instead.'''
@@ -584,12 +584,12 @@ class Threads(object):
             'httpBodyParams': {
             },
         }
-        return self._conn._asyncHttpRequest(leaveOutNulls(queryParams))
+        return self._request(queryParams)
 
 
-class Drafts(object):
-    def __init__(self, conn):
-        self._conn = conn
+class Drafts(Service):
+    def __init__(self, conn, *args, **kwargs):
+        super(Drafts, self).__init__(conn, *args, **kwargs)
 
     def get(self, userId, id, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, format=None):
         '''Gets the specified draft.'''
@@ -612,7 +612,7 @@ class Drafts(object):
             'httpBodyParams': {
             },
         }
-        return self._conn._asyncHttpRequest(leaveOutNulls(queryParams))
+        return self._request(queryParams)
 
     def create(self, userId, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, historyId=None, id=None, snippet=None, raw=None, sizeEstimate=None, threadId=None, labelIds=None, attachmentId=None, data=None, size=None, mimeType=None, partId=None, filename=None, headers=None, parts=None, id_=None):
         '''Creates a new draft with the DRAFT label.'''
@@ -655,7 +655,7 @@ class Drafts(object):
                 'id': id_,
             },
         }
-        return self._conn._asyncHttpRequest(leaveOutNulls(queryParams))
+        return self._request(queryParams)
 
     def list(self, userId, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, pageToken=None, maxResults=None):
         '''Lists the drafts in the user's mailbox.'''
@@ -678,7 +678,7 @@ class Drafts(object):
             'httpBodyParams': {
             },
         }
-        return self._conn._asyncHttpRequest(leaveOutNulls(queryParams))
+        return self._request(queryParams)
 
     def update(self, userId, id, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, historyId=None, id_=None, snippet=None, raw=None, sizeEstimate=None, threadId=None, labelIds=None, attachmentId=None, data=None, size=None, mimeType=None, partId=None, filename=None, headers=None, parts=None, updateId=None):
         '''Replaces a draft's content.'''
@@ -722,7 +722,7 @@ class Drafts(object):
                 'id': updateId,
             },
         }
-        return self._conn._asyncHttpRequest(leaveOutNulls(queryParams))
+        return self._request(queryParams)
 
     def send(self, userId, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, historyId=None, id=None, snippet=None, raw=None, sizeEstimate=None, threadId=None, labelIds=None, attachmentId=None, data=None, size=None, mimeType=None, partId=None, filename=None, headers=None, parts=None, id_=None):
         '''Sends the specified, existing draft to the recipients in the To, Cc, and Bcc headers.'''
@@ -765,7 +765,7 @@ class Drafts(object):
                 'id': id_,
             },
         }
-        return self._conn._asyncHttpRequest(leaveOutNulls(queryParams))
+        return self._request(queryParams)
 
     def delete(self, userId, id, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None):
         '''Immediately and permanently deletes the specified draft. Does not simply trash it.'''
@@ -787,12 +787,12 @@ class Drafts(object):
             'httpBodyParams': {
             },
         }
-        return self._conn._asyncHttpRequest(leaveOutNulls(queryParams))
+        return self._request(queryParams)
 
 
-class History(object):
-    def __init__(self, conn):
-        self._conn = conn
+class History(Service):
+    def __init__(self, conn, *args, **kwargs):
+        super(History, self).__init__(conn, *args, **kwargs)
 
     def list(self, userId, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, pageToken=None, labelId=None, maxResults=None, startHistoryId=None):
         '''Lists the history of all changes to the given mailbox. History results are returned in chronological order (increasing historyId).'''
@@ -817,12 +817,12 @@ class History(object):
             'httpBodyParams': {
             },
         }
-        return self._conn._asyncHttpRequest(leaveOutNulls(queryParams))
+        return self._request(queryParams)
 
 
-class Users(object):
-    def __init__(self, conn):
-        self._conn = conn
+class Users(Service):
+    def __init__(self, conn, *args, **kwargs):
+        super(Users, self).__init__(conn, *args, **kwargs)
         self.messages = Messages(conn)
         self.labels = Labels(conn)
         self.threads = Threads(conn)
@@ -830,14 +830,15 @@ class Users(object):
         self.history = History(conn)
 
 
-class Gmail(object):
+class Gmail(Service):
     '''The Gmail REST API.'''
     _DEFAULT_SCOPES = [u'https://www.googleapis.com/auth/gmail.compose', u'https://mail.google.com/', u'https://www.googleapis.com/auth/gmail.modify', u'https://www.googleapis.com/auth/gmail.readonly']
 
-    def __init__(self, conn=None, scopes=None):
+    def __init__(self, conn=None, scopes=None, *args, **kwargs):
         if scopes is not None:
             self._scopes = scopes
         else:
             self._scopes = self._DEFAULT_SCOPES
         conn.registerScopes(self._scopes)
+        super(Gmail, self).__init__(conn, *args, **kwargs)
         self.users = Users(conn)

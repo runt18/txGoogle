@@ -1,9 +1,9 @@
-from txGoogle.utils import leaveOutNulls
+from txGoogle.service import Service
 
 
-class Topics(object):
-    def __init__(self, conn):
-        self._conn = conn
+class Topics(Service):
+    def __init__(self, conn, *args, **kwargs):
+        super(Topics, self).__init__(conn, *args, **kwargs)
 
     def create(self, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, name=None):
         '''Creates the given topic with the given name.'''
@@ -24,7 +24,7 @@ class Topics(object):
                 'name': name,
             },
         }
-        return self._conn._asyncHttpRequest(leaveOutNulls(queryParams))
+        return self._request(queryParams)
 
     def get(self, topic, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None):
         '''Gets the configuration of a topic. Since the topic only has the name attribute, this method is only useful to check the existence of a topic. If other attributes are added in the future, they will be returned here.'''
@@ -45,7 +45,7 @@ class Topics(object):
             'httpBodyParams': {
             },
         }
-        return self._conn._asyncHttpRequest(leaveOutNulls(queryParams))
+        return self._request(queryParams)
 
     def list(self, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, pageToken=None, maxResults=None, query=None):
         '''Lists matching topics.'''
@@ -68,7 +68,7 @@ class Topics(object):
             'httpBodyParams': {
             },
         }
-        return self._conn._asyncHttpRequest(leaveOutNulls(queryParams))
+        return self._request(queryParams)
 
     def publish(self, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, topic=None, data=None, label=None):
         '''Adds a message to the topic. Returns NOT_FOUND if the topic does not exist.'''
@@ -93,7 +93,7 @@ class Topics(object):
                 },
             },
         }
-        return self._conn._asyncHttpRequest(leaveOutNulls(queryParams))
+        return self._request(queryParams)
 
     def delete(self, topic, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None):
         '''Deletes the topic with the given name. All subscriptions to this topic are also deleted. Returns NOT_FOUND if the topic does not exist. After a topic is deleted, a new topic may be created with the same name.'''
@@ -114,12 +114,12 @@ class Topics(object):
             'httpBodyParams': {
             },
         }
-        return self._conn._asyncHttpRequest(leaveOutNulls(queryParams))
+        return self._request(queryParams)
 
 
-class Subscriptions(object):
-    def __init__(self, conn):
-        self._conn = conn
+class Subscriptions(Service):
+    def __init__(self, conn, *args, **kwargs):
+        super(Subscriptions, self).__init__(conn, *args, **kwargs)
 
     def pull(self, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, returnImmediately=None, subscription=None):
         '''Pulls a single message from the server. If return_immediately is true, and no messages are available in the subscription, this method returns FAILED_PRECONDITION. The system is free to return an UNAVAILABLE error if no messages are available in a reasonable amount of time (to reduce system load).'''
@@ -141,7 +141,7 @@ class Subscriptions(object):
                 'subscription': subscription,
             },
         }
-        return self._conn._asyncHttpRequest(leaveOutNulls(queryParams))
+        return self._request(queryParams)
 
     def get(self, subscription, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None):
         '''Gets the configuration details of a subscription.'''
@@ -162,7 +162,7 @@ class Subscriptions(object):
             'httpBodyParams': {
             },
         }
-        return self._conn._asyncHttpRequest(leaveOutNulls(queryParams))
+        return self._request(queryParams)
 
     def list(self, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, pageToken=None, maxResults=None, query=None):
         '''Lists matching subscriptions.'''
@@ -185,7 +185,7 @@ class Subscriptions(object):
             'httpBodyParams': {
             },
         }
-        return self._conn._asyncHttpRequest(leaveOutNulls(queryParams))
+        return self._request(queryParams)
 
     def create(self, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, ackDeadlineSeconds=None, topic=None, pushEndpoint=None, name=None):
         '''Creates a subscription on a given topic for a given subscriber. If the subscription already exists, returns ALREADY_EXISTS. If the corresponding topic doesn't exist, returns NOT_FOUND.'''
@@ -211,7 +211,7 @@ class Subscriptions(object):
                 'name': name,
             },
         }
-        return self._conn._asyncHttpRequest(leaveOutNulls(queryParams))
+        return self._request(queryParams)
 
     def acknowledge(self, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, ackId=None, subscription=None):
         '''Acknowledges a particular received message: the Pub/Sub system can remove the given message from the subscription. Acknowledging a message whose Ack deadline has expired may succeed, but the message could have been already redelivered. Acknowledging a message more than once will not result in an error. This is only used for messages received via pull.'''
@@ -233,7 +233,7 @@ class Subscriptions(object):
                 'subscription': subscription,
             },
         }
-        return self._conn._asyncHttpRequest(leaveOutNulls(queryParams))
+        return self._request(queryParams)
 
     def modifyAckDeadline(self, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, ackDeadlineSeconds=None, ackId=None, subscription=None):
         '''Modifies the Ack deadline for a message received from a pull request.'''
@@ -256,7 +256,7 @@ class Subscriptions(object):
                 'subscription': subscription,
             },
         }
-        return self._conn._asyncHttpRequest(leaveOutNulls(queryParams))
+        return self._request(queryParams)
 
     def modifyPushConfig(self, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, pushEndpoint=None, subscription=None):
         '''Modifies the PushConfig for a specified subscription. This method can be used to suspend the flow of messages to an end point by clearing the PushConfig field in the request. Messages will be accumulated for delivery even if no push configuration is defined or while the configuration is modified.'''
@@ -280,7 +280,7 @@ class Subscriptions(object):
                 'subscription': subscription,
             },
         }
-        return self._conn._asyncHttpRequest(leaveOutNulls(queryParams))
+        return self._request(queryParams)
 
     def delete(self, subscription, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None):
         '''Deletes an existing subscription. All pending messages in the subscription are immediately dropped. Calls to Pull after deletion will return NOT_FOUND.'''
@@ -301,18 +301,19 @@ class Subscriptions(object):
             'httpBodyParams': {
             },
         }
-        return self._conn._asyncHttpRequest(leaveOutNulls(queryParams))
+        return self._request(queryParams)
 
 
-class Pubsub(object):
+class Pubsub(Service):
     '''Provides reliable, many-to-many, asynchronous messaging between applications.'''
     _DEFAULT_SCOPES = [u'https://www.googleapis.com/auth/cloud-platform', u'https://www.googleapis.com/auth/pubsub']
 
-    def __init__(self, conn=None, scopes=None):
+    def __init__(self, conn=None, scopes=None, *args, **kwargs):
         if scopes is not None:
             self._scopes = scopes
         else:
             self._scopes = self._DEFAULT_SCOPES
         conn.registerScopes(self._scopes)
+        super(Pubsub, self).__init__(conn, *args, **kwargs)
         self.topics = Topics(conn)
         self.subscriptions = Subscriptions(conn)

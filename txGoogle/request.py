@@ -50,7 +50,7 @@ class Request(object):
             httpBodyParams = {}
         if httpHeaders is None:
             httpHeaders = {}
-        self._url = url.format(**httpUrlParams),
+        self._url = url.format(**httpUrlParams)
         self._urlParams = httpUrlParams
         self._bodyParams = httpBodyParams
         self._headers = httpHeaders

@@ -5,6 +5,7 @@ Created on 22 aug. 2014
 '''
 from txGoogle.utils import leaveOutNulls
 from txGoogle.googleServiceRequest import GoogleServiceRequest
+from txGoogle.googleResponseHandler import GoogleResponseHandler
 
 
 class Service(object):
@@ -18,10 +19,10 @@ class Service(object):
         if 'responseCls' in kwargs:
             self._responseCls = kwargs['resonseCls']
         else:
-            self._responseCls = kwargs['resonseCls']
+            self._responseCls = GoogleResponseHandler
 
     def _request(self, requestParams):
-        respObj = self._responseCls()
-        reqObj = self._requestCls(respObj, **leaveOutNulls(requestParams))
-        self._conn.request(reqObj)
+        respObj = self._responseCls(self._conn, requestParams.pop('resultType'))
+        reqObj = self._requestCls(**leaveOutNulls(requestParams))
+        self._conn.request(reqObj, respObj)
         return respObj.dfd
