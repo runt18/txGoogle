@@ -34,8 +34,8 @@ class Messages(Service):
         super(Messages, self).__init__(conn, *args, **kwargs)
         self.attachments = Attachments(conn)
 
-    def insert(self, userId, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, historyId=None, id=None, snippet=None, raw=None, sizeEstimate=None, threadId=None, labelIds=None, attachmentId=None, data=None, size=None, mimeType=None, partId=None, filename=None, headers=None, parts=None):
-        '''Directly inserts a message into only this user's mailbox. Does not send a message.'''
+    def insert(self, userId, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, internalDateSource=None, historyId=None, id=None, snippet=None, raw=None, sizeEstimate=None, threadId=None, labelIds=None, attachmentId=None, data=None, size=None, mimeType=None, partId=None, filename=None, headers=None, parts=None):
+        '''Directly inserts a message into only this user's mailbox similar to IMAP APPEND, bypassing most scanning and classification. Does not send a message.'''
         queryParams = {
             'url': 'https://www.googleapis.com/gmail/v1/users/{userId}/messages',
             'method': 'POST',
@@ -48,6 +48,7 @@ class Messages(Service):
                 'key': key,
                 'userIp': userIp,
                 'alt': alt,
+                'internalDateSource': internalDateSource,
                 'userId': userId,
             },
             'httpBodyParams': {
@@ -96,7 +97,7 @@ class Messages(Service):
         }
         return self._request(queryParams)
 
-    def get(self, userId, id, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, format=None):
+    def get(self, userId, id, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, metadataHeaders=None, format=None):
         '''Gets the specified message.'''
         queryParams = {
             'url': 'https://www.googleapis.com/gmail/v1/users/{userId}/messages/{id}',
@@ -110,6 +111,7 @@ class Messages(Service):
                 'key': key,
                 'userIp': userIp,
                 'alt': alt,
+                'metadataHeaders': metadataHeaders,
                 'userId': userId,
                 'id': id,
                 'format': format,
@@ -209,8 +211,8 @@ class Messages(Service):
         }
         return self._request(queryParams)
 
-    def import_(self, userId, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, historyId=None, id=None, snippet=None, raw=None, sizeEstimate=None, threadId=None, labelIds=None, attachmentId=None, data=None, size=None, mimeType=None, partId=None, filename=None, headers=None, parts=None):
-        '''Directly imports a message into only this user's mailbox, similar to receiving via SMTP. Does not send a message.'''
+    def import_(self, userId, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, internalDateSource=None, historyId=None, id=None, snippet=None, raw=None, sizeEstimate=None, threadId=None, labelIds=None, attachmentId=None, data=None, size=None, mimeType=None, partId=None, filename=None, headers=None, parts=None):
+        '''Imports a message into only this user's mailbox, with standard email delivery scanning and classification similar to receiving via SMTP. Does not send a message.'''
         queryParams = {
             'url': 'https://www.googleapis.com/gmail/v1/users/{userId}/messages/import',
             'method': 'POST',
@@ -223,6 +225,7 @@ class Messages(Service):
                 'key': key,
                 'userIp': userIp,
                 'alt': alt,
+                'internalDateSource': internalDateSource,
                 'userId': userId,
             },
             'httpBodyParams': {

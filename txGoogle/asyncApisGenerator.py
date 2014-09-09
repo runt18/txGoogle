@@ -24,16 +24,6 @@ def capitalizeFirstChar(inp):
         return inp
 
 
-def loadApiDict(apiNames):
-    for apiName in apiNames:
-        filename = os.path.join(_APIDOCS_PATH, apiName) + '.json'
-        if os.path.exists(filename):
-            apiDescription = json.load(open(filename))
-            yield apiName, apiDescription
-        else:
-            print '{} does not exist'.format(filename)
-
-
 def generatePyCode(apiName, apiDict):
 
     def generateMethodCode(methodName, method):
@@ -120,13 +110,16 @@ def generatePyCode(apiName, apiDict):
 
 
 def generateCode(apiNames):
-    for apiName, apiDict in loadApiDict(apiNames):
-        code, tests = generatePyCode(apiName, apiDict)
-        fileName = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'services/{}.py'.format(apiName + '_'))
-        fl = open(fileName, 'wb')
-        fl.write(code.replace('\t', '    '))
-        fl.close()
-        print 'generated {}'.format(fileName)
+    for apiName in apiNames:
+        apiFilename = 'apiFiles/{}.json'.format(apiName)
+        if not os.path.exists(apiFilename):
+            print 'Api description file ({}) does not exist. Try downloading it with discovery service wrapper'.format(apiFilename)
+        else:
+            apiDict = json.load(open(apiFilename))
+                
+            code, tests = generatePyCode(apiName, apiDict)
+            open('services/{}.py'.format(apiName + '_'), 'wb').write(code)
+    #open('AsyncApis.py'.format(apiName), 'a').write(tests)
 
 
 if __name__ == '__main__':

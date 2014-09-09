@@ -492,7 +492,7 @@ class Jobs(Service):
         return self._request(queryParams)
 
     def list(self, projectId, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, projection=None, stateFilter=None, allUsers=None, maxResults=None, pageToken=None):
-        '''Lists all the Jobs in the specified project that were started by the user.'''
+        '''Lists all the Jobs in the specified project that were started by the user. The job list returns in reverse chronological order of when the jobs were created, starting with the most recent job created.'''
         queryParams = {
             'url': 'https://www.googleapis.com/bigquery/v2/projects/{projectId}/jobs',
             'method': 'GET',
