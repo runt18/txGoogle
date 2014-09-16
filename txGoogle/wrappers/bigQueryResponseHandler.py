@@ -39,7 +39,7 @@ class BigQueryResponseHandler(GoogleResponseHandler):
         if 'jobReference' in loaded and 'jobId' in loaded['jobReference']:
             self._handleJobResult(loaded, requestObj)
         else:
-            super(GoogleResponseHandler, self)._onResponse(self, loaded, requestObj)
+            super(BigQueryResponseHandler, self)._onResponse(loaded, requestObj)
 
     def _handleJobResult(self, loaded, requestObj):
         requestObj.setUrlParam('jobId', loaded['jobReference']['jobId'])
@@ -132,7 +132,8 @@ class BigQueryResponseHandler(GoogleResponseHandler):
                 exMsg = '\n'.join(errorMessages)
                 if 'FROM clause with table wildcards matches no table' in exMsg:
                     self._onResponse([], requestObj)
-                self._dfd.errback(Exception(exMsg))
+                else:
+                    self._dfd.errback(Exception(exMsg))
             else:
                 self._dfd.errback(Exception(json.dumps(loaded['error'])))
         else:
