@@ -17,10 +17,11 @@ class BigQueryResponseHandler(GoogleResponseHandler):
         'INTEGER': lambda s: int(s) if s else s
     }
 
-    def loadJson(self, msg):
+    def loadJson(self, response):
         '''
         Overriding the json loading as splitting is much faster when dealing with records
         '''
+        msg = response.msg
         rowsStr = '"rows": [\n  {\n   "f": [\n    {\n     "v": "'
         rowsParsed = []
         if rowsStr in msg:
