@@ -39,7 +39,7 @@ class SharedConnection(object):
             dfdRequest.addCallback(self._handleResponse, requestObj, responseHandler)
             dfdRequest.addErrback(self._handleFailed, requestObj, responseHandler)
         else:
-            reactor.callLater(self.REQUEST_RESEND_CHECK_INTERVAL, self._asyncHttpRequest, requestObj, responseHandler)
+            reactor.callLater(self.REQUEST_RESEND_CHECK_INTERVAL, self.request, requestObj, responseHandler)
         return responseHandler.dfd
 
     def _handleResponse(self, response, requestObj, responseHandler):
