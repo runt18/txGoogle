@@ -17,7 +17,7 @@ class Service(object):
         else:
             self._requestCls = GoogleServiceRequest
         if 'responseCls' in kwargs:
-            self._responseCls = kwargs['resonseCls']
+            self._responseCls = kwargs['responseCls']
         else:
             self._responseCls = GoogleResponseHandler
 
