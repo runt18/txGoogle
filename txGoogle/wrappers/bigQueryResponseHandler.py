@@ -131,7 +131,7 @@ class BigQueryResponseHandler(GoogleResponseHandler):
                 errorMessages = [item['message'] for item in loaded['error']['errors']]
                 exMsg = '\n'.join(errorMessages)
                 if 'FROM clause with table wildcards matches no table' in exMsg:
-                    self._onResponse([], requestObj)
+                    self._onResponse({'kind': 'bigquery#queryResponse', 'rows': [], 'message': exMsg}, requestObj)
                 else:
                     self._dfd.errback(Exception(exMsg))
             else:

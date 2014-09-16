@@ -59,3 +59,12 @@ def ignoreFirstArg(dummy, fun, *args, **kwargs):
 
 def ignoreAllArgs(dummy, fun, *args, **kwargs):
     return fun()
+
+
+def wrapCallback(fun, cb):
+    def wrapper(*args, **kwargs):
+        dfd = fun(*args, **kwargs)
+        if isinstance(dfd, Deferred):
+            dfd.addCallback(cb)
+        return dfd
+    return wrapper

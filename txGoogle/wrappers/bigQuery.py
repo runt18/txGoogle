@@ -3,9 +3,16 @@ Created on 26 jun. 2014
 
 @author: sjuul
 '''
-from txGoogle.asyncUtils import mapFunToItems, addPrintCbs
+from txGoogle.asyncUtils import mapFunToItems
+from txGoogle.asyncUtils import addPrintCbs
+from txGoogle.asyncUtils import wrapCallback
 from txGoogle.asyncUtils import mapFunToItemsSequentially
 from txGoogle.services.bigquery_ import Bigquery
+from txGoogle.services.bigquery_ import Tables
+from txGoogle.services.bigquery_ import Datasets
+from txGoogle.services.bigquery_ import Jobs
+from txGoogle.services.bigquery_ import Tabledata
+from txGoogle.services.bigquery_ import Projects
 from txGoogle.wrappers.bigQueryResponseHandler import BigQueryResponseHandler
 
 '''
@@ -20,71 +27,87 @@ def splitRecordsToChuncks(records):
         yield records[i:i + DEFAULT_BQ_CHUNK_SIZE]
 
 
-def _copyTable(self, srcProjectId, srcDatasetId, srcTableId, dstProjectId, dstDatasetId, dstTableId):
-    jobData = {
-         'projectId': srcProjectId,
-         'configuration': {
-            'copy': {
-                'sourceTable': {
-                'projectId': srcProjectId,
-                'datasetId': srcDatasetId,
-                'tableId': srcTableId
-              },
-                'destinationTable': {
-                'projectId': dstProjectId,
-                'datasetId': dstDatasetId,
-                'tableId': dstTableId
-              }
-           }
+class TablesWrapper(Tables):
+
+    def copy(self, srcProjectId, srcDatasetId, srcTableId, dstProjectId, dstDatasetId, dstTableId):
+        jobData = {
+             'projectId': srcProjectId,
+             'configuration': {
+                'copy': {
+                    'sourceTable': {
+                    'projectId': srcProjectId,
+                    'datasetId': srcDatasetId,
+                    'tableId': srcTableId
+                  },
+                    'destinationTable': {
+                    'projectId': dstProjectId,
+                    'datasetId': dstDatasetId,
+                    'tableId': dstTableId
+                  }
+               }
+            }
         }
-    }
-    queryParams = {
-        'projectId': projectId,
-        'method': 'POST',
-        'httpBodyParams': jobData,
-        'resultType': 'job',
-        'url': 'https://www.googleapis.com/bigquery/v2/projects/{projectId}/jobs'
-    }
-    return self._request(queryParams)
+        queryParams = {
+            'projectId': projectId,
+            'method': 'POST',
+            'httpBodyParams': jobData,
+            'resultType': 'job',
+            'url': 'https://www.googleapis.com/bigquery/v2/projects/{projectId}/jobs'
+        }
+        return self._request(queryParams)
+
+    def rename(self, projectId, datasetId, oldTableId, newTableId):
+        dfd = self.copyTable(projectId, datasetId, oldTableId, projectId, datasetId, newTableId)
+
+        @dfd.addCallback
+        def onTableCopied(dummy):
+            self.deleteTable(projectId, datasetId, oldTableId)
+        return dfd
+
+    def _extractTableIds(self, tables):
+        return [table['tableReference']['tableId'] for table in tables]
+
+    def getIds(self, projectId, datasetId):
+        dfd = self.getTables(projectId, datasetId)
+        dfd.addCallback(self._extractTableIds)
+        return dfd
 
 
-def _renameTable(self, projectId, datasetId, oldTableId, newTableId):
-    dfd = self.copyTable(projectId, datasetId, oldTableId, projectId, datasetId, newTableId)
+class TabledataWrapper(Tabledata):
 
-    @dfd.addCallback
-    def onTableCopied(dummy):
-        self.deleteTable(projectId, datasetId, oldTableId)
-    return dfd
+    def streamParallel(self, projectId, datasetId, tableId, records):
+        return mapFunToItems(splitRecordsToChuncks(records), self.insertAll, projectId=projectId, datasetId=datasetId, tableId=tableId)
 
-
-def _getTableIds(self, projectId, datasetId):
-    dfd = self.getTables(projectId, datasetId)
-    dfd.addCallback(_extractTableIds)
-    return dfd
+    def streamSequential(self, projectId, datasetId, tableId, records):
+        return mapFunToItemsSequentially(splitRecordsToChuncks(records), self.insertAll, projectId=projectId, datasetId=datasetId, tableId=tableId)
 
 
-def _extractTableIds(tables):
-    return [table['tableReference']['tableId'] for table in tables]
+class JobsWrapper(Jobs):
 
+    def _extractRows(self, inp):
+        return inp.get('rows', [])
 
-def _streamingInsertParallel(self, projectId, datasetId, tableId, records):
-    return mapFunToItems(splitRecordsToChuncks(records), self.insertAll, projectId=projectId, datasetId=datasetId, tableId=tableId)
-
-
-def _streamingInsertSequential(self, projectId, datasetId, tableId, records):
-    return mapFunToItemsSequentially(splitRecordsToChuncks(records), self.insertAll, projectId=projectId, datasetId=datasetId, tableId=tableId)
+    def query(self, projectId, query, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, timeoutMs=None, kind=None, dryRun=None, useQueryCache=None, projectId_=None, datasetId=None, maxResults=None, preserveNulls=None):
+        dfd = Jobs.query(self, projectId, query, prettyPrint, fields, quotaUser, oauth_token, key, userIp, alt, timeoutMs, kind, dryRun, useQueryCache, projectId_, datasetId, maxResults, preserveNulls)
+        dfd.addCallback(self._extractRows)
+        return dfd
 
 
 class BigQueryWrapper(Bigquery):
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, conn=None, scopes=None, *args, **kwargs):
+        if scopes is not None:
+            self._scopes = scopes
+        else:
+            self._scopes = self._DEFAULT_SCOPES
+        conn.registerScopes(self._scopes)
         kwargs['responseCls'] = BigQueryResponseHandler
-        super(BigQueryWrapper, self).__init__(*args, **kwargs)
-        self.tables.copy = _copyTable
-        self.tables.rename = _renameTable
-        self.tables.getIds = _getTableIds
-        self.tabledata.streamParallel = _streamingInsertParallel
-        self.tabledata.streamSequential = _streamingInsertSequential
+        super(Bigquery, self).__init__(conn, *args, **kwargs)
+        self.tables = TablesWrapper(conn, *args, **kwargs)
+        self.datasets = Datasets(conn, *args, **kwargs)
+        self.jobs = JobsWrapper(conn, *args, **kwargs)
+        self.tabledata = TabledataWrapper(conn, *args, **kwargs)
+        self.projects = Projects(conn, *args, **kwargs)
 
 
 if __name__ == '__main__':
