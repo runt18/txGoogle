@@ -844,4 +844,4 @@ class Gmail(Service):
             self._scopes = self._DEFAULT_SCOPES
         conn.registerScopes(self._scopes)
         super(Gmail, self).__init__(conn, *args, **kwargs)
-        self.users = Users(conn)
+        self.users = Users(conn, *args, **kwargs)

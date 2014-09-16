@@ -110,6 +110,6 @@ class Cloudmonitoring(Service):
             self._scopes = self._DEFAULT_SCOPES
         conn.registerScopes(self._scopes)
         super(Cloudmonitoring, self).__init__(conn, *args, **kwargs)
-        self.timeseriesDescriptors = TimeseriesDescriptors(conn)
-        self.timeseries = Timeseries(conn)
-        self.metricDescriptors = MetricDescriptors(conn)
+        self.timeseriesDescriptors = TimeseriesDescriptors(conn, *args, **kwargs)
+        self.timeseries = Timeseries(conn, *args, **kwargs)
+        self.metricDescriptors = MetricDescriptors(conn, *args, **kwargs)

@@ -660,8 +660,8 @@ class Bigquery(Service):
             self._scopes = self._DEFAULT_SCOPES
         conn.registerScopes(self._scopes)
         super(Bigquery, self).__init__(conn, *args, **kwargs)
-        self.tables = Tables(conn)
-        self.datasets = Datasets(conn)
-        self.jobs = Jobs(conn)
-        self.tabledata = Tabledata(conn)
-        self.projects = Projects(conn)
+        self.tables = Tables(conn, *args, **kwargs)
+        self.datasets = Datasets(conn, *args, **kwargs)
+        self.jobs = Jobs(conn, *args, **kwargs)
+        self.tabledata = Tabledata(conn, *args, **kwargs)
+        self.projects = Projects(conn, *args, **kwargs)

@@ -227,4 +227,4 @@ class Datastore(Service):
             self._scopes = self._DEFAULT_SCOPES
         conn.registerScopes(self._scopes)
         super(Datastore, self).__init__(conn, *args, **kwargs)
-        self.datasets = Datasets(conn)
+        self.datasets = Datasets(conn, *args, **kwargs)

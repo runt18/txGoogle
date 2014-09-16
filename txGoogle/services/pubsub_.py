@@ -315,5 +315,5 @@ class Pubsub(Service):
             self._scopes = self._DEFAULT_SCOPES
         conn.registerScopes(self._scopes)
         super(Pubsub, self).__init__(conn, *args, **kwargs)
-        self.topics = Topics(conn)
-        self.subscriptions = Subscriptions(conn)
+        self.topics = Topics(conn, *args, **kwargs)
+        self.subscriptions = Subscriptions(conn, *args, **kwargs)

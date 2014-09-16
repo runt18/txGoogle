@@ -67,7 +67,7 @@ class Apis(Service):
 class Discovery(Service):
     '''Lets you discover information about other Google APIs, such as what APIs are available, the resource and method details for each API.'''
     _DEFAULT_SCOPES = ['']
-    
+
     def __init__(self, conn=None, scopes=None):
         if scopes is not None:
             self._scopes = scopes
@@ -119,7 +119,7 @@ if __name__ == '__main__':
     conn = SharedConnection('785509043543.apps.googleusercontent.com', 'Mhx2IjJLk78U9VyErHHIVbnw', '../AsyncAllCredentials.json')
     downloader = DiscoveryWrapper(conn)
     conn.connect()
-    serviceList = ['datastore', 'bigquery', 'gmail']
+    serviceList = ['bigquery', 'cloudmonitoring', 'datastore', 'gmail', 'pubsub', 'storage']
     dfd = downloader.downloadPreferred(serviceList)
     #dfd = downloader.apis.getRest('datastore', 'v1beta2')
     #@dfd.addCallback

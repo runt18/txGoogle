@@ -3,10 +3,10 @@ Created on 26 jun. 2014
 
 @author: sjuul
 '''
-from twisted.internet import reactor
 from txGoogle.asyncUtils import mapFunToItems, addPrintCbs
 from txGoogle.asyncUtils import mapFunToItemsSequentially
 from txGoogle.services.bigquery_ import Bigquery
+from txGoogle.wrappers.bigQueryResponseHandler import BigQueryResponseHandler
 
 '''
 Reference: https://developers.google.com/bigquery/docs/reference/v2/
@@ -75,10 +75,11 @@ def _streamingInsertSequential(self, projectId, datasetId, tableId, records):
     return mapFunToItemsSequentially(splitRecordsToChuncks(records), self.insertAll, projectId=projectId, datasetId=datasetId, tableId=tableId)
 
 
-class BigQuery(Bigquery):
+class BigQueryWrapper(Bigquery):
 
     def __init__(self, *args, **kwargs):
-        super(BigQuery, self).__init__(*args, **kwargs)
+        kwargs['responseCls'] = BigQueryResponseHandler
+        super(BigQueryWrapper, self).__init__(*args, **kwargs)
         self.tables.copy = _copyTable
         self.tables.rename = _renameTable
         self.tables.getIds = _getTableIds
@@ -90,7 +91,7 @@ if __name__ == '__main__':
     from txGoogle.sharedConnection import SharedConnection
     from twisted.internet import reactor
     conn = SharedConnection('785509043543.apps.googleusercontent.com', 'Mhx2IjJLk78U9VyErHHIVbnw', 'apiFiles/asyncBqCredentials.json')
-    abq = BigQuery(conn)
+    abq = BigQueryWrapper(conn)
     conn.connect()
 
     prod = True
