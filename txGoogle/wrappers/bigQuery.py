@@ -68,7 +68,7 @@ class TablesWrapper(Tables):
         return [table['tableReference']['tableId'] for table in tables]
 
     def getIds(self, projectId, datasetId):
-        dfd = self.getTables(projectId, datasetId)
+        dfd = self.get(projectId, datasetId)
         dfd.addCallback(self._extractTableIds)
         return dfd
 
