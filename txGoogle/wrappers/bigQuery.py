@@ -75,11 +75,14 @@ class TablesWrapper(Tables):
 class TabledataWrapper(Tabledata):
 
     def streamParallel(self, projectId, datasetId, tableId, records):
-        return mapFunToItems(splitRecordsToChuncks(records), self.insertAll, projectId=projectId, datasetId=datasetId, tableId=tableId)
+        return mapFunToItems(splitRecordsToChuncks(records), self.insertRows, projectId=projectId, datasetId=datasetId, tableId=tableId)
 
     def streamSequential(self, projectId, datasetId, tableId, records):
-        return mapFunToItemsSequentially(splitRecordsToChuncks(records), self.insertAll, projectId=projectId, datasetId=datasetId, tableId=tableId)
+        return mapFunToItemsSequentially(splitRecordsToChuncks(records), self.insertRows, projectId=projectId, datasetId=datasetId, tableId=tableId)
 
+    def insertRows(self, rows, projectId, datasetId, tableId):
+        rows = [{"json": record} for record in rows]
+        return self.insertAll(projectId=projectId, tableId=tableId, datasetId=datasetId, rows=rows, kind='bigquery#tableDataInsertAllRequest')
 
 class JobsWrapper(Jobs):
 
