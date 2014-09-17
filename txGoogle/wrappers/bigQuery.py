@@ -75,14 +75,21 @@ class TablesWrapper(Tables):
 class TabledataWrapper(Tabledata):
 
     def streamParallel(self, projectId, datasetId, tableId, records):
-        return mapFunToItems(splitRecordsToChuncks(records), self.insertRows, projectId=projectId, datasetId=datasetId, tableId=tableId)
+        if len(records) > DEFAULT_BQ_CHUNK_SIZE:
+            return mapFunToItems(splitRecordsToChuncks(records), self.insertRows, projectId=projectId, datasetId=datasetId, tableId=tableId)
+        else:
+            return self._abq.tabledata.insertRows(records, self._projectId, datasetId, tableId)
 
     def streamSequential(self, projectId, datasetId, tableId, records):
-        return mapFunToItemsSequentially(splitRecordsToChuncks(records), self.insertRows, projectId=projectId, datasetId=datasetId, tableId=tableId)
+        if len(records) > DEFAULT_BQ_CHUNK_SIZE:
+            return mapFunToItemsSequentially(splitRecordsToChuncks(records), self.insertRows, projectId=projectId, datasetId=datasetId, tableId=tableId)
+        else:
+            return self._abq.tabledata.insertRows(records, self._projectId, datasetId, tableId)
 
     def insertRows(self, rows, projectId, datasetId, tableId):
         rows = [{"json": record} for record in rows]
         return self.insertAll(projectId=projectId, tableId=tableId, datasetId=datasetId, rows=rows, kind='bigquery#tableDataInsertAllRequest')
+
 
 class JobsWrapper(Jobs):
 
