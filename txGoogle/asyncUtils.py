@@ -3,7 +3,8 @@ Created on 16 jul. 2014
 
 @author: Sjuul
 '''
-from twisted.internet.defer import DeferredList, fail
+from twisted.internet.defer import DeferredList
+from twisted.internet.defer import fail
 from twisted.internet.defer import succeed
 from twisted.internet.defer import Deferred
 import json
@@ -102,7 +103,7 @@ def cacheDfdWhileRunning(fun):
             return fun.dfds[key]
         else:
             result = fun(*args, **kwargs)
-            if isinstance(result, Deferred):
+            if isinstance(result, Deferred) and not result.called:
                 fun.dfds[key] = result
                 result.addCallback(clearCacheCb, key=key)
                 result.addErrback(clearCacheEb, key=key)
