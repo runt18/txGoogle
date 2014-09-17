@@ -5,7 +5,6 @@ Created on 26 jun. 2014
 '''
 from txGoogle.asyncUtils import mapFunToItems
 from txGoogle.asyncUtils import addPrintCbs
-from txGoogle.asyncUtils import wrapCallback
 from txGoogle.asyncUtils import mapFunToItemsSequentially
 from txGoogle.services.bigquery_ import Bigquery
 from txGoogle.services.bigquery_ import Tables
@@ -64,11 +63,11 @@ class TablesWrapper(Tables):
             self.deleteTable(projectId, datasetId, oldTableId)
         return dfd
 
-    def _extractTableIds(self, tables):
-        return [table['tableReference']['tableId'] for table in tables]
+    def _extractTableIds(self, result):
+        return [table['tableReference']['tableId'] for table in result.get('tables', [])]
 
     def getIds(self, projectId, datasetId):
-        dfd = self.get(projectId, datasetId)
+        dfd = self.list(projectId=projectId, datasetId=datasetId)
         dfd.addCallback(self._extractTableIds)
         return dfd
 

@@ -31,8 +31,10 @@ class BigQueryResponseHandler(GoogleResponseHandler):
             rowSepPattern = '"\n    }\n   ]\n  },\n  {\n   "f": [\n    {\n     "v": "'
             colSepPattern = '"\n    },\n    {\n     "v": "'
             rowsParsed = [row.split(colSepPattern) for row in rows.split(rowSepPattern)]
-        loaded = json.loads(msg)
-        loaded['rows'] = rowsParsed
+            loaded = json.loads(msg)
+            loaded['rows'] = rowsParsed
+        else:
+            loaded = json.loads(msg)
         return loaded
 
     def _onResponse(self, loaded, requestObj):
