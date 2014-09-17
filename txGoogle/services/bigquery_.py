@@ -5,7 +5,7 @@ class Tables(Service):
     def __init__(self, conn, *args, **kwargs):
         super(Tables, self).__init__(conn, *args, **kwargs)
 
-    def insert(self, projectId, datasetId, tableId, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, expirationTime=None, description=None, friendlyName=None, fields_=None, query=None):
+    def insert(self, projectId, datasetId, tableId, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, expirationTime=None, description=None, friendlyName=None, schema_fields=None, query=None):
         '''Creates a new, empty table in the dataset.'''
         queryParams = {
             'url': 'https://www.googleapis.com/bigquery/v2/projects/{projectId}/datasets/{datasetId}/tables',
@@ -27,7 +27,7 @@ class Tables(Service):
                 'friendlyName': friendlyName,
                 'expirationTime': expirationTime,
                 'schema': {
-                    'fields': fields_,
+                    'fields': schema_fields,
                 },
                 'tableReference': {
                     'projectId': projectId,
@@ -88,7 +88,7 @@ class Tables(Service):
         }
         return self._request(queryParams)
 
-    def update(self, projectId, tableId, datasetId, projectId_, tableId_, datasetId_, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, expirationTime=None, description=None, friendlyName=None, fields_=None, query=None):
+    def update(self, projectId, tableId, datasetId, projectId_, tableId_, datasetId_, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, expirationTime=None, description=None, friendlyName=None, schema_fields=None, query=None):
         '''Updates information in an existing table. The update method replaces the entire table resource, whereas the patch method only replaces fields that are provided in the submitted table resource.'''
         queryParams = {
             'url': 'https://www.googleapis.com/bigquery/v2/projects/{projectId}/datasets/{datasetId}/tables/{tableId}',
@@ -111,7 +111,7 @@ class Tables(Service):
                 'friendlyName': friendlyName,
                 'expirationTime': expirationTime,
                 'schema': {
-                    'fields': fields_,
+                    'fields': schema_fields,
                 },
                 'tableReference': {
                     'projectId': projectId_,
@@ -125,7 +125,7 @@ class Tables(Service):
         }
         return self._request(queryParams)
 
-    def patch(self, projectId, tableId, datasetId, projectId_, tableId_, datasetId_, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, expirationTime=None, description=None, friendlyName=None, fields_=None, query=None):
+    def patch(self, projectId, tableId, datasetId, projectId_, tableId_, datasetId_, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, expirationTime=None, description=None, friendlyName=None, schema_fields=None, query=None):
         '''Updates information in an existing table. The update method replaces the entire table resource, whereas the patch method only replaces fields that are provided in the submitted table resource. This method supports patch semantics.'''
         queryParams = {
             'url': 'https://www.googleapis.com/bigquery/v2/projects/{projectId}/datasets/{datasetId}/tables/{tableId}',
@@ -148,7 +148,7 @@ class Tables(Service):
                 'friendlyName': friendlyName,
                 'expirationTime': expirationTime,
                 'schema': {
-                    'fields': fields_,
+                    'fields': schema_fields,
                 },
                 'tableReference': {
                     'projectId': projectId_,
@@ -350,7 +350,7 @@ class Jobs(Service):
     def __init__(self, conn, *args, **kwargs):
         super(Jobs, self).__init__(conn, *args, **kwargs)
 
-    def insert(self, projectId, load_destinationTable_projectId, tableId, datasetId, link_destinationTable_projectId, link_destinationTable_tableId, link_destinationTable_datasetId, copy_destinationTable_projectId, copy_destinationTable_tableId, copy_destinationTable_datasetId, extract_sourceTable_projectId, extract_sourceTable_tableId, extract_sourceTable_datasetId, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, projectId_=None, jobId=None, quote=None, encoding=None, fieldDelimiter=None, sourceFormat=None, maxBadRecords=None, allowJaggedRows=None, writeDisposition=None, sourceUris=None, skipLeadingRows=None, createDisposition=None, schemaInlineFormat=None, schemaInline=None, allowQuotedNewlines=None, ignoreUnknownValues=None, fields_=None, dryRun=None, createDisposition_=None, writeDisposition_=None, sourceUri=None, flattenResults=None, useQueryCache=None, projectIdQuery=None, datasetIdQuery=None, query_destinationTable_projectId=None, query_destinationTable_tableId=None, query_destinationTable_datasetId=None, priority=None, query_writeDisposition=None, allowLargeResults=None, query_createDisposition=None, query=None, preserveNulls=None, copy_createDisposition=None, sourceTables=None, copy_writeDisposition=None, copy_sourceTable_projectId=None, copy_sourceTable_tableId=None, copy_sourceTable_datasetId=None, destinationUri=None, compression=None, fieldDelimiter_=None, destinationFormat=None, printHeader=None, destinationUris=None):
+    def insert(self, projectId, load_destinationTable_projectId, tableId, datasetId, link_destinationTable_projectId, link_destinationTable_tableId, link_destinationTable_datasetId, copy_destinationTable_projectId, copy_destinationTable_tableId, copy_destinationTable_datasetId, extract_sourceTable_projectId, extract_sourceTable_tableId, extract_sourceTable_datasetId, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, projectId_=None, jobId=None, quote=None, encoding=None, fieldDelimiter=None, sourceFormat=None, maxBadRecords=None, allowJaggedRows=None, writeDisposition=None, sourceUris=None, skipLeadingRows=None, createDisposition=None, schemaInlineFormat=None, schemaInline=None, allowQuotedNewlines=None, ignoreUnknownValues=None, schema_fields=None, dryRun=None, createDisposition_=None, writeDisposition_=None, sourceUri=None, flattenResults=None, useQueryCache=None, projectIdQuery=None, datasetIdQuery=None, query_destinationTable_projectId=None, query_destinationTable_tableId=None, query_destinationTable_datasetId=None, priority=None, query_writeDisposition=None, allowLargeResults=None, query_createDisposition=None, query=None, preserveNulls=None, copy_createDisposition=None, sourceTables=None, copy_writeDisposition=None, copy_sourceTable_projectId=None, copy_sourceTable_tableId=None, copy_sourceTable_datasetId=None, destinationUri=None, compression=None, fieldDelimiter_=None, destinationFormat=None, printHeader=None, destinationUris=None):
         '''Starts a new asynchronous job.'''
         queryParams = {
             'url': 'https://www.googleapis.com/bigquery/v2/projects/{projectId}/jobs',
@@ -389,7 +389,7 @@ class Jobs(Service):
                         'allowQuotedNewlines': allowQuotedNewlines,
                         'ignoreUnknownValues': ignoreUnknownValues,
                         'schema': {
-                            'fields': fields_,
+                            'fields': schema_fields,
                         },
                     },
                     'dryRun': dryRun,

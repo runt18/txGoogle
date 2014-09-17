@@ -4,14 +4,14 @@ Created on 20 aug. 2014
 @author: koos
 '''
 duplicateDict = {
-    'bigquery:v2:bigquery.tables.insert:schema_fields': 'fields_',
+    'bigquery:v2:bigquery.tables.insert:schema_fields': 'schema_fields',
     'bigquery:v2:bigquery.tables.insert:tableReference_projectId': 'projectId',
     #'bigquery:v2:bigquery.tables.insert:tableReference_datasetId': 'datasetId_',
-    'bigquery:v2:bigquery.tables.update:schema_fields': 'fields_',
+    'bigquery:v2:bigquery.tables.update:schema_fields': 'schema_fields',
     'bigquery:v2:bigquery.tables.update:tableReference_projectId': 'projectId_',
     'bigquery:v2:bigquery.tables.update:tableReference_tableId': 'tableId_',
     'bigquery:v2:bigquery.tables.update:tableReference_datasetId': 'datasetId_',
-    'bigquery:v2:bigquery.tables.patch:schema_fields': 'fields_',
+    'bigquery:v2:bigquery.tables.patch:schema_fields': 'schema_fields',
     'bigquery:v2:bigquery.tables.patch:tableReference_projectId': 'projectId_',
     'bigquery:v2:bigquery.tables.patch:tableReference_tableId': 'tableId_',
     'bigquery:v2:bigquery.tables.patch:tableReference_datasetId': 'datasetId_',
@@ -23,7 +23,7 @@ duplicateDict = {
     'bigquery:v2:bigquery.jobs.insert:statistics_query_totalBytesProcessed': 'totalBytesProcessed_',
     'bigquery:v2:bigquery.jobs.insert:jobReference_projectId': 'projectId_',
     'bigquery:v2:bigquery.jobs.insert:configuration_load_destinationTable_projectId': 'load_destinationTable_projectId',
-    'bigquery:v2:bigquery.jobs.insert:configuration_load_schema_fields': 'fields_',
+    'bigquery:v2:bigquery.jobs.insert:configuration_load_schema_fields': 'schema_fields',
     'bigquery:v2:bigquery.jobs.insert:configuration_link_createDisposition': 'createDisposition_',
     'bigquery:v2:bigquery.jobs.insert:configuration_link_writeDisposition': 'writeDisposition_',
     'bigquery:v2:bigquery.jobs.insert:configuration_link_destinationTable_projectId': 'link_destinationTable_projectId',
