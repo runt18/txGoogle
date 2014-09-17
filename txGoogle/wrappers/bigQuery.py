@@ -78,13 +78,13 @@ class TabledataWrapper(Tabledata):
         if len(records) > DEFAULT_BQ_CHUNK_SIZE:
             return mapFunToItems(splitRecordsToChuncks(records), self.insertRows, projectId=projectId, datasetId=datasetId, tableId=tableId)
         else:
-            return self.insertRows(records, self._projectId, datasetId, tableId)
+            return self.insertRows(records, projectId, datasetId, tableId)
 
     def streamSequential(self, projectId, datasetId, tableId, records):
         if len(records) > DEFAULT_BQ_CHUNK_SIZE:
             return mapFunToItemsSequentially(splitRecordsToChuncks(records), self.insertRows, projectId=projectId, datasetId=datasetId, tableId=tableId)
         else:
-            return self.insertRows(records, self._projectId, datasetId, tableId)
+            return self.insertRows(records, projectId, datasetId, tableId)
 
     def insertRows(self, rows, projectId, datasetId, tableId):
         rows = [{"json": record} for record in rows]
