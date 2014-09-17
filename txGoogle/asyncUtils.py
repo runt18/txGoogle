@@ -3,7 +3,7 @@ Created on 16 jul. 2014
 
 @author: Sjuul
 '''
-from twisted.internet.defer import DeferredList
+from twisted.internet.defer import DeferredList, fail
 from twisted.internet.defer import succeed
 from twisted.internet.defer import Deferred
 import json
@@ -67,4 +67,45 @@ def wrapCallback(fun, cb):
         if isinstance(dfd, Deferred):
             dfd.addCallback(cb)
         return dfd
+    return wrapper
+
+
+class immutableKwargs(dict):
+    '''
+    Only useable if kwargs don't change!!!
+    '''
+    def __hash__(self):
+        return hash(tuple(sorted(self.items())))
+
+    def __setitem__(self, *args, **kwargs):
+        raise Exception('not allowed')
+
+    def __delitem__(self, *args, **kwargs):
+        raise Exception('not allowed')
+
+
+def cacheDfdWhileRunning(fun):
+
+    def clearCacheCb(result, key):
+        del fun.dfds[key]
+        return result
+
+    def clearCacheEb(result, key):
+        del fun.dfds[key]
+        return fail(result)
+
+    def wrapper(*args, **kwargs):
+        if not hasattr(fun, 'dfds'):
+            fun.dfds = {}
+        key = (args, immutableKwargs(kwargs))
+        if key in fun.dfds:
+            return fun.dfds[key]
+        else:
+            result = fun(*args, **kwargs)
+            if isinstance(result, Deferred):
+                fun.dfds[key] = result
+                result.addCallback(clearCacheCb, key=key)
+                result.addErrback(clearCacheEb, key=key)
+            return result
+
     return wrapper
