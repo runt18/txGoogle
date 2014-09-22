@@ -9,6 +9,7 @@ from txGoogle.services.gmail_ import Gmail
 from email.mime.text import MIMEText
 import base64
 from txGoogle.asyncUtils import printCb
+from txGoogle.singleton import Singleton
 
 
 class GmailWrapper(Gmail):
@@ -27,6 +28,11 @@ class GmailWrapper(Gmail):
         raw = base64.urlsafe_b64encode(message.as_string())
         print raw
         return self.users.messages.send(userId=userId, raw=raw)
+
+
+class GmailSingleton(GmailWrapper):
+
+    __metaclass__ = Singleton
 
 
 if __name__ == '__main__':
