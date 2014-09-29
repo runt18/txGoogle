@@ -93,12 +93,8 @@ class TabledataWrapper(Tabledata):
 
 class JobsWrapper(Jobs):
 
-    def _extractRows(self, inp):
-        return inp.get('rows', [])
-
     def query(self, projectId, query, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, timeoutMs=None, kind=None, dryRun=None, useQueryCache=None, projectId_=None, datasetId=None, maxResults=None, preserveNulls=None):
         dfd = Jobs.query(self, projectId, query, prettyPrint, fields, quotaUser, oauth_token, key, userIp, alt, timeoutMs, kind, dryRun, useQueryCache, projectId_, datasetId, maxResults, preserveNulls)
-        dfd.addCallback(self._extractRows)
         return dfd
 
 

@@ -44,6 +44,7 @@ class BigQueryResponseHandler(GoogleResponseHandler):
             super(BigQueryResponseHandler, self)._onResponse(loaded, requestObj)
 
     def _handleJobResult(self, loaded, requestObj):
+        self._loadResults(loaded, requestObj)
         requestObj.setUrlParam('jobId', loaded['jobReference']['jobId'])
         if 'pageToken' in loaded:
             requestObj.setUrlParam('pageToken', loaded['pageToken'])
@@ -55,8 +56,10 @@ class BigQueryResponseHandler(GoogleResponseHandler):
         elif 'status' in loaded:
             self._handleJobStatus(loaded, requestObj)
         else:
-            assert self._result is None, 'Already have loaded results?'
-            self._dfd.callback(loaded)
+            if self._result is None:
+                self._dfd.callback(loaded)
+            else:
+                self._dfd.callback(self._result)
 
     def _getQueryResults(self, requestObj):
         '''
@@ -107,7 +110,7 @@ class BigQueryResponseHandler(GoogleResponseHandler):
     def _loadResults_job(self, loaded):
         self._result = loaded
 
-    def _loadResults_rows(self, results):
+    def _loadResults_QueryRequest(self, results):
         if self._result is None:
             self._result = []
         if 'rows' in results:
@@ -118,8 +121,8 @@ class BigQueryResponseHandler(GoogleResponseHandler):
                     return
             columns = results['schema']['fields']
             for row in results['rows']:
-                newRows = [self.VALUE_FORMAT_FUNS[itemColumn['type']](item) for item, itemColumn in zip(row, columns)]
-                self._result.extend(newRows)
+                newRow = [self.VALUE_FORMAT_FUNS[itemColumn['type']](item) for item, itemColumn in zip(row, columns)]
+                self._result.append(newRow)
             del results['rows']
 
     '''
