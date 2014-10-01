@@ -12,6 +12,8 @@ from urllib import urlencode
 import simplejson as json
 import time
 from txGoogle.utils import simpleDeepCopy
+from twisted.python import log
+import logging
 
 
 class StringProducer(object):
@@ -96,6 +98,7 @@ class Request(object):
                 # headers['Content-Length'] = [len(encoded)]
                 dataProducer = StringProducer(encoded)
         url = url.encode('ascii', 'ignore')
+        log.msg('fetching {}'.format(url), logLevel=logging.DEBUG)
         return agent.request(method, url, Headers(headers), dataProducer)
 
     def _upsertContentType(self, headers, contentType):

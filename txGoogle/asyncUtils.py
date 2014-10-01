@@ -9,6 +9,7 @@ from twisted.internet.defer import succeed
 from twisted.internet.defer import Deferred
 import json
 import types
+from twisted.python import log
 
 
 def trueCb(dummy):
@@ -24,7 +25,10 @@ def printCb(result, *args, **kwargs):
         for item in result:
             print item
     elif result is not None:
-        print json.dumps(result, indent=2)
+        try:
+            print json.dumps(result, indent=2)
+        except:
+            print result
 
 
 def mapFunToItems(items, fun, *args, **kwargs):
@@ -110,3 +114,13 @@ def cacheDfdWhileRunning(fun):
             return result
 
     return wrapper
+
+def loggedException(function):
+    def wrapper(*args, **kwargs):
+        try:
+            return function(*args, **kwargs)
+        except:
+            log.err()
+    return wrapper
+
+

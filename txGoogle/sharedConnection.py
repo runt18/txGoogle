@@ -5,6 +5,9 @@ Created on 15 jul. 2014
 '''
 from asyncOAuth import AsyncOAuthConnectionHandler
 from twisted.internet import reactor
+import time
+from twisted.internet.error import TimeoutError
+from twisted.python import log
 
 
 class SharedConnection(object):
@@ -39,6 +42,15 @@ class SharedConnection(object):
             dfdRequest.addCallback(self._handleResponse, requestObj, responseHandler)
             dfdRequest.addErrback(self._handleFailed, requestObj, responseHandler)
         else:
+            hundredSecsAgo = time.time() -100
+            for req in list(self._runningReqs):
+                if req._startTs < hundredSecsAgo:
+                    try:
+                        if not req._dfd.called:
+                            self._runningReqs.remove(req)
+                            req._dfd.errback(TimeoutError())
+                    except:
+                        log.err()
             reactor.callLater(self.REQUEST_RESEND_CHECK_INTERVAL, self.request, requestObj, responseHandler)
         return responseHandler.dfd
 
