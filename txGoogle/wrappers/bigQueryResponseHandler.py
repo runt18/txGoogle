@@ -101,16 +101,10 @@ class BigQueryResponseHandler(GoogleResponseHandler):
         self._conn.request(requestObj, self)
         return self._dfd
 
-    def _loadResults_tables(self, loaded):
-        if 'tables' in loaded:
-            if self._result is None:
-                self._result = []
-            self._result.extend(loaded['tables'])
-
     def _loadResults_TableList(self, loaded):
+        if self._result is None:
+            self._result = []
         if 'tables' in loaded:
-            if self._result is None:
-                self._result = []
             self._result.extend(loaded['tables'])
 
     def _loadResults_job(self, loaded):
