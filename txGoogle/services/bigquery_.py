@@ -46,7 +46,7 @@ class Tables(Service):
         queryParams = {
             'url': 'https://www.googleapis.com/bigquery/v2/projects/{projectId}/datasets/{datasetId}/tables/{tableId}',
             'method': 'GET',
-            'resultType': 'empty',
+            'resultType': 'Table',
             'httpUrlParams': {
                 'prettyPrint': prettyPrint,
                 'fields': fields,
@@ -69,7 +69,7 @@ class Tables(Service):
         queryParams = {
             'url': 'https://www.googleapis.com/bigquery/v2/projects/{projectId}/datasets/{datasetId}/tables',
             'method': 'GET',
-            'resultType': 'empty',
+            'resultType': 'TableList',
             'httpUrlParams': {
                 'prettyPrint': prettyPrint,
                 'fields': fields,
@@ -223,7 +223,7 @@ class Datasets(Service):
         queryParams = {
             'url': 'https://www.googleapis.com/bigquery/v2/projects/{projectId}/datasets/{datasetId}',
             'method': 'GET',
-            'resultType': 'empty',
+            'resultType': 'Dataset',
             'httpUrlParams': {
                 'prettyPrint': prettyPrint,
                 'fields': fields,
@@ -245,7 +245,7 @@ class Datasets(Service):
         queryParams = {
             'url': 'https://www.googleapis.com/bigquery/v2/projects/{projectId}/datasets',
             'method': 'GET',
-            'resultType': 'empty',
+            'resultType': 'DatasetList',
             'httpUrlParams': {
                 'prettyPrint': prettyPrint,
                 'fields': fields,
@@ -464,7 +464,7 @@ class Jobs(Service):
         queryParams = {
             'url': 'https://www.googleapis.com/bigquery/v2/projects/{projectId}/queries',
             'method': 'POST',
-            'resultType': 'QueryRequest',
+            'resultType': 'QueryResponse',
             'httpUrlParams': {
                 'prettyPrint': prettyPrint,
                 'fields': fields,
@@ -496,7 +496,7 @@ class Jobs(Service):
         queryParams = {
             'url': 'https://www.googleapis.com/bigquery/v2/projects/{projectId}/jobs',
             'method': 'GET',
-            'resultType': 'empty',
+            'resultType': 'JobList',
             'httpUrlParams': {
                 'prettyPrint': prettyPrint,
                 'fields': fields,
@@ -522,7 +522,7 @@ class Jobs(Service):
         queryParams = {
             'url': 'https://www.googleapis.com/bigquery/v2/projects/{projectId}/queries/{jobId}',
             'method': 'GET',
-            'resultType': 'empty',
+            'resultType': 'GetQueryResultsResponse',
             'httpUrlParams': {
                 'prettyPrint': prettyPrint,
                 'fields': fields,
@@ -548,7 +548,7 @@ class Jobs(Service):
         queryParams = {
             'url': 'https://www.googleapis.com/bigquery/v2/projects/{projectId}/jobs/{jobId}',
             'method': 'GET',
-            'resultType': 'empty',
+            'resultType': 'Job',
             'httpUrlParams': {
                 'prettyPrint': prettyPrint,
                 'fields': fields,
@@ -575,7 +575,7 @@ class Tabledata(Service):
         queryParams = {
             'url': 'https://www.googleapis.com/bigquery/v2/projects/{projectId}/datasets/{datasetId}/tables/{tableId}/data',
             'method': 'GET',
-            'resultType': 'empty',
+            'resultType': 'TableDataList',
             'httpUrlParams': {
                 'prettyPrint': prettyPrint,
                 'fields': fields,
@@ -601,7 +601,7 @@ class Tabledata(Service):
         queryParams = {
             'url': 'https://www.googleapis.com/bigquery/v2/projects/{projectId}/datasets/{datasetId}/tables/{tableId}/insertAll',
             'method': 'POST',
-            'resultType': 'TableDataInsertAllRequest',
+            'resultType': 'TableDataInsertAllResponse',
             'httpUrlParams': {
                 'prettyPrint': prettyPrint,
                 'fields': fields,
@@ -631,7 +631,7 @@ class Projects(Service):
         queryParams = {
             'url': 'https://www.googleapis.com/bigquery/v2/projects',
             'method': 'GET',
-            'resultType': 'empty',
+            'resultType': 'ProjectList',
             'httpUrlParams': {
                 'prettyPrint': prettyPrint,
                 'fields': fields,

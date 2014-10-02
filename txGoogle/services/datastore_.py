@@ -10,7 +10,7 @@ class Datasets(Service):
         queryParams = {
             'url': 'https://www.googleapis.com/datastore/v1beta2/datasets/{datasetId}/allocateIds',
             'method': 'POST',
-            'resultType': 'AllocateIdsRequest',
+            'resultType': 'AllocateIdsResponse',
             'httpUrlParams': {
                 'prettyPrint': prettyPrint,
                 'fields': fields,
@@ -32,7 +32,7 @@ class Datasets(Service):
         queryParams = {
             'url': 'https://www.googleapis.com/datastore/v1beta2/datasets/{datasetId}/rollback',
             'method': 'POST',
-            'resultType': 'RollbackRequest',
+            'resultType': 'RollbackResponse',
             'httpUrlParams': {
                 'prettyPrint': prettyPrint,
                 'fields': fields,
@@ -54,7 +54,7 @@ class Datasets(Service):
         queryParams = {
             'url': 'https://www.googleapis.com/datastore/v1beta2/datasets/{datasetId}/beginTransaction',
             'method': 'POST',
-            'resultType': 'BeginTransactionRequest',
+            'resultType': 'BeginTransactionResponse',
             'httpUrlParams': {
                 'prettyPrint': prettyPrint,
                 'fields': fields,
@@ -76,7 +76,7 @@ class Datasets(Service):
         queryParams = {
             'url': 'https://www.googleapis.com/datastore/v1beta2/datasets/{datasetId}/lookup',
             'method': 'POST',
-            'resultType': 'LookupRequest',
+            'resultType': 'LookupResponse',
             'httpUrlParams': {
                 'prettyPrint': prettyPrint,
                 'fields': fields,
@@ -102,7 +102,7 @@ class Datasets(Service):
         queryParams = {
             'url': 'https://www.googleapis.com/datastore/v1beta2/datasets/{datasetId}/commit',
             'method': 'POST',
-            'resultType': 'CommitRequest',
+            'resultType': 'CommitResponse',
             'httpUrlParams': {
                 'prettyPrint': prettyPrint,
                 'fields': fields,
@@ -134,7 +134,7 @@ class Datasets(Service):
         queryParams = {
             'url': 'https://www.googleapis.com/datastore/v1beta2/datasets/{datasetId}/runQuery',
             'method': 'POST',
-            'resultType': 'RunQueryRequest',
+            'resultType': 'RunQueryResponse',
             'httpUrlParams': {
                 'prettyPrint': prettyPrint,
                 'fields': fields,

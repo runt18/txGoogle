@@ -31,7 +31,7 @@ class Topics(Service):
         queryParams = {
             'url': 'https://www.googleapis.com/pubsub/v1beta1/topics/{+topic}',
             'method': 'GET',
-            'resultType': 'empty',
+            'resultType': 'Topic',
             'httpUrlParams': {
                 'prettyPrint': prettyPrint,
                 'fields': fields,
@@ -52,7 +52,7 @@ class Topics(Service):
         queryParams = {
             'url': 'https://www.googleapis.com/pubsub/v1beta1/topics',
             'method': 'GET',
-            'resultType': 'empty',
+            'resultType': 'ListTopicsResponse',
             'httpUrlParams': {
                 'prettyPrint': prettyPrint,
                 'fields': fields,
@@ -75,7 +75,7 @@ class Topics(Service):
         queryParams = {
             'url': 'https://www.googleapis.com/pubsub/v1beta1/topics/publish',
             'method': 'POST',
-            'resultType': 'PublishRequest',
+            'resultType': 'empty',
             'httpUrlParams': {
                 'prettyPrint': prettyPrint,
                 'fields': fields,
@@ -126,7 +126,7 @@ class Subscriptions(Service):
         queryParams = {
             'url': 'https://www.googleapis.com/pubsub/v1beta1/subscriptions/pull',
             'method': 'POST',
-            'resultType': 'PullRequest',
+            'resultType': 'PullResponse',
             'httpUrlParams': {
                 'prettyPrint': prettyPrint,
                 'fields': fields,
@@ -148,7 +148,7 @@ class Subscriptions(Service):
         queryParams = {
             'url': 'https://www.googleapis.com/pubsub/v1beta1/subscriptions/{+subscription}',
             'method': 'GET',
-            'resultType': 'empty',
+            'resultType': 'Subscription',
             'httpUrlParams': {
                 'prettyPrint': prettyPrint,
                 'fields': fields,
@@ -169,7 +169,7 @@ class Subscriptions(Service):
         queryParams = {
             'url': 'https://www.googleapis.com/pubsub/v1beta1/subscriptions',
             'method': 'GET',
-            'resultType': 'empty',
+            'resultType': 'ListSubscriptionsResponse',
             'httpUrlParams': {
                 'prettyPrint': prettyPrint,
                 'fields': fields,
@@ -218,7 +218,7 @@ class Subscriptions(Service):
         queryParams = {
             'url': 'https://www.googleapis.com/pubsub/v1beta1/subscriptions/acknowledge',
             'method': 'POST',
-            'resultType': 'AcknowledgeRequest',
+            'resultType': 'empty',
             'httpUrlParams': {
                 'prettyPrint': prettyPrint,
                 'fields': fields,
@@ -240,7 +240,7 @@ class Subscriptions(Service):
         queryParams = {
             'url': 'https://www.googleapis.com/pubsub/v1beta1/subscriptions/modifyAckDeadline',
             'method': 'POST',
-            'resultType': 'ModifyAckDeadlineRequest',
+            'resultType': 'empty',
             'httpUrlParams': {
                 'prettyPrint': prettyPrint,
                 'fields': fields,
@@ -263,7 +263,7 @@ class Subscriptions(Service):
         queryParams = {
             'url': 'https://www.googleapis.com/pubsub/v1beta1/subscriptions/modifyPushConfig',
             'method': 'POST',
-            'resultType': 'ModifyPushConfigRequest',
+            'resultType': 'empty',
             'httpUrlParams': {
                 'prettyPrint': prettyPrint,
                 'fields': fields,

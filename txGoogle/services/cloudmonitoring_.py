@@ -10,7 +10,7 @@ class TimeseriesDescriptors(Service):
         queryParams = {
             'url': 'https://www.googleapis.com/cloudmonitoring/v2beta1/projects/{project}/timeseriesDescriptors/{metric}',
             'method': 'GET',
-            'resultType': 'ListTimeseriesDescriptorsRequest',
+            'resultType': 'ListTimeseriesDescriptorsResponse',
             'httpUrlParams': {
                 'prettyPrint': prettyPrint,
                 'fields': fields,
@@ -44,7 +44,7 @@ class Timeseries(Service):
         queryParams = {
             'url': 'https://www.googleapis.com/cloudmonitoring/v2beta1/projects/{project}/timeseries/{metric}',
             'method': 'GET',
-            'resultType': 'ListTimeseriesRequest',
+            'resultType': 'ListTimeseriesResponse',
             'httpUrlParams': {
                 'prettyPrint': prettyPrint,
                 'fields': fields,
@@ -78,7 +78,7 @@ class MetricDescriptors(Service):
         queryParams = {
             'url': 'https://www.googleapis.com/cloudmonitoring/v2beta1/projects/{project}/metricDescriptors',
             'method': 'GET',
-            'resultType': 'ListMetricDescriptorsRequest',
+            'resultType': 'ListMetricDescriptorsResponse',
             'httpUrlParams': {
                 'prettyPrint': prettyPrint,
                 'fields': fields,

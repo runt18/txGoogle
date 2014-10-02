@@ -10,7 +10,7 @@ class Attachments(Service):
         queryParams = {
             'url': 'https://www.googleapis.com/gmail/v1/users/{userId}/messages/{messageId}/attachments/{id}',
             'method': 'GET',
-            'resultType': 'empty',
+            'resultType': 'MessagePartBody',
             'httpUrlParams': {
                 'prettyPrint': prettyPrint,
                 'fields': fields,
@@ -80,7 +80,7 @@ class Messages(Service):
         queryParams = {
             'url': 'https://www.googleapis.com/gmail/v1/users/{userId}/messages/{id}/untrash',
             'method': 'POST',
-            'resultType': 'empty',
+            'resultType': 'Message',
             'httpUrlParams': {
                 'prettyPrint': prettyPrint,
                 'fields': fields,
@@ -102,7 +102,7 @@ class Messages(Service):
         queryParams = {
             'url': 'https://www.googleapis.com/gmail/v1/users/{userId}/messages/{id}',
             'method': 'GET',
-            'resultType': 'empty',
+            'resultType': 'Message',
             'httpUrlParams': {
                 'prettyPrint': prettyPrint,
                 'fields': fields,
@@ -126,7 +126,7 @@ class Messages(Service):
         queryParams = {
             'url': 'https://www.googleapis.com/gmail/v1/users/{userId}/messages',
             'method': 'GET',
-            'resultType': 'empty',
+            'resultType': 'ListMessagesResponse',
             'httpUrlParams': {
                 'prettyPrint': prettyPrint,
                 'fields': fields,
@@ -152,7 +152,7 @@ class Messages(Service):
         queryParams = {
             'url': 'https://www.googleapis.com/gmail/v1/users/{userId}/messages/{id}/modify',
             'method': 'POST',
-            'resultType': 'ModifyMessageRequest',
+            'resultType': 'Message',
             'httpUrlParams': {
                 'prettyPrint': prettyPrint,
                 'fields': fields,
@@ -257,7 +257,7 @@ class Messages(Service):
         queryParams = {
             'url': 'https://www.googleapis.com/gmail/v1/users/{userId}/messages/{id}/trash',
             'method': 'POST',
-            'resultType': 'empty',
+            'resultType': 'Message',
             'httpUrlParams': {
                 'prettyPrint': prettyPrint,
                 'fields': fields,
@@ -306,7 +306,7 @@ class Labels(Service):
         queryParams = {
             'url': 'https://www.googleapis.com/gmail/v1/users/{userId}/labels/{id}',
             'method': 'GET',
-            'resultType': 'empty',
+            'resultType': 'Label',
             'httpUrlParams': {
                 'prettyPrint': prettyPrint,
                 'fields': fields,
@@ -354,7 +354,7 @@ class Labels(Service):
         queryParams = {
             'url': 'https://www.googleapis.com/gmail/v1/users/{userId}/labels',
             'method': 'GET',
-            'resultType': 'empty',
+            'resultType': 'ListLabelsResponse',
             'httpUrlParams': {
                 'prettyPrint': prettyPrint,
                 'fields': fields,
@@ -456,7 +456,7 @@ class Threads(Service):
         queryParams = {
             'url': 'https://www.googleapis.com/gmail/v1/users/{userId}/threads/{id}/untrash',
             'method': 'POST',
-            'resultType': 'empty',
+            'resultType': 'Thread',
             'httpUrlParams': {
                 'prettyPrint': prettyPrint,
                 'fields': fields,
@@ -478,7 +478,7 @@ class Threads(Service):
         queryParams = {
             'url': 'https://www.googleapis.com/gmail/v1/users/{userId}/threads/{id}',
             'method': 'GET',
-            'resultType': 'empty',
+            'resultType': 'Thread',
             'httpUrlParams': {
                 'prettyPrint': prettyPrint,
                 'fields': fields,
@@ -500,7 +500,7 @@ class Threads(Service):
         queryParams = {
             'url': 'https://www.googleapis.com/gmail/v1/users/{userId}/threads',
             'method': 'GET',
-            'resultType': 'empty',
+            'resultType': 'ListThreadsResponse',
             'httpUrlParams': {
                 'prettyPrint': prettyPrint,
                 'fields': fields,
@@ -526,7 +526,7 @@ class Threads(Service):
         queryParams = {
             'url': 'https://www.googleapis.com/gmail/v1/users/{userId}/threads/{id}/modify',
             'method': 'POST',
-            'resultType': 'ModifyThreadRequest',
+            'resultType': 'Thread',
             'httpUrlParams': {
                 'prettyPrint': prettyPrint,
                 'fields': fields,
@@ -550,7 +550,7 @@ class Threads(Service):
         queryParams = {
             'url': 'https://www.googleapis.com/gmail/v1/users/{userId}/threads/{id}/trash',
             'method': 'POST',
-            'resultType': 'empty',
+            'resultType': 'Thread',
             'httpUrlParams': {
                 'prettyPrint': prettyPrint,
                 'fields': fields,
@@ -599,7 +599,7 @@ class Drafts(Service):
         queryParams = {
             'url': 'https://www.googleapis.com/gmail/v1/users/{userId}/drafts/{id}',
             'method': 'GET',
-            'resultType': 'empty',
+            'resultType': 'Draft',
             'httpUrlParams': {
                 'prettyPrint': prettyPrint,
                 'fields': fields,
@@ -665,7 +665,7 @@ class Drafts(Service):
         queryParams = {
             'url': 'https://www.googleapis.com/gmail/v1/users/{userId}/drafts',
             'method': 'GET',
-            'resultType': 'empty',
+            'resultType': 'ListDraftsResponse',
             'httpUrlParams': {
                 'prettyPrint': prettyPrint,
                 'fields': fields,
@@ -732,7 +732,7 @@ class Drafts(Service):
         queryParams = {
             'url': 'https://www.googleapis.com/gmail/v1/users/{userId}/drafts/send',
             'method': 'POST',
-            'resultType': 'Draft',
+            'resultType': 'Message',
             'httpUrlParams': {
                 'prettyPrint': prettyPrint,
                 'fields': fields,
@@ -802,7 +802,7 @@ class History(Service):
         queryParams = {
             'url': 'https://www.googleapis.com/gmail/v1/users/{userId}/history',
             'method': 'GET',
-            'resultType': 'empty',
+            'resultType': 'ListHistoryResponse',
             'httpUrlParams': {
                 'prettyPrint': prettyPrint,
                 'fields': fields,

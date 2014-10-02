@@ -44,7 +44,7 @@ class DefaultObjectAccessControls(Service):
         queryParams = {
             'url': 'https://www.googleapis.com/storage/v1/b/{bucket}/defaultObjectAcl/{entity}',
             'method': 'GET',
-            'resultType': 'empty',
+            'resultType': 'ObjectAccessControl',
             'httpUrlParams': {
                 'prettyPrint': prettyPrint,
                 'fields': fields,
@@ -66,7 +66,7 @@ class DefaultObjectAccessControls(Service):
         queryParams = {
             'url': 'https://www.googleapis.com/storage/v1/b/{bucket}/defaultObjectAcl',
             'method': 'GET',
-            'resultType': 'empty',
+            'resultType': 'ObjectAccessControls',
             'httpUrlParams': {
                 'prettyPrint': prettyPrint,
                 'fields': fields,
@@ -218,7 +218,7 @@ class BucketAccessControls(Service):
         queryParams = {
             'url': 'https://www.googleapis.com/storage/v1/b/{bucket}/acl/{entity}',
             'method': 'GET',
-            'resultType': 'empty',
+            'resultType': 'BucketAccessControl',
             'httpUrlParams': {
                 'prettyPrint': prettyPrint,
                 'fields': fields,
@@ -240,7 +240,7 @@ class BucketAccessControls(Service):
         queryParams = {
             'url': 'https://www.googleapis.com/storage/v1/b/{bucket}/acl',
             'method': 'GET',
-            'resultType': 'empty',
+            'resultType': 'BucketAccessControls',
             'httpUrlParams': {
                 'prettyPrint': prettyPrint,
                 'fields': fields,
@@ -354,7 +354,7 @@ class Channels(Service):
         queryParams = {
             'url': 'https://www.googleapis.com/storage/v1/channels/stop',
             'method': 'POST',
-            'resultType': 'Channel',
+            'resultType': 'empty',
             'httpUrlParams': {
                 'prettyPrint': prettyPrint,
                 'fields': fields,
@@ -479,7 +479,7 @@ class Objects(Service):
         queryParams = {
             'url': 'https://www.googleapis.com/storage/v1/b/{destinationBucket}/o/{destinationObject}/compose',
             'method': 'POST',
-            'resultType': 'ComposeRequest',
+            'resultType': 'Object',
             'httpUrlParams': {
                 'prettyPrint': prettyPrint,
                 'fields': fields,
@@ -532,7 +532,7 @@ class Objects(Service):
         queryParams = {
             'url': 'https://www.googleapis.com/storage/v1/b/{bucket}/o/{object}',
             'method': 'GET',
-            'resultType': 'empty',
+            'resultType': 'Object',
             'httpUrlParams': {
                 'prettyPrint': prettyPrint,
                 'fields': fields,
@@ -560,7 +560,7 @@ class Objects(Service):
         queryParams = {
             'url': 'https://www.googleapis.com/storage/v1/b/{bucket}/o',
             'method': 'GET',
-            'resultType': 'empty',
+            'resultType': 'Objects',
             'httpUrlParams': {
                 'prettyPrint': prettyPrint,
                 'fields': fields,
@@ -820,7 +820,7 @@ class ObjectAccessControls(Service):
         queryParams = {
             'url': 'https://www.googleapis.com/storage/v1/b/{bucket}/o/{object}/acl/{entity}',
             'method': 'GET',
-            'resultType': 'empty',
+            'resultType': 'ObjectAccessControl',
             'httpUrlParams': {
                 'prettyPrint': prettyPrint,
                 'fields': fields,
@@ -844,7 +844,7 @@ class ObjectAccessControls(Service):
         queryParams = {
             'url': 'https://www.googleapis.com/storage/v1/b/{bucket}/o/{object}/acl',
             'method': 'GET',
-            'resultType': 'empty',
+            'resultType': 'ObjectAccessControls',
             'httpUrlParams': {
                 'prettyPrint': prettyPrint,
                 'fields': fields,
@@ -1011,7 +1011,7 @@ class Buckets(Service):
         queryParams = {
             'url': 'https://www.googleapis.com/storage/v1/b/{bucket}',
             'method': 'GET',
-            'resultType': 'empty',
+            'resultType': 'Bucket',
             'httpUrlParams': {
                 'prettyPrint': prettyPrint,
                 'fields': fields,
@@ -1035,7 +1035,7 @@ class Buckets(Service):
         queryParams = {
             'url': 'https://www.googleapis.com/storage/v1/b',
             'method': 'GET',
-            'resultType': 'empty',
+            'resultType': 'Buckets',
             'httpUrlParams': {
                 'prettyPrint': prettyPrint,
                 'fields': fields,

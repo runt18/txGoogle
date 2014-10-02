@@ -5,6 +5,7 @@ Created on 22 aug. 2014
 '''
 import simplejson as json
 from twisted.internet.defer import Deferred
+from twisted.python import log
 
 
 class ResponseHandler(object):
@@ -13,6 +14,7 @@ class ResponseHandler(object):
         self._resultType = resultType
         self._connection = connection
         self._dfd = Deferred()
+        self._ebAdded = False
 
     @property
     def dfd(self):
@@ -21,10 +23,32 @@ class ResponseHandler(object):
     def onFailed(self, faillure, requestObj):
         self._dfd.errback(faillure)
 
+    def _logErr(self, fail):
+        log.err()
+        raise fail
+    
+    def _hasErrback(self):
+        if self._ebAdded:
+            return True
+        if len(self._dfd.callbacks) == 0:
+            return False
+        return self._dfd.callbacks[0][1][0].__name__ != 'passthru'
+
+    def _checkForExistingEbs(self):
+        if not self._hasErrback():
+            self._dfd.addErrback(self._logErr)
+            self._ebAdded = True
+
     def onResponse(self, response, requestObj):
+        self._checkForExistingEbs()
         if response.contentType == 'json':
             try:
                 self.handleLoaded(self.loadJson(response), requestObj)
+            except Exception as ex:
+                self._dfd.errback(Exception(str(ex) + '\n' + response.msg))
+        elif response.contentType == 'csv':
+            try:
+                self.handleLoaded(self.loadCsv(response), requestObj)
             except Exception as ex:
                 self._dfd.errback(Exception(str(ex) + '\n' + response.msg))
         else:
@@ -39,3 +63,7 @@ class ResponseHandler(object):
         else:
             encoding = None
         return json.loads(response.msg, encoding=encoding)
+
+    def loadCsv(self, response):
+        return [[cell for cell in line.split(',')] for line in response.msg.split('\n')]
+        # return [cell for line in response.msg.split('\n') for cell in line.split(',')]

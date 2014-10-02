@@ -64,7 +64,7 @@ class TablesWrapper(Tables):
         return dfd
 
     def _extractTableIds(self, result):
-        return [table['tableReference']['tableId'] for table in result.get('tables', [])]
+        return [table['tableReference']['tableId'] for table in result]
 
     def getIds(self, projectId, datasetId):
         dfd = self.list(projectId=projectId, datasetId=datasetId)
@@ -149,7 +149,7 @@ if __name__ == '__main__':
     dfd.addCallback(printCb)
     dfd.addErrback(printCb)
     dfd.addCallback(abq.tables.delete, projectId, 'removeMeTable', 'cust_23eb8fd09fbc')'''
-    dfd = abq.tables.delete(projectId, 'removeMeTable', 'cust_23eb8fd09fbc')
+    dfd = abq.tabledata.list(projectId, 'perf_201410_005056ad452d', 'cust_711f9f25ed85', alt='csv', maxResults=10)
     dfd.addCallback(printCb)
     dfd.addErrback(printCb)
     reactor.run()
