@@ -51,6 +51,8 @@ class SharedConnection(object):
                             req._dfd.errback(TimeoutError())
                     except:
                         log.err()
+                else:
+                    break # no use continueing because items are appended
             reactor.callLater(self.REQUEST_RESEND_CHECK_INTERVAL, self.request, requestObj, responseHandler)
         return responseHandler.dfd
 

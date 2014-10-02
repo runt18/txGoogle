@@ -117,6 +117,7 @@ class BigQueryWrapper(Bigquery):
 
 if __name__ == '__main__':
     from txGoogle.sharedConnection import SharedConnection
+    from generic.twistedUtils import printCb
     from twisted.internet import reactor
     conn = SharedConnection('785509043543.apps.googleusercontent.com', 'Mhx2IjJLk78U9VyErHHIVbnw', 'apiFiles/asyncBqCredentials.json')
     abq = BigQueryWrapper(conn)
@@ -133,36 +134,22 @@ if __name__ == '__main__':
         tableId = 'log_201407'
 
     # queryStr = "SELECT probeName, checkName, type, itemName, propertyName, value, timestamp\n        FROM TABLE_QUERY(cust_23eb8fd09fbc, 'table_id CONTAINS \"perf_\" AND table_id CONTAINS \"_1e0895f63693\" AND INTEGER(SUBSTR(table_id, 6, 6)) >= 201408 AND INTEGER(SUBSTR(table_id, 6, 6)) <= 201408')\n        WHERE timestamp > 1407315364000000\n        AND timestamp < 1408006564000000\n        ORDER BY probeName, checkName, type, itemName, propertyName, timestamp"
-    queryStr = "SELECT * FROM TABLE_QUERY(cust_23eb8fd09fbc, 'table_id CONTAINS \"log_\" AND INTEGER(SUBSTR(table_id, 5, 6)) >= 201308 AND INTEGER(SUBSTR(table_id, 5, 6)) <= 201408') WHERE (LogType = 8)"
-    dfds = []
-    #dfds.append(aBq.getJob(projectId, 'job_VJo4zEhFOUNZ5lmPGonPcOp1OJE'))
-    dfds.append(abq.jobs.query(projectId=projectId, query=queryStr))
-    #dfds.append(aBq.query(projectId, datasetId, queryStr))
-    #dfds.append(aBq.getTableData(projectId, datasetId, tableId))
-    # dfds.append(aBq.getTables(projectId, datasetId))
-    #dfds.append(aBq.getTable(projectId, datasetId, tableId))
-    #dfds.append(aBq.getTables(projectId, datasetId))
-    # dfds.append(aBq.createTable(projectId, datasetId, tableId, fields, expirationMiliTs, friendlyName, description))
+    # queryStr = "SELECT * FROM TABLE_QUERY(cust_23eb8fd09fbc, 'table_id CONTAINS \"log_\" AND INTEGER(SUBSTR(table_id, 5, 6)) >= 201308 AND INTEGER(SUBSTR(table_id, 5, 6)) <= 201408') WHERE (LogType = 8)"
 
-    # dfds.append(aBq.copyTable(projectId, datasetId, tableId, projectId, datasetId, tableId + '_2'))
-    # dfds.append(aBq.deleteTable(projectId, datasetId, tableId + '_2'))
-    # dfds.append(aBq.renameTable(projectId, datasetId, tableId + '_2', tableId))
-
-    #dfds.append(aBq.createTable(projectId, datasetId, tableId, {}))
-    # records = [{'fieldname': str(a)} for a in xrange(1000)]
-    #dfds.append(aBq.streamingInsertParallel(projectId, datasetId, tableId, records))
-    #dfds += aBq.streamingInsertSequential(projectId, datasetId, tableId, records)
-    '''from generic.osgoogle.asyncUtils import mapFunToItems
-    from twisted.internet.defer import succeed
-
-    def renameFun(tableId, projectId, datasetId):
-        if 'perf_' not in tableId:
-            return succeed('Skipped')
-        splitted = tableId.split('_')
-        newtableId = '_'.join([splitted[0], splitted[2], splitted[1]])
-        return aBq.renameTable(projectId, datasetId, tableId, newtableId)
-    dfdGetTables = aBq.getTableIds(projectId, datasetId)
-    dfdGetTables.addCallback(mapFunToItems, renameFun, projectId, datasetId)
-    dfds.append(dfdGetTables)'''
-    addPrintCbs(dfds)
+    '''dfd = abq.tables.insert(projectId, 'cust_23eb8fd09fbc', 'removeMeTable', schema_fields=[
+        {"name":"HostUuid", "type":"STRING"},
+        {"name":"ProbeName", "type":"STRING"},
+        {"name":"CheckName", "type":"STRING"},
+        {"name":"Type", "type":"STRING"},
+        {"name":"ItemName", "type":"STRING"},
+        {"name":"PropertyName", "type":"STRING"},
+        {"name":"Value", "type":"FLOAT"},
+        {"name":"TimeStamp", "type":"TIMESTAMP"}
+    ])
+    dfd.addCallback(printCb)
+    dfd.addErrback(printCb)
+    dfd.addCallback(abq.tables.delete, projectId, 'removeMeTable', 'cust_23eb8fd09fbc')'''
+    dfd = abq.tables.delete(projectId, 'removeMeTable', 'cust_23eb8fd09fbc')
+    dfd.addCallback(printCb)
+    dfd.addErrback(printCb)
     reactor.run()

@@ -65,7 +65,7 @@ class AsyncHttp(object):
 
     def _handleResponse(self, response, requestObj):
         if response.code == 204:
-            return succeed(None)
+            return succeed(Response(None, None, None))
         else:
             dfdResponse = Deferred()
             headers = dict(response.headers.getAllRawHeaders())
