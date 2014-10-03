@@ -14,6 +14,7 @@ import time
 from txGoogle.utils import simpleDeepCopy
 from twisted.python import log
 import logging
+from string import Formatter
 
 
 class StringProducer(object):
@@ -54,6 +55,9 @@ class Request(object):
             httpHeaders = {}
         self._url = url.format(**httpUrlParams)
         self._urlParams = httpUrlParams
+        for tup in Formatter().parse(url):
+            if len(tup) > 0 and tup[1] is not None:
+                del self._urlParams[tup[1]]
         self._bodyParams = httpBodyParams
         self._headers = httpHeaders
         self._method = method

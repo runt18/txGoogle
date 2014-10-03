@@ -1,4 +1,5 @@
 from txGoogle.service import Service
+from urllib import quote as urlibQuoteEncode
 
 
 class Attachments(Service):
@@ -19,9 +20,9 @@ class Attachments(Service):
                 'key': key,
                 'userIp': userIp,
                 'alt': alt,
-                'userId': userId,
-                'id': id,
-                'messageId': messageId,
+                'userId': urlibQuoteEncode(userId, safe=''),
+                'id': urlibQuoteEncode(id, safe=''),
+                'messageId': urlibQuoteEncode(messageId, safe=''),
             },
             'httpBodyParams': {
             },
@@ -49,7 +50,7 @@ class Messages(Service):
                 'userIp': userIp,
                 'alt': alt,
                 'internalDateSource': internalDateSource,
-                'userId': userId,
+                'userId': urlibQuoteEncode(userId, safe=''),
             },
             'httpBodyParams': {
                 'historyId': historyId,
@@ -89,8 +90,8 @@ class Messages(Service):
                 'key': key,
                 'userIp': userIp,
                 'alt': alt,
-                'userId': userId,
-                'id': id,
+                'userId': urlibQuoteEncode(userId, safe=''),
+                'id': urlibQuoteEncode(id, safe=''),
             },
             'httpBodyParams': {
             },
@@ -112,8 +113,8 @@ class Messages(Service):
                 'userIp': userIp,
                 'alt': alt,
                 'metadataHeaders': metadataHeaders,
-                'userId': userId,
-                'id': id,
+                'userId': urlibQuoteEncode(userId, safe=''),
+                'id': urlibQuoteEncode(id, safe=''),
                 'format': format,
             },
             'httpBodyParams': {
@@ -135,7 +136,7 @@ class Messages(Service):
                 'key': key,
                 'userIp': userIp,
                 'alt': alt,
-                'userId': userId,
+                'userId': urlibQuoteEncode(userId, safe=''),
                 'maxResults': maxResults,
                 'q': q,
                 'pageToken': pageToken,
@@ -161,8 +162,8 @@ class Messages(Service):
                 'key': key,
                 'userIp': userIp,
                 'alt': alt,
-                'userId': userId,
-                'id': id,
+                'userId': urlibQuoteEncode(userId, safe=''),
+                'id': urlibQuoteEncode(id, safe=''),
             },
             'httpBodyParams': {
                 'removeLabelIds': removeLabelIds,
@@ -185,7 +186,7 @@ class Messages(Service):
                 'key': key,
                 'userIp': userIp,
                 'alt': alt,
-                'userId': userId,
+                'userId': urlibQuoteEncode(userId, safe=''),
             },
             'httpBodyParams': {
                 'historyId': historyId,
@@ -226,7 +227,7 @@ class Messages(Service):
                 'userIp': userIp,
                 'alt': alt,
                 'internalDateSource': internalDateSource,
-                'userId': userId,
+                'userId': urlibQuoteEncode(userId, safe=''),
             },
             'httpBodyParams': {
                 'historyId': historyId,
@@ -266,8 +267,8 @@ class Messages(Service):
                 'key': key,
                 'userIp': userIp,
                 'alt': alt,
-                'userId': userId,
-                'id': id,
+                'userId': urlibQuoteEncode(userId, safe=''),
+                'id': urlibQuoteEncode(id, safe=''),
             },
             'httpBodyParams': {
             },
@@ -288,8 +289,8 @@ class Messages(Service):
                 'key': key,
                 'userIp': userIp,
                 'alt': alt,
-                'userId': userId,
-                'id': id,
+                'userId': urlibQuoteEncode(userId, safe=''),
+                'id': urlibQuoteEncode(id, safe=''),
             },
             'httpBodyParams': {
             },
@@ -315,8 +316,8 @@ class Labels(Service):
                 'key': key,
                 'userIp': userIp,
                 'alt': alt,
-                'userId': userId,
-                'id': id,
+                'userId': urlibQuoteEncode(userId, safe=''),
+                'id': urlibQuoteEncode(id, safe=''),
             },
             'httpBodyParams': {
             },
@@ -337,7 +338,7 @@ class Labels(Service):
                 'key': key,
                 'userIp': userIp,
                 'alt': alt,
-                'userId': userId,
+                'userId': urlibQuoteEncode(userId, safe=''),
             },
             'httpBodyParams': {
                 'type': type,
@@ -363,7 +364,7 @@ class Labels(Service):
                 'key': key,
                 'userIp': userIp,
                 'alt': alt,
-                'userId': userId,
+                'userId': urlibQuoteEncode(userId, safe=''),
             },
             'httpBodyParams': {
             },
@@ -384,8 +385,8 @@ class Labels(Service):
                 'key': key,
                 'userIp': userIp,
                 'alt': alt,
-                'userId': userId,
-                'id': id,
+                'userId': urlibQuoteEncode(userId, safe=''),
+                'id': urlibQuoteEncode(id, safe=''),
             },
             'httpBodyParams': {
                 'type': type,
@@ -411,8 +412,8 @@ class Labels(Service):
                 'key': key,
                 'userIp': userIp,
                 'alt': alt,
-                'userId': userId,
-                'id': id,
+                'userId': urlibQuoteEncode(userId, safe=''),
+                'id': urlibQuoteEncode(id, safe=''),
             },
             'httpBodyParams': {
                 'type': type,
@@ -438,8 +439,8 @@ class Labels(Service):
                 'key': key,
                 'userIp': userIp,
                 'alt': alt,
-                'userId': userId,
-                'id': id,
+                'userId': urlibQuoteEncode(userId, safe=''),
+                'id': urlibQuoteEncode(id, safe=''),
             },
             'httpBodyParams': {
             },
@@ -465,8 +466,8 @@ class Threads(Service):
                 'key': key,
                 'userIp': userIp,
                 'alt': alt,
-                'userId': userId,
-                'id': id,
+                'userId': urlibQuoteEncode(userId, safe=''),
+                'id': urlibQuoteEncode(id, safe=''),
             },
             'httpBodyParams': {
             },
@@ -487,8 +488,8 @@ class Threads(Service):
                 'key': key,
                 'userIp': userIp,
                 'alt': alt,
-                'userId': userId,
-                'id': id,
+                'userId': urlibQuoteEncode(userId, safe=''),
+                'id': urlibQuoteEncode(id, safe=''),
             },
             'httpBodyParams': {
             },
@@ -509,7 +510,7 @@ class Threads(Service):
                 'key': key,
                 'userIp': userIp,
                 'alt': alt,
-                'userId': userId,
+                'userId': urlibQuoteEncode(userId, safe=''),
                 'maxResults': maxResults,
                 'q': q,
                 'pageToken': pageToken,
@@ -535,8 +536,8 @@ class Threads(Service):
                 'key': key,
                 'userIp': userIp,
                 'alt': alt,
-                'userId': userId,
-                'id': id,
+                'userId': urlibQuoteEncode(userId, safe=''),
+                'id': urlibQuoteEncode(id, safe=''),
             },
             'httpBodyParams': {
                 'removeLabelIds': removeLabelIds,
@@ -559,8 +560,8 @@ class Threads(Service):
                 'key': key,
                 'userIp': userIp,
                 'alt': alt,
-                'userId': userId,
-                'id': id,
+                'userId': urlibQuoteEncode(userId, safe=''),
+                'id': urlibQuoteEncode(id, safe=''),
             },
             'httpBodyParams': {
             },
@@ -581,8 +582,8 @@ class Threads(Service):
                 'key': key,
                 'userIp': userIp,
                 'alt': alt,
-                'userId': userId,
-                'id': id,
+                'userId': urlibQuoteEncode(userId, safe=''),
+                'id': urlibQuoteEncode(id, safe=''),
             },
             'httpBodyParams': {
             },
@@ -608,8 +609,8 @@ class Drafts(Service):
                 'key': key,
                 'userIp': userIp,
                 'alt': alt,
-                'userId': userId,
-                'id': id,
+                'userId': urlibQuoteEncode(userId, safe=''),
+                'id': urlibQuoteEncode(id, safe=''),
                 'format': format,
             },
             'httpBodyParams': {
@@ -631,7 +632,7 @@ class Drafts(Service):
                 'key': key,
                 'userIp': userIp,
                 'alt': alt,
-                'userId': userId,
+                'userId': urlibQuoteEncode(userId, safe=''),
             },
             'httpBodyParams': {
                 'message': {
@@ -675,7 +676,7 @@ class Drafts(Service):
                 'userIp': userIp,
                 'alt': alt,
                 'pageToken': pageToken,
-                'userId': userId,
+                'userId': urlibQuoteEncode(userId, safe=''),
                 'maxResults': maxResults,
             },
             'httpBodyParams': {
@@ -697,8 +698,8 @@ class Drafts(Service):
                 'key': key,
                 'userIp': userIp,
                 'alt': alt,
-                'userId': userId,
-                'id': id,
+                'userId': urlibQuoteEncode(userId, safe=''),
+                'id': urlibQuoteEncode(id, safe=''),
             },
             'httpBodyParams': {
                 'message': {
@@ -741,7 +742,7 @@ class Drafts(Service):
                 'key': key,
                 'userIp': userIp,
                 'alt': alt,
-                'userId': userId,
+                'userId': urlibQuoteEncode(userId, safe=''),
             },
             'httpBodyParams': {
                 'message': {
@@ -784,8 +785,8 @@ class Drafts(Service):
                 'key': key,
                 'userIp': userIp,
                 'alt': alt,
-                'userId': userId,
-                'id': id,
+                'userId': urlibQuoteEncode(userId, safe=''),
+                'id': urlibQuoteEncode(id, safe=''),
             },
             'httpBodyParams': {
             },
@@ -812,7 +813,7 @@ class History(Service):
                 'userIp': userIp,
                 'alt': alt,
                 'pageToken': pageToken,
-                'userId': userId,
+                'userId': urlibQuoteEncode(userId, safe=''),
                 'labelId': labelId,
                 'maxResults': maxResults,
                 'startHistoryId': startHistoryId,

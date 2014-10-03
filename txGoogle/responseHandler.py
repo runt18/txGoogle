@@ -26,7 +26,7 @@ class ResponseHandler(object):
     def _logErr(self, fail):
         log.err()
         raise fail
-    
+
     def _hasErrback(self):
         if self._ebAdded:
             return True

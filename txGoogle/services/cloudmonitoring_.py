@@ -1,4 +1,5 @@
 from txGoogle.service import Service
+from urllib import quote as urlibQuoteEncode
 
 
 class TimeseriesDescriptors(Service):
@@ -20,9 +21,9 @@ class TimeseriesDescriptors(Service):
                 'userIp': userIp,
                 'alt': alt,
                 'count': count,
-                'project': project,
+                'project': urlibQuoteEncode(project, safe=''),
                 'timespan': timespan,
-                'metric': metric,
+                'metric': urlibQuoteEncode(metric, safe=''),
                 'labels': labels,
                 'youngest': youngest,
                 'pageToken': pageToken,
@@ -54,9 +55,9 @@ class Timeseries(Service):
                 'userIp': userIp,
                 'alt': alt,
                 'count': count,
-                'project': project,
+                'project': urlibQuoteEncode(project, safe=''),
                 'timespan': timespan,
-                'metric': metric,
+                'metric': urlibQuoteEncode(metric, safe=''),
                 'labels': labels,
                 'youngest': youngest,
                 'pageToken': pageToken,
@@ -89,7 +90,7 @@ class MetricDescriptors(Service):
                 'alt': alt,
                 'count': count,
                 'pageToken': pageToken,
-                'project': project,
+                'project': urlibQuoteEncode(project, safe=''),
                 'query': query,
             },
             'httpBodyParams': {

@@ -18,13 +18,12 @@ from txGoogle.response import Response
 
 class ResponseReceiver(Protocol):
 
-
     def _getCharset(self, contentType):
-        idx = contentType.index('charset=')
-        if idx >= 0:
-            self.charset = contentType[idx + 8:]
-        else:
-            self.charset = ''
+        self.charset = ''
+        if 'charset=' in contentType:
+            idx = contentType.index('charset=')
+            if idx >= 0:
+                self.charset = contentType[idx + 8:]
 
     def __init__(self, dfd, responseHeaders):
         self.strIoBuff = StringIO()
@@ -35,12 +34,13 @@ class ResponseReceiver(Protocol):
             contentType = responseHeaders['Content-Type'][0]
             if contentType.startswith('application/json'):
                 self.contentType = 'json'
-                self._getCharset(contentType)
             elif contentType.startswith('text/csv'):
                 self.contentType = 'csv'
-                self._getCharset(contentType)
+            elif contentType.startswith('text/html'):
+                self.contentType = 'html'
             else:
                 self.contentType = contentType
+            self._getCharset(contentType)
         if 'Content-Encoding' in responseHeaders:
             self.contentEncoding = responseHeaders['Content-Encoding'][0]
 

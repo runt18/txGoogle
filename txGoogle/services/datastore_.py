@@ -1,4 +1,5 @@
 from txGoogle.service import Service
+from urllib import quote as urlibQuoteEncode
 
 
 class Datasets(Service):
@@ -19,7 +20,7 @@ class Datasets(Service):
                 'key': key,
                 'userIp': userIp,
                 'alt': alt,
-                'datasetId': datasetId,
+                'datasetId': urlibQuoteEncode(datasetId, safe=''),
             },
             'httpBodyParams': {
                 'keys': keys,
@@ -41,7 +42,7 @@ class Datasets(Service):
                 'key': key,
                 'userIp': userIp,
                 'alt': alt,
-                'datasetId': datasetId,
+                'datasetId': urlibQuoteEncode(datasetId, safe=''),
             },
             'httpBodyParams': {
                 'transaction': transaction,
@@ -63,7 +64,7 @@ class Datasets(Service):
                 'key': key,
                 'userIp': userIp,
                 'alt': alt,
-                'datasetId': datasetId,
+                'datasetId': urlibQuoteEncode(datasetId, safe=''),
             },
             'httpBodyParams': {
                 'isolationLevel': isolationLevel,
@@ -85,7 +86,7 @@ class Datasets(Service):
                 'key': key,
                 'userIp': userIp,
                 'alt': alt,
-                'datasetId': datasetId,
+                'datasetId': urlibQuoteEncode(datasetId, safe=''),
             },
             'httpBodyParams': {
                 'keys': keys,
@@ -111,7 +112,7 @@ class Datasets(Service):
                 'key': key,
                 'userIp': userIp,
                 'alt': alt,
-                'datasetId': datasetId,
+                'datasetId': urlibQuoteEncode(datasetId, safe=''),
             },
             'httpBodyParams': {
                 'ignoreReadOnly': ignoreReadOnly,
@@ -143,7 +144,7 @@ class Datasets(Service):
                 'key': key,
                 'userIp': userIp,
                 'alt': alt,
-                'datasetId': datasetId,
+                'datasetId': urlibQuoteEncode(datasetId, safe=''),
             },
             'httpBodyParams': {
                 'query': {

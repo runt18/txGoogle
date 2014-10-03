@@ -1,4 +1,5 @@
 from txGoogle.service import Service
+from urllib import quote as urlibQuoteEncode
 
 
 class Topics(Service):
@@ -40,7 +41,7 @@ class Topics(Service):
                 'key': key,
                 'userIp': userIp,
                 'alt': alt,
-                'topic': topic,
+                'topic': urlibQuoteEncode(topic, safe=''),
             },
             'httpBodyParams': {
             },
@@ -109,7 +110,7 @@ class Topics(Service):
                 'key': key,
                 'userIp': userIp,
                 'alt': alt,
-                'topic': topic,
+                'topic': urlibQuoteEncode(topic, safe=''),
             },
             'httpBodyParams': {
             },
@@ -157,7 +158,7 @@ class Subscriptions(Service):
                 'key': key,
                 'userIp': userIp,
                 'alt': alt,
-                'subscription': subscription,
+                'subscription': urlibQuoteEncode(subscription, safe=''),
             },
             'httpBodyParams': {
             },
@@ -296,7 +297,7 @@ class Subscriptions(Service):
                 'key': key,
                 'userIp': userIp,
                 'alt': alt,
-                'subscription': subscription,
+                'subscription': urlibQuoteEncode(subscription, safe=''),
             },
             'httpBodyParams': {
             },

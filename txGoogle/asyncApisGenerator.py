@@ -1,8 +1,9 @@
-from collections import defaultdict
+from collections import defaultdict, OrderedDict
 import json
 import os
 import jinja2
 from txGoogle.duplicateParams import duplicateDict
+import collections
 
 CURRENT_DIR = os.path.dirname(__file__)
 templatesDir = os.path.join(CURRENT_DIR, 'templates')
@@ -24,11 +25,21 @@ def capitalizeFirstChar(inp):
         return inp
 
 
+def getDuplicates(lst):
+    return [x for x, y in collections.Counter(lst).items() if y > 1]
+
+
 def generatePyCode(apiName, apiDict):
 
-    def generateMethodCode(methodName, method):
+    def generateMethodCode(resourceName, methodName, method):
+
+        def getFullMethodName():
+            return '{}.{}.{}'.format(apiName, resourceName, methodName)
+
         if methodName == 'import':
             methodName = 'import_'
+
+        paramsToEncode = [k for k, v in method.get('parameters', {}).iteritems() if 'location' in v and v['location'] == 'path']
 
         rParams = [k for k, v in method.get('parameters', {}).iteritems() if 'required' in v]
         oParams = apiDict.get('parameters', {}).keys() + [k for k, v in method.get('parameters', {}).iteritems() if not 'required' in v]
@@ -43,8 +54,8 @@ def generatePyCode(apiName, apiDict):
                     paramKey = '{}:{}:{}'.format(apiDict['id'], method['id'], newKey)
                     key = duplicateDict.get(paramKey, key)
                     if (key in rParams or key in oParams) and not paramKey in duplicateDict:
-                        pass#raise Exception('Duplicate key {} found. Try adding\n"{}": <NEW_KEY_ALIAS>,\nto duplicateParams.py'.format(key, paramKey))
-                     
+                        pass  #raise Exception('Duplicate key {} found. Try adding\n"{}": <NEW_KEY_ALIAS>,\nto duplicateParams.py'.format(key, paramKey))
+
                     description = v.get('description', '')
                     isRequired = 'Required' in description
                     if 'Output-only' in description:
@@ -57,22 +68,29 @@ def generatePyCode(apiName, apiDict):
                             rParams.append(key)
                         else:
                             oParams.append(key)
-                
+
                 return bodyParams, rParams, oParams
 
             schema = apiDict['schemas'][method['request']['$ref']]
             bodyParams, rParams, oParams = schemaFun(schema, rParams, oParams)
-            
+
             rParamsSet = []
             for itm in rParams:
                 if not itm in rParamsSet:
                     rParamsSet.append(itm)
             rParams = rParamsSet
-            for key in oParams:
+
+            rParams = list(OrderedDict.fromkeys(rParams))
+            oParams = list(OrderedDict.fromkeys(oParams))
+
+            for key in list(oParams):
                 if key in rParams:
-                    oParams.pop(key)
-            
-            
+                    oParams.remove(key)
+            allParams = oParams + rParams
+            duplicates = getDuplicates(allParams)
+            if duplicates:
+                raise Exception('Duplicate params detected in {}: {}'.format(getFullMethodName(), ','.join(duplicates)))
+
         else:
             bodyParams = {}
 
@@ -81,7 +99,8 @@ def generatePyCode(apiName, apiDict):
                                                    methodDict=method,
                                                    bodyParams=bodyParams,
                                                    rParams=rParams,
-                                                   oParams=oParams)
+                                                   oParams=oParams,
+                                                   paramsToEncode=paramsToEncode)
         return methodLines
 
     def generateResourceCode(resourceName, resource, scopes=None, existingResources=None):
@@ -98,7 +117,7 @@ def generatePyCode(apiName, apiDict):
 
         methodsDict = defaultdict(dict)
         for methodName, methodDict in resource.get('methods', {}).iteritems():
-            methodsDict[methodName] = generateMethodCode(methodName, methodDict)
+            methodsDict[methodName] = generateMethodCode(resourceName, methodName, methodDict)
 
         if scopes:
             resourceLines = render('service.py', resourceName=resourceName,
@@ -112,7 +131,7 @@ def generatePyCode(apiName, apiDict):
         functionCode += resourceLines
         return functionCode
 
-    functionCode = 'from txGoogle.service import Service\n'
+    functionCode = 'from txGoogle.service import Service\nfrom urllib import quote as urlibQuoteEncode\n'
     if 'auth' in apiDict:
         scopes = apiDict['auth']['oauth2']['scopes'].keys()
     else:
@@ -128,7 +147,7 @@ def generateCode(apiNames):
             print 'Api description file ({}) does not exist. Try downloading it with discovery service wrapper'.format(apiFilename)
         else:
             apiDict = json.load(open(apiFilename))
-                
+
             code, tests = generatePyCode(apiName, apiDict)
             open('services/{}.py'.format(apiName + '_'), 'wb').write(code)
     #open('AsyncApis.py'.format(apiName), 'a').write(tests)
