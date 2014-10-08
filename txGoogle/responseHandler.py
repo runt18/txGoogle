@@ -65,5 +65,5 @@ class ResponseHandler(object):
         return json.loads(response.msg, encoding=encoding)
 
     def loadCsv(self, response):
-        return [[cell for cell in line.split(',')] for line in response.msg.split('\n')]
+        return [[cell for cell in line.split(',')] for line in response.msg.split('\n')[:-1]]
         # return [cell for line in response.msg.split('\n') for cell in line.split(',')]
