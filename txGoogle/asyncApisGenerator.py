@@ -158,6 +158,6 @@ if __name__ == '__main__':
     # dfds = [aApis.bigquery.tables.list('over-sight', 'testdataset', fields='tables')]
     # reactor.run()
 
-    generateCode(['bigquery', 'cloudmonitoring', 'datastore', 'gmail', 'pubsub', 'storage'])
+    generateCode(['bigquery', 'cloudmonitoring', 'datastore', 'gmail', 'pubsub', 'storage', 'prediction'])
     #Popen('python generated.py').communicate()
     pass
