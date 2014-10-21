@@ -4,10 +4,9 @@ Created on 15 okt. 2014
 @author: Sjuul
 '''
 import datetime
-from txGoogle.timeUtils import datetimeToTimestamp
+from txGoogle.timeUtils import datetimeToTimestamp, timestampToDateTime
 from txGoogle.wrappers.gcdKeyNdbKey import urlSafeFromPairs, getPairsFromUrlSafe
 import base64
-from generic.timeUtils import timestampToDateTime
 from txGoogle.asyncUtils import hasListItems
 from twisted.python import log
 
