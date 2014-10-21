@@ -1,10 +1,11 @@
 from txGoogle.service import Service
 from urllib import quote as urlibQuoteEncode
+from txGoogle.resource import Resource
 
 
-class Trainedmodels(Service):
-    def __init__(self, conn, *args, **kwargs):
-        super(Trainedmodels, self).__init__(conn, *args, **kwargs)
+class Trainedmodels(Resource):
+    def __init__(self, service, conn, *args, **kwargs):
+        super(Trainedmodels, self).__init__(service, conn, *args, **kwargs)
 
     def insert(self, project, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, storageDataLocation=None, modelType=None, storagePMMLModelLocation=None, sourceModel=None, storagePMMLLocation=None, trainingInstances=None, id=None, utility=None):
         '''Train a Prediction API model.'''
@@ -172,9 +173,9 @@ class Trainedmodels(Service):
         return self._request(queryParams)
 
 
-class Hostedmodels(Service):
-    def __init__(self, conn, *args, **kwargs):
-        super(Hostedmodels, self).__init__(conn, *args, **kwargs)
+class Hostedmodels(Resource):
+    def __init__(self, service, conn, *args, **kwargs):
+        super(Hostedmodels, self).__init__(service, conn, *args, **kwargs)
 
     def predict(self, project, hostedModelName, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, input=None):
         '''Submit input and request an output against a hosted model.'''
@@ -211,5 +212,5 @@ class Prediction(Service):
             self._scopes = self._DEFAULT_SCOPES
         conn.registerScopes(self._scopes)
         super(Prediction, self).__init__(conn, *args, **kwargs)
-        self.trainedmodels = Trainedmodels(conn, *args, **kwargs)
-        self.hostedmodels = Hostedmodels(conn, *args, **kwargs)
+        self.trainedmodels = Trainedmodels(self, conn, *args, **kwargs)
+        self.hostedmodels = Hostedmodels(self, conn, *args, **kwargs)
