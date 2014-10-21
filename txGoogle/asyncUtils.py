@@ -115,12 +115,26 @@ def cacheDfdWhileRunning(fun):
 
     return wrapper
 
+
 def loggedException(function):
     def wrapper(*args, **kwargs):
         try:
-            return function(*args, **kwargs)
+            res = function(*args, **kwargs)
+            if isinstance(res, Deferred):
+                res.addErrback(log.err)
+            return res
         except:
             log.err()
     return wrapper
 
+def wrapInList(item):
+    return [item]
 
+def hasListItems(lst):
+    if lst:
+        return True
+    else:
+        return False
+
+def buildDeferredList(*args):
+    return DeferredList(args)

@@ -127,6 +127,7 @@ class AsyncOAuthConnectionHandler(AsyncHttp):
             return self._getAccessCredentials()
 
     def request(self, requestObj):
+        requestObj._startTs = time.time()
         dfd = self._loadCredentials()
         if self._hasScopes:
             @dfd.addCallback

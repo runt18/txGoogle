@@ -1,9 +1,11 @@
 from txGoogle.service import Service
+from urllib import quote as urlibQuoteEncode
+from txGoogle.resource import Resource
 
 
-class TimeseriesDescriptors(Service):
-    def __init__(self, conn, *args, **kwargs):
-        super(TimeseriesDescriptors, self).__init__(conn, *args, **kwargs)
+class TimeseriesDescriptors(Resource):
+    def __init__(self, service, conn, *args, **kwargs):
+        super(TimeseriesDescriptors, self).__init__(service, conn, *args, **kwargs)
 
     def list(self, project, metric, youngest, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, count=None, timespan=None, labels=None, pageToken=None, oldest=None, kind=None):
         '''List the descriptors of the time series that match the metric and labels values and that have data points in the interval. Large responses are paginated; use the nextPageToken returned in the response to request subsequent pages of results by setting the pageToken query parameter to the value of the nextPageToken.'''
@@ -20,9 +22,9 @@ class TimeseriesDescriptors(Service):
                 'userIp': userIp,
                 'alt': alt,
                 'count': count,
-                'project': project,
+                'project': urlibQuoteEncode(project, safe=''),
                 'timespan': timespan,
-                'metric': metric,
+                'metric': urlibQuoteEncode(metric, safe=''),
                 'labels': labels,
                 'youngest': youngest,
                 'pageToken': pageToken,
@@ -35,9 +37,9 @@ class TimeseriesDescriptors(Service):
         return self._request(queryParams)
 
 
-class Timeseries(Service):
-    def __init__(self, conn, *args, **kwargs):
-        super(Timeseries, self).__init__(conn, *args, **kwargs)
+class Timeseries(Resource):
+    def __init__(self, service, conn, *args, **kwargs):
+        super(Timeseries, self).__init__(service, conn, *args, **kwargs)
 
     def list(self, project, metric, youngest, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, count=None, timespan=None, labels=None, pageToken=None, oldest=None, kind=None):
         '''List the data points of the time series that match the metric and labels values and that have data points in the interval. Large responses are paginated; use the nextPageToken returned in the response to request subsequent pages of results by setting the pageToken query parameter to the value of the nextPageToken.'''
@@ -54,9 +56,9 @@ class Timeseries(Service):
                 'userIp': userIp,
                 'alt': alt,
                 'count': count,
-                'project': project,
+                'project': urlibQuoteEncode(project, safe=''),
                 'timespan': timespan,
-                'metric': metric,
+                'metric': urlibQuoteEncode(metric, safe=''),
                 'labels': labels,
                 'youngest': youngest,
                 'pageToken': pageToken,
@@ -69,9 +71,9 @@ class Timeseries(Service):
         return self._request(queryParams)
 
 
-class MetricDescriptors(Service):
-    def __init__(self, conn, *args, **kwargs):
-        super(MetricDescriptors, self).__init__(conn, *args, **kwargs)
+class MetricDescriptors(Resource):
+    def __init__(self, service, conn, *args, **kwargs):
+        super(MetricDescriptors, self).__init__(service, conn, *args, **kwargs)
 
     def list(self, project, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, count=None, pageToken=None, query=None, kind=None):
         '''List metric descriptors that match the query. If the query is not set, then all of the metric descriptors will be returned. Large responses will be paginated, use the nextPageToken returned in the response to request subsequent pages of results by setting the pageToken query parameter to the value of the nextPageToken.'''
@@ -89,7 +91,7 @@ class MetricDescriptors(Service):
                 'alt': alt,
                 'count': count,
                 'pageToken': pageToken,
-                'project': project,
+                'project': urlibQuoteEncode(project, safe=''),
                 'query': query,
             },
             'httpBodyParams': {
@@ -110,6 +112,6 @@ class Cloudmonitoring(Service):
             self._scopes = self._DEFAULT_SCOPES
         conn.registerScopes(self._scopes)
         super(Cloudmonitoring, self).__init__(conn, *args, **kwargs)
-        self.timeseriesDescriptors = TimeseriesDescriptors(conn, *args, **kwargs)
-        self.timeseries = Timeseries(conn, *args, **kwargs)
-        self.metricDescriptors = MetricDescriptors(conn, *args, **kwargs)
+        self.timeseriesDescriptors = TimeseriesDescriptors(self, conn, *args, **kwargs)
+        self.timeseries = Timeseries(self, conn, *args, **kwargs)
+        self.metricDescriptors = MetricDescriptors(self, conn, *args, **kwargs)

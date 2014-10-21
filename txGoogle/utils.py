@@ -61,3 +61,20 @@ def simpleDeepCopy(inp):
     elif isinstance(inp, list):
         return deepCopyList(inp)
     return inp
+
+
+def getChunk(genIn, maxLen):
+    cnt = 0
+    for item in genIn:
+        yield item
+        cnt += 1
+        if cnt >= maxLen:
+            raise Exception('maxLen reached')
+
+def getChunks(genIn, maxLen):
+    try:
+        while True:
+            yield getChunk(genIn, maxLen)
+    except StopIteration:
+        pass # exhausted the generator, exception is normal
+    

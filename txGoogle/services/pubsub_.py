@@ -1,9 +1,11 @@
 from txGoogle.service import Service
+from urllib import quote as urlibQuoteEncode
+from txGoogle.resource import Resource
 
 
-class Topics(Service):
-    def __init__(self, conn, *args, **kwargs):
-        super(Topics, self).__init__(conn, *args, **kwargs)
+class Topics(Resource):
+    def __init__(self, service, conn, *args, **kwargs):
+        super(Topics, self).__init__(service, conn, *args, **kwargs)
 
     def create(self, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, name=None):
         '''Creates the given topic with the given name.'''
@@ -40,7 +42,7 @@ class Topics(Service):
                 'key': key,
                 'userIp': userIp,
                 'alt': alt,
-                'topic': topic,
+                'topic': urlibQuoteEncode(topic, safe=''),
             },
             'httpBodyParams': {
             },
@@ -109,7 +111,7 @@ class Topics(Service):
                 'key': key,
                 'userIp': userIp,
                 'alt': alt,
-                'topic': topic,
+                'topic': urlibQuoteEncode(topic, safe=''),
             },
             'httpBodyParams': {
             },
@@ -117,9 +119,9 @@ class Topics(Service):
         return self._request(queryParams)
 
 
-class Subscriptions(Service):
-    def __init__(self, conn, *args, **kwargs):
-        super(Subscriptions, self).__init__(conn, *args, **kwargs)
+class Subscriptions(Resource):
+    def __init__(self, service, conn, *args, **kwargs):
+        super(Subscriptions, self).__init__(service, conn, *args, **kwargs)
 
     def pull(self, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, returnImmediately=None, subscription=None):
         '''Pulls a single message from the server. If return_immediately is true, and no messages are available in the subscription, this method returns FAILED_PRECONDITION. The system is free to return an UNAVAILABLE error if no messages are available in a reasonable amount of time (to reduce system load).'''
@@ -157,7 +159,7 @@ class Subscriptions(Service):
                 'key': key,
                 'userIp': userIp,
                 'alt': alt,
-                'subscription': subscription,
+                'subscription': urlibQuoteEncode(subscription, safe=''),
             },
             'httpBodyParams': {
             },
@@ -296,7 +298,7 @@ class Subscriptions(Service):
                 'key': key,
                 'userIp': userIp,
                 'alt': alt,
-                'subscription': subscription,
+                'subscription': urlibQuoteEncode(subscription, safe=''),
             },
             'httpBodyParams': {
             },
@@ -315,5 +317,5 @@ class Pubsub(Service):
             self._scopes = self._DEFAULT_SCOPES
         conn.registerScopes(self._scopes)
         super(Pubsub, self).__init__(conn, *args, **kwargs)
-        self.topics = Topics(conn, *args, **kwargs)
-        self.subscriptions = Subscriptions(conn, *args, **kwargs)
+        self.topics = Topics(self, conn, *args, **kwargs)
+        self.subscriptions = Subscriptions(self, conn, *args, **kwargs)

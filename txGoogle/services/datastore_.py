@@ -1,9 +1,11 @@
 from txGoogle.service import Service
+from urllib import quote as urlibQuoteEncode
+from txGoogle.resource import Resource
 
 
-class Datasets(Service):
-    def __init__(self, conn, *args, **kwargs):
-        super(Datasets, self).__init__(conn, *args, **kwargs)
+class Datasets(Resource):
+    def __init__(self, service, conn, *args, **kwargs):
+        super(Datasets, self).__init__(service, conn, *args, **kwargs)
 
     def allocateIds(self, datasetId, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, keys=None):
         '''Allocate IDs for incomplete keys (useful for referencing an entity before it is inserted).'''
@@ -19,7 +21,7 @@ class Datasets(Service):
                 'key': key,
                 'userIp': userIp,
                 'alt': alt,
-                'datasetId': datasetId,
+                'datasetId': urlibQuoteEncode(datasetId, safe=''),
             },
             'httpBodyParams': {
                 'keys': keys,
@@ -41,7 +43,7 @@ class Datasets(Service):
                 'key': key,
                 'userIp': userIp,
                 'alt': alt,
-                'datasetId': datasetId,
+                'datasetId': urlibQuoteEncode(datasetId, safe=''),
             },
             'httpBodyParams': {
                 'transaction': transaction,
@@ -63,7 +65,7 @@ class Datasets(Service):
                 'key': key,
                 'userIp': userIp,
                 'alt': alt,
-                'datasetId': datasetId,
+                'datasetId': urlibQuoteEncode(datasetId, safe=''),
             },
             'httpBodyParams': {
                 'isolationLevel': isolationLevel,
@@ -85,7 +87,7 @@ class Datasets(Service):
                 'key': key,
                 'userIp': userIp,
                 'alt': alt,
-                'datasetId': datasetId,
+                'datasetId': urlibQuoteEncode(datasetId, safe=''),
             },
             'httpBodyParams': {
                 'keys': keys,
@@ -111,7 +113,7 @@ class Datasets(Service):
                 'key': key,
                 'userIp': userIp,
                 'alt': alt,
-                'datasetId': datasetId,
+                'datasetId': urlibQuoteEncode(datasetId, safe=''),
             },
             'httpBodyParams': {
                 'ignoreReadOnly': ignoreReadOnly,
@@ -143,7 +145,7 @@ class Datasets(Service):
                 'key': key,
                 'userIp': userIp,
                 'alt': alt,
-                'datasetId': datasetId,
+                'datasetId': urlibQuoteEncode(datasetId, safe=''),
             },
             'httpBodyParams': {
                 'query': {
@@ -227,4 +229,4 @@ class Datastore(Service):
             self._scopes = self._DEFAULT_SCOPES
         conn.registerScopes(self._scopes)
         super(Datastore, self).__init__(conn, *args, **kwargs)
-        self.datasets = Datasets(conn, *args, **kwargs)
+        self.datasets = Datasets(self, conn, *args, **kwargs)

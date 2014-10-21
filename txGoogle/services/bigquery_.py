@@ -1,9 +1,11 @@
 from txGoogle.service import Service
+from urllib import quote as urlibQuoteEncode
+from txGoogle.resource import Resource
 
 
-class Tables(Service):
-    def __init__(self, conn, *args, **kwargs):
-        super(Tables, self).__init__(conn, *args, **kwargs)
+class Tables(Resource):
+    def __init__(self, service, conn, *args, **kwargs):
+        super(Tables, self).__init__(service, conn, *args, **kwargs)
 
     def insert(self, projectId, datasetId, tableId, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, expirationTime=None, description=None, friendlyName=None, schema_fields=None, query=None):
         '''Creates a new, empty table in the dataset.'''
@@ -19,8 +21,8 @@ class Tables(Service):
                 'key': key,
                 'userIp': userIp,
                 'alt': alt,
-                'projectId': projectId,
-                'datasetId': datasetId,
+                'projectId': urlibQuoteEncode(projectId, safe=''),
+                'datasetId': urlibQuoteEncode(datasetId, safe=''),
             },
             'httpBodyParams': {
                 'description': description,
@@ -55,9 +57,9 @@ class Tables(Service):
                 'key': key,
                 'userIp': userIp,
                 'alt': alt,
-                'projectId': projectId,
-                'tableId': tableId,
-                'datasetId': datasetId,
+                'projectId': urlibQuoteEncode(projectId, safe=''),
+                'tableId': urlibQuoteEncode(tableId, safe=''),
+                'datasetId': urlibQuoteEncode(datasetId, safe=''),
             },
             'httpBodyParams': {
             },
@@ -79,9 +81,9 @@ class Tables(Service):
                 'userIp': userIp,
                 'alt': alt,
                 'pageToken': pageToken,
-                'datasetId': datasetId,
+                'datasetId': urlibQuoteEncode(datasetId, safe=''),
                 'maxResults': maxResults,
-                'projectId': projectId,
+                'projectId': urlibQuoteEncode(projectId, safe=''),
             },
             'httpBodyParams': {
             },
@@ -102,9 +104,9 @@ class Tables(Service):
                 'key': key,
                 'userIp': userIp,
                 'alt': alt,
-                'projectId': projectId,
-                'tableId': tableId,
-                'datasetId': datasetId,
+                'projectId': urlibQuoteEncode(projectId, safe=''),
+                'tableId': urlibQuoteEncode(tableId, safe=''),
+                'datasetId': urlibQuoteEncode(datasetId, safe=''),
             },
             'httpBodyParams': {
                 'description': description,
@@ -139,9 +141,9 @@ class Tables(Service):
                 'key': key,
                 'userIp': userIp,
                 'alt': alt,
-                'projectId': projectId,
-                'tableId': tableId,
-                'datasetId': datasetId,
+                'projectId': urlibQuoteEncode(projectId, safe=''),
+                'tableId': urlibQuoteEncode(tableId, safe=''),
+                'datasetId': urlibQuoteEncode(datasetId, safe=''),
             },
             'httpBodyParams': {
                 'description': description,
@@ -176,9 +178,9 @@ class Tables(Service):
                 'key': key,
                 'userIp': userIp,
                 'alt': alt,
-                'projectId': projectId,
-                'tableId': tableId,
-                'datasetId': datasetId,
+                'projectId': urlibQuoteEncode(projectId, safe=''),
+                'tableId': urlibQuoteEncode(tableId, safe=''),
+                'datasetId': urlibQuoteEncode(datasetId, safe=''),
             },
             'httpBodyParams': {
             },
@@ -186,9 +188,9 @@ class Tables(Service):
         return self._request(queryParams)
 
 
-class Datasets(Service):
-    def __init__(self, conn, *args, **kwargs):
-        super(Datasets, self).__init__(conn, *args, **kwargs)
+class Datasets(Resource):
+    def __init__(self, service, conn, *args, **kwargs):
+        super(Datasets, self).__init__(service, conn, *args, **kwargs)
 
     def insert(self, projectId, datasetId, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, description=None, projectId_=None, access=None, friendlyName=None):
         '''Creates a new empty dataset.'''
@@ -204,7 +206,7 @@ class Datasets(Service):
                 'key': key,
                 'userIp': userIp,
                 'alt': alt,
-                'projectId': projectId,
+                'projectId': urlibQuoteEncode(projectId, safe=''),
             },
             'httpBodyParams': {
                 'access': access,
@@ -232,8 +234,8 @@ class Datasets(Service):
                 'key': key,
                 'userIp': userIp,
                 'alt': alt,
-                'projectId': projectId,
-                'datasetId': datasetId,
+                'projectId': urlibQuoteEncode(projectId, safe=''),
+                'datasetId': urlibQuoteEncode(datasetId, safe=''),
             },
             'httpBodyParams': {
             },
@@ -257,7 +259,7 @@ class Datasets(Service):
                 'pageToken': pageToken,
                 'all': all,
                 'maxResults': maxResults,
-                'projectId': projectId,
+                'projectId': urlibQuoteEncode(projectId, safe=''),
             },
             'httpBodyParams': {
             },
@@ -278,8 +280,8 @@ class Datasets(Service):
                 'key': key,
                 'userIp': userIp,
                 'alt': alt,
-                'projectId': projectId,
-                'datasetId': datasetId,
+                'projectId': urlibQuoteEncode(projectId, safe=''),
+                'datasetId': urlibQuoteEncode(datasetId, safe=''),
             },
             'httpBodyParams': {
                 'access': access,
@@ -307,8 +309,8 @@ class Datasets(Service):
                 'key': key,
                 'userIp': userIp,
                 'alt': alt,
-                'projectId': projectId,
-                'datasetId': datasetId,
+                'projectId': urlibQuoteEncode(projectId, safe=''),
+                'datasetId': urlibQuoteEncode(datasetId, safe=''),
             },
             'httpBodyParams': {
                 'access': access,
@@ -337,8 +339,8 @@ class Datasets(Service):
                 'userIp': userIp,
                 'alt': alt,
                 'deleteContents': deleteContents,
-                'datasetId': datasetId,
-                'projectId': projectId,
+                'datasetId': urlibQuoteEncode(datasetId, safe=''),
+                'projectId': urlibQuoteEncode(projectId, safe=''),
             },
             'httpBodyParams': {
             },
@@ -346,9 +348,9 @@ class Datasets(Service):
         return self._request(queryParams)
 
 
-class Jobs(Service):
-    def __init__(self, conn, *args, **kwargs):
-        super(Jobs, self).__init__(conn, *args, **kwargs)
+class Jobs(Resource):
+    def __init__(self, service, conn, *args, **kwargs):
+        super(Jobs, self).__init__(service, conn, *args, **kwargs)
 
     def insert(self, projectId, load_destinationTable_projectId, tableId, datasetId, link_destinationTable_projectId, link_destinationTable_tableId, link_destinationTable_datasetId, copy_destinationTable_projectId, copy_destinationTable_tableId, copy_destinationTable_datasetId, extract_sourceTable_projectId, extract_sourceTable_tableId, extract_sourceTable_datasetId, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, projectId_=None, jobId=None, quote=None, encoding=None, fieldDelimiter=None, sourceFormat=None, maxBadRecords=None, allowJaggedRows=None, writeDisposition=None, sourceUris=None, skipLeadingRows=None, createDisposition=None, schemaInlineFormat=None, schemaInline=None, allowQuotedNewlines=None, ignoreUnknownValues=None, schema_fields=None, dryRun=None, createDisposition_=None, writeDisposition_=None, sourceUri=None, flattenResults=None, useQueryCache=None, projectIdQuery=None, datasetIdQuery=None, query_destinationTable_projectId=None, query_destinationTable_tableId=None, query_destinationTable_datasetId=None, priority=None, query_writeDisposition=None, allowLargeResults=None, query_createDisposition=None, query=None, preserveNulls=None, copy_createDisposition=None, sourceTables=None, copy_writeDisposition=None, copy_sourceTable_projectId=None, copy_sourceTable_tableId=None, copy_sourceTable_datasetId=None, destinationUri=None, compression=None, fieldDelimiter_=None, destinationFormat=None, printHeader=None, destinationUris=None):
         '''Starts a new asynchronous job.'''
@@ -364,7 +366,7 @@ class Jobs(Service):
                 'key': key,
                 'userIp': userIp,
                 'alt': alt,
-                'projectId': projectId,
+                'projectId': urlibQuoteEncode(projectId, safe=''),
             },
             'httpBodyParams': {
                 'configuration': {
@@ -473,7 +475,7 @@ class Jobs(Service):
                 'key': key,
                 'userIp': userIp,
                 'alt': alt,
-                'projectId': projectId,
+                'projectId': urlibQuoteEncode(projectId, safe=''),
             },
             'httpBodyParams': {
                 'timeoutMs': timeoutMs,
@@ -507,7 +509,7 @@ class Jobs(Service):
                 'alt': alt,
                 'projection': projection,
                 'stateFilter': stateFilter,
-                'projectId': projectId,
+                'projectId': urlibQuoteEncode(projectId, safe=''),
                 'allUsers': allUsers,
                 'maxResults': maxResults,
                 'pageToken': pageToken,
@@ -532,9 +534,9 @@ class Jobs(Service):
                 'userIp': userIp,
                 'alt': alt,
                 'timeoutMs': timeoutMs,
-                'projectId': projectId,
+                'projectId': urlibQuoteEncode(projectId, safe=''),
                 'maxResults': maxResults,
-                'jobId': jobId,
+                'jobId': urlibQuoteEncode(jobId, safe=''),
                 'pageToken': pageToken,
                 'startIndex': startIndex,
             },
@@ -557,8 +559,8 @@ class Jobs(Service):
                 'key': key,
                 'userIp': userIp,
                 'alt': alt,
-                'projectId': projectId,
-                'jobId': jobId,
+                'projectId': urlibQuoteEncode(projectId, safe=''),
+                'jobId': urlibQuoteEncode(jobId, safe=''),
             },
             'httpBodyParams': {
             },
@@ -566,9 +568,9 @@ class Jobs(Service):
         return self._request(queryParams)
 
 
-class Tabledata(Service):
-    def __init__(self, conn, *args, **kwargs):
-        super(Tabledata, self).__init__(conn, *args, **kwargs)
+class Tabledata(Resource):
+    def __init__(self, service, conn, *args, **kwargs):
+        super(Tabledata, self).__init__(service, conn, *args, **kwargs)
 
     def list(self, projectId, tableId, datasetId, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, maxResults=None, pageToken=None, startIndex=None):
         '''Retrieves table data from a specified set of rows.'''
@@ -584,12 +586,12 @@ class Tabledata(Service):
                 'key': key,
                 'userIp': userIp,
                 'alt': alt,
-                'projectId': projectId,
+                'projectId': urlibQuoteEncode(projectId, safe=''),
                 'maxResults': maxResults,
                 'pageToken': pageToken,
                 'startIndex': startIndex,
-                'tableId': tableId,
-                'datasetId': datasetId,
+                'tableId': urlibQuoteEncode(tableId, safe=''),
+                'datasetId': urlibQuoteEncode(datasetId, safe=''),
             },
             'httpBodyParams': {
             },
@@ -610,9 +612,9 @@ class Tabledata(Service):
                 'key': key,
                 'userIp': userIp,
                 'alt': alt,
-                'projectId': projectId,
-                'tableId': tableId,
-                'datasetId': datasetId,
+                'projectId': urlibQuoteEncode(projectId, safe=''),
+                'tableId': urlibQuoteEncode(tableId, safe=''),
+                'datasetId': urlibQuoteEncode(datasetId, safe=''),
             },
             'httpBodyParams': {
                 'kind': kind,
@@ -622,9 +624,9 @@ class Tabledata(Service):
         return self._request(queryParams)
 
 
-class Projects(Service):
-    def __init__(self, conn, *args, **kwargs):
-        super(Projects, self).__init__(conn, *args, **kwargs)
+class Projects(Resource):
+    def __init__(self, service, conn, *args, **kwargs):
+        super(Projects, self).__init__(service, conn, *args, **kwargs)
 
     def list(self, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, pageToken=None, maxResults=None):
         '''Lists the projects to which you have at least read access.'''
@@ -660,8 +662,8 @@ class Bigquery(Service):
             self._scopes = self._DEFAULT_SCOPES
         conn.registerScopes(self._scopes)
         super(Bigquery, self).__init__(conn, *args, **kwargs)
-        self.tables = Tables(conn, *args, **kwargs)
-        self.datasets = Datasets(conn, *args, **kwargs)
-        self.jobs = Jobs(conn, *args, **kwargs)
-        self.tabledata = Tabledata(conn, *args, **kwargs)
-        self.projects = Projects(conn, *args, **kwargs)
+        self.tables = Tables(self, conn, *args, **kwargs)
+        self.datasets = Datasets(self, conn, *args, **kwargs)
+        self.jobs = Jobs(self, conn, *args, **kwargs)
+        self.tabledata = Tabledata(self, conn, *args, **kwargs)
+        self.projects = Projects(self, conn, *args, **kwargs)

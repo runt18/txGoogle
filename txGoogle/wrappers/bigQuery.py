@@ -71,6 +71,15 @@ class TablesWrapper(Tables):
         dfd.addCallback(self._extractTableIds)
         return dfd
 
+    def extractPropery(self, item, property):
+        if property in item:
+            return item[property]
+
+    def getSize(self, projectId, datasetId, tableId):
+        dfd = self.get(projectId=projectId, tableId=tableId, datasetId=datasetId, fields='numBytes')
+        dfd.addCallback(self.extractPropery, 'numBytes')
+        return dfd
+
 
 class TabledataWrapper(Tabledata):
 
@@ -98,6 +107,25 @@ class JobsWrapper(Jobs):
         return dfd
 
 
+class DatasetsWrapper(Datasets):
+
+    def getSize(self, projectId, datasetId):
+        def getTableSize(tableId):
+            return self._service.tables.getSize(projectId, datasetId, tableId)
+
+        dfd = self._service.tables.getIds(projectId, datasetId)
+        dfd.addCallback(mapFunToItems, getTableSize)
+        dfd.addCallback(self._total)
+        return dfd
+
+    def _total(self, gen):
+        total = 0
+        for item in gen:
+            if item[1] is not None:
+                total += int(item[1])
+        return total
+
+
 class BigQueryWrapper(Bigquery):
 
     def __init__(self, conn=None, scopes=None, *args, **kwargs):
@@ -107,12 +135,12 @@ class BigQueryWrapper(Bigquery):
             self._scopes = self._DEFAULT_SCOPES
         conn.registerScopes(self._scopes)
         kwargs['responseCls'] = BigQueryResponseHandler
-        super(Bigquery, self).__init__(conn, *args, **kwargs)
-        self.tables = TablesWrapper(conn, *args, **kwargs)
-        self.datasets = Datasets(conn, *args, **kwargs)
-        self.jobs = JobsWrapper(conn, *args, **kwargs)
-        self.tabledata = TabledataWrapper(conn, *args, **kwargs)
-        self.projects = Projects(conn, *args, **kwargs)
+        super(Bigquery, self).__init__(self, conn, *args, **kwargs)
+        self.tables = TablesWrapper(self, conn, *args, **kwargs)
+        self.datasets = DatasetsWrapper(self, conn, *args, **kwargs)
+        self.jobs = JobsWrapper(self, conn, *args, **kwargs)
+        self.tabledata = TabledataWrapper(self, conn, *args, **kwargs)
+        self.projects = Projects(self, conn, *args, **kwargs)
 
 
 if __name__ == '__main__':
@@ -149,7 +177,10 @@ if __name__ == '__main__':
     dfd.addCallback(printCb)
     dfd.addErrback(printCb)
     dfd.addCallback(abq.tables.delete, projectId, 'removeMeTable', 'cust_23eb8fd09fbc')'''
-    dfd = abq.tabledata.list(projectId, 'perf_201410_005056ad452d', 'cust_711f9f25ed85', alt='csv', maxResults=10)
+    #dfd = abq.tabledata.list(projectId, 'perf_201410_005056ad452d', 'cust_711f9f25ed85', alt='csv', maxResults=10)
+
+    #dfd = abq.tables.getSize(projectId, datasetId, tableId)
+    dfd = abq.datasets.getSize(projectId=projectId, datasetId='cust_e428109a7be1')
     dfd.addCallback(printCb)
     dfd.addErrback(printCb)
     reactor.run()

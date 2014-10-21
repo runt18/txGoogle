@@ -5,6 +5,7 @@ Created on 22 aug. 2014
 '''
 import simplejson as json
 from twisted.internet.defer import Deferred
+from twisted.internet.defer import passthru
 from twisted.python import log
 
 
@@ -26,13 +27,13 @@ class ResponseHandler(object):
     def _logErr(self, fail):
         log.err()
         raise fail
-    
+
     def _hasErrback(self):
         if self._ebAdded:
             return True
         if len(self._dfd.callbacks) == 0:
             return False
-        return self._dfd.callbacks[0][1][0].__name__ != 'passthru'
+        return self._dfd.callbacks[0][1][0] != passthru
 
     def _checkForExistingEbs(self):
         if not self._hasErrback():
@@ -41,12 +42,12 @@ class ResponseHandler(object):
 
     def onResponse(self, response, requestObj):
         self._checkForExistingEbs()
-        if response.contentType == 'json':
+        if response.contentType == 'application/json':
             try:
                 self.handleLoaded(self.loadJson(response), requestObj)
             except Exception as ex:
                 self._dfd.errback(Exception(str(ex) + '\n' + response.msg))
-        elif response.contentType == 'csv':
+        elif response.contentType == 'text/csv':
             try:
                 self.handleLoaded(self.loadCsv(response), requestObj)
             except Exception as ex:

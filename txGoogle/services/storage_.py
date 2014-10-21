@@ -1,11 +1,13 @@
 from txGoogle.service import Service
+from urllib import quote as urlibQuoteEncode
+from txGoogle.resource import Resource
 
 
-class DefaultObjectAccessControls(Service):
-    def __init__(self, conn, *args, **kwargs):
-        super(DefaultObjectAccessControls, self).__init__(conn, *args, **kwargs)
+class DefaultObjectAccessControls(Resource):
+    def __init__(self, service, conn, *args, **kwargs):
+        super(DefaultObjectAccessControls, self).__init__(service, conn, *args, **kwargs)
 
-    def insert(self, bucket, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, domain=None, generation=None, object=None, bucket_=None, kind=None, entity=None, email=None, etag=None, role=None, entityId=None, projectTeam=None, id=None, selfLink=None):
+    def insert(self, bucket, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, domain=None, generation=None, object=None, kind=None, entity=None, email=None, etag=None, role=None, entityId=None, projectTeam=None, id=None, selfLink=None):
         '''Creates a new default object ACL entry on the specified bucket.'''
         queryParams = {
             'url': 'https://www.googleapis.com/storage/v1/b/{bucket}/defaultObjectAcl',
@@ -19,13 +21,13 @@ class DefaultObjectAccessControls(Service):
                 'key': key,
                 'userIp': userIp,
                 'alt': alt,
-                'bucket': bucket,
+                'bucket': urlibQuoteEncode(bucket, safe=''),
             },
             'httpBodyParams': {
                 'domain': domain,
                 'generation': generation,
                 'object': object,
-                'bucket': bucket_,
+                'bucket': bucket,
                 'kind': kind,
                 'entity': entity,
                 'etag': etag,
@@ -53,8 +55,8 @@ class DefaultObjectAccessControls(Service):
                 'key': key,
                 'userIp': userIp,
                 'alt': alt,
-                'bucket': bucket,
-                'entity': entity,
+                'bucket': urlibQuoteEncode(bucket, safe=''),
+                'entity': urlibQuoteEncode(entity, safe=''),
             },
             'httpBodyParams': {
             },
@@ -76,7 +78,7 @@ class DefaultObjectAccessControls(Service):
                 'userIp': userIp,
                 'alt': alt,
                 'ifMetagenerationMatch': ifMetagenerationMatch,
-                'bucket': bucket,
+                'bucket': urlibQuoteEncode(bucket, safe=''),
                 'ifMetagenerationNotMatch': ifMetagenerationNotMatch,
             },
             'httpBodyParams': {
@@ -84,7 +86,7 @@ class DefaultObjectAccessControls(Service):
         }
         return self._request(queryParams)
 
-    def update(self, bucket, entity, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, domain=None, generation=None, object=None, bucket_=None, kind=None, entity_=None, email=None, etag=None, role=None, entityId=None, projectTeam=None, id=None, selfLink=None):
+    def update(self, bucket, entity, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, domain=None, generation=None, object=None, kind=None, email=None, etag=None, role=None, entityId=None, projectTeam=None, id=None, selfLink=None):
         '''Updates a default object ACL entry on the specified bucket.'''
         queryParams = {
             'url': 'https://www.googleapis.com/storage/v1/b/{bucket}/defaultObjectAcl/{entity}',
@@ -98,16 +100,16 @@ class DefaultObjectAccessControls(Service):
                 'key': key,
                 'userIp': userIp,
                 'alt': alt,
-                'bucket': bucket,
-                'entity': entity,
+                'bucket': urlibQuoteEncode(bucket, safe=''),
+                'entity': urlibQuoteEncode(entity, safe=''),
             },
             'httpBodyParams': {
                 'domain': domain,
                 'generation': generation,
                 'object': object,
-                'bucket': bucket_,
+                'bucket': bucket,
                 'kind': kind,
-                'entity': entity_,
+                'entity': entity,
                 'etag': etag,
                 'role': role,
                 'id': id,
@@ -119,7 +121,7 @@ class DefaultObjectAccessControls(Service):
         }
         return self._request(queryParams)
 
-    def patch(self, bucket, entity, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, domain=None, generation=None, object=None, bucket_=None, kind=None, entity_=None, email=None, etag=None, role=None, entityId=None, projectTeam=None, id=None, selfLink=None):
+    def patch(self, bucket, entity, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, domain=None, generation=None, object=None, kind=None, email=None, etag=None, role=None, entityId=None, projectTeam=None, id=None, selfLink=None):
         '''Updates a default object ACL entry on the specified bucket. This method supports patch semantics.'''
         queryParams = {
             'url': 'https://www.googleapis.com/storage/v1/b/{bucket}/defaultObjectAcl/{entity}',
@@ -133,16 +135,16 @@ class DefaultObjectAccessControls(Service):
                 'key': key,
                 'userIp': userIp,
                 'alt': alt,
-                'bucket': bucket,
-                'entity': entity,
+                'bucket': urlibQuoteEncode(bucket, safe=''),
+                'entity': urlibQuoteEncode(entity, safe=''),
             },
             'httpBodyParams': {
                 'domain': domain,
                 'generation': generation,
                 'object': object,
-                'bucket': bucket_,
+                'bucket': bucket,
                 'kind': kind,
-                'entity': entity_,
+                'entity': entity,
                 'etag': etag,
                 'role': role,
                 'id': id,
@@ -168,8 +170,8 @@ class DefaultObjectAccessControls(Service):
                 'key': key,
                 'userIp': userIp,
                 'alt': alt,
-                'bucket': bucket,
-                'entity': entity,
+                'bucket': urlibQuoteEncode(bucket, safe=''),
+                'entity': urlibQuoteEncode(entity, safe=''),
             },
             'httpBodyParams': {
             },
@@ -177,11 +179,11 @@ class DefaultObjectAccessControls(Service):
         return self._request(queryParams)
 
 
-class BucketAccessControls(Service):
-    def __init__(self, conn, *args, **kwargs):
-        super(BucketAccessControls, self).__init__(conn, *args, **kwargs)
+class BucketAccessControls(Resource):
+    def __init__(self, service, conn, *args, **kwargs):
+        super(BucketAccessControls, self).__init__(service, conn, *args, **kwargs)
 
-    def insert(self, bucket, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, domain=None, bucket_=None, kind=None, entity=None, email=None, etag=None, role=None, entityId=None, projectTeam=None, id=None, selfLink=None):
+    def insert(self, bucket, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, domain=None, kind=None, entity=None, email=None, etag=None, role=None, entityId=None, projectTeam=None, id=None, selfLink=None):
         '''Creates a new ACL entry on the specified bucket.'''
         queryParams = {
             'url': 'https://www.googleapis.com/storage/v1/b/{bucket}/acl',
@@ -195,11 +197,11 @@ class BucketAccessControls(Service):
                 'key': key,
                 'userIp': userIp,
                 'alt': alt,
-                'bucket': bucket,
+                'bucket': urlibQuoteEncode(bucket, safe=''),
             },
             'httpBodyParams': {
                 'domain': domain,
-                'bucket': bucket_,
+                'bucket': bucket,
                 'kind': kind,
                 'entity': entity,
                 'etag': etag,
@@ -227,8 +229,8 @@ class BucketAccessControls(Service):
                 'key': key,
                 'userIp': userIp,
                 'alt': alt,
-                'bucket': bucket,
-                'entity': entity,
+                'bucket': urlibQuoteEncode(bucket, safe=''),
+                'entity': urlibQuoteEncode(entity, safe=''),
             },
             'httpBodyParams': {
             },
@@ -249,14 +251,14 @@ class BucketAccessControls(Service):
                 'key': key,
                 'userIp': userIp,
                 'alt': alt,
-                'bucket': bucket,
+                'bucket': urlibQuoteEncode(bucket, safe=''),
             },
             'httpBodyParams': {
             },
         }
         return self._request(queryParams)
 
-    def update(self, bucket, entity, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, domain=None, bucket_=None, kind=None, entity_=None, email=None, etag=None, role=None, entityId=None, projectTeam=None, id=None, selfLink=None):
+    def update(self, bucket, entity, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, domain=None, kind=None, email=None, etag=None, role=None, entityId=None, projectTeam=None, id=None, selfLink=None):
         '''Updates an ACL entry on the specified bucket.'''
         queryParams = {
             'url': 'https://www.googleapis.com/storage/v1/b/{bucket}/acl/{entity}',
@@ -270,14 +272,14 @@ class BucketAccessControls(Service):
                 'key': key,
                 'userIp': userIp,
                 'alt': alt,
-                'bucket': bucket,
-                'entity': entity,
+                'bucket': urlibQuoteEncode(bucket, safe=''),
+                'entity': urlibQuoteEncode(entity, safe=''),
             },
             'httpBodyParams': {
                 'domain': domain,
-                'bucket': bucket_,
+                'bucket': bucket,
                 'kind': kind,
-                'entity': entity_,
+                'entity': entity,
                 'etag': etag,
                 'role': role,
                 'id': id,
@@ -289,7 +291,7 @@ class BucketAccessControls(Service):
         }
         return self._request(queryParams)
 
-    def patch(self, bucket, entity, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, domain=None, bucket_=None, kind=None, entity_=None, email=None, etag=None, role=None, entityId=None, projectTeam=None, id=None, selfLink=None):
+    def patch(self, bucket, entity, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, domain=None, kind=None, email=None, etag=None, role=None, entityId=None, projectTeam=None, id=None, selfLink=None):
         '''Updates an ACL entry on the specified bucket. This method supports patch semantics.'''
         queryParams = {
             'url': 'https://www.googleapis.com/storage/v1/b/{bucket}/acl/{entity}',
@@ -303,14 +305,14 @@ class BucketAccessControls(Service):
                 'key': key,
                 'userIp': userIp,
                 'alt': alt,
-                'bucket': bucket,
-                'entity': entity,
+                'bucket': urlibQuoteEncode(bucket, safe=''),
+                'entity': urlibQuoteEncode(entity, safe=''),
             },
             'httpBodyParams': {
                 'domain': domain,
-                'bucket': bucket_,
+                'bucket': bucket,
                 'kind': kind,
-                'entity': entity_,
+                'entity': entity,
                 'etag': etag,
                 'role': role,
                 'id': id,
@@ -336,8 +338,8 @@ class BucketAccessControls(Service):
                 'key': key,
                 'userIp': userIp,
                 'alt': alt,
-                'bucket': bucket,
-                'entity': entity,
+                'bucket': urlibQuoteEncode(bucket, safe=''),
+                'entity': urlibQuoteEncode(entity, safe=''),
             },
             'httpBodyParams': {
             },
@@ -345,9 +347,9 @@ class BucketAccessControls(Service):
         return self._request(queryParams)
 
 
-class Channels(Service):
-    def __init__(self, conn, *args, **kwargs):
-        super(Channels, self).__init__(conn, *args, **kwargs)
+class Channels(Resource):
+    def __init__(self, service, conn, *args, **kwargs):
+        super(Channels, self).__init__(service, conn, *args, **kwargs)
 
     def stop(self, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, resourceUri=None, kind=None, resourceId=None, id=None, token=None, params=None, expiration=None, address=None, type=None, payload=None):
         '''Stop watching resources through this channel'''
@@ -380,11 +382,11 @@ class Channels(Service):
         return self._request(queryParams)
 
 
-class Objects(Service):
-    def __init__(self, conn, *args, **kwargs):
-        super(Objects, self).__init__(conn, *args, **kwargs)
+class Objects(Resource):
+    def __init__(self, service, conn, *args, **kwargs):
+        super(Objects, self).__init__(service, conn, *args, **kwargs)
 
-    def insert(self, bucket, name_, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, ifGenerationMatch=None, projection=None, name=None, ifMetagenerationMatch=None, contentEncoding=None, predefinedAcl=None, ifMetagenerationNotMatch=None, ifGenerationNotMatch=None, selfLink=None, generation=None, componentCount=None, mediaLink=None, owner=None, cacheControl=None, acl=None, id=None, size=None, timeDeleted=None, md5Hash=None, crc32c=None, etag=None, metadata=None, updated=None, contentType=None, contentLanguage=None, metageneration=None, kind=None, bucket_=None, contentEncoding_=None, storageClass=None, contentDisposition=None):
+    def insert(self, bucket, name, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, ifGenerationMatch=None, projection=None, ifMetagenerationMatch=None, contentEncoding=None, predefinedAcl=None, ifMetagenerationNotMatch=None, ifGenerationNotMatch=None, selfLink=None, generation=None, componentCount=None, mediaLink=None, owner=None, cacheControl=None, acl=None, id=None, size=None, timeDeleted=None, md5Hash=None, crc32c=None, etag=None, metadata=None, updated=None, contentType=None, contentLanguage=None, metageneration=None, kind=None, storageClass=None, contentDisposition=None):
         '''Stores a new object and metadata.'''
         queryParams = {
             'url': 'https://www.googleapis.com/storage/v1/b/{bucket}/o',
@@ -402,7 +404,7 @@ class Objects(Service):
                 'projection': projection,
                 'name': name,
                 'ifMetagenerationMatch': ifMetagenerationMatch,
-                'bucket': bucket,
+                'bucket': urlibQuoteEncode(bucket, safe=''),
                 'contentEncoding': contentEncoding,
                 'predefinedAcl': predefinedAcl,
                 'ifMetagenerationNotMatch': ifMetagenerationNotMatch,
@@ -428,9 +430,9 @@ class Objects(Service):
                 'contentLanguage': contentLanguage,
                 'metageneration': metageneration,
                 'kind': kind,
-                'name': name_,
-                'bucket': bucket_,
-                'contentEncoding': contentEncoding_,
+                'name': name,
+                'bucket': bucket,
+                'contentEncoding': contentEncoding,
                 'storageClass': storageClass,
                 'selfLink': selfLink,
             },
@@ -453,7 +455,7 @@ class Objects(Service):
                 'alt': alt,
                 'projection': projection,
                 'versions': versions,
-                'bucket': bucket,
+                'bucket': urlibQuoteEncode(bucket, safe=''),
                 'delimiter': delimiter,
                 'maxResults': maxResults,
                 'pageToken': pageToken,
@@ -474,7 +476,7 @@ class Objects(Service):
         }
         return self._request(queryParams)
 
-    def compose(self, destinationBucket, destinationObject, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, ifMetagenerationMatch=None, ifGenerationMatch=None, destinationPredefinedAcl=None, kind=None, selfLink=None, generation=None, componentCount=None, mediaLink=None, owner=None, cacheControl=None, acl=None, id=None, size=None, timeDeleted=None, md5Hash=None, crc32c=None, etag=None, metadata=None, updated=None, contentType=None, contentLanguage=None, metageneration=None, kind_=None, name=None, bucket=None, contentEncoding=None, storageClass=None, contentDisposition=None, sourceObjects=None):
+    def compose(self, destinationBucket, destinationObject, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, ifMetagenerationMatch=None, ifGenerationMatch=None, destinationPredefinedAcl=None, kind=None, selfLink=None, generation=None, componentCount=None, mediaLink=None, owner=None, cacheControl=None, acl=None, id=None, size=None, timeDeleted=None, md5Hash=None, crc32c=None, etag=None, metadata=None, updated=None, contentType=None, contentLanguage=None, metageneration=None, destination_kind=None, name=None, bucket=None, contentEncoding=None, storageClass=None, contentDisposition=None, sourceObjects=None):
         '''Concatenates a list of existing objects into a new object in the same bucket.'''
         queryParams = {
             'url': 'https://www.googleapis.com/storage/v1/b/{destinationBucket}/o/{destinationObject}/compose',
@@ -488,10 +490,10 @@ class Objects(Service):
                 'key': key,
                 'userIp': userIp,
                 'alt': alt,
-                'destinationBucket': destinationBucket,
+                'destinationBucket': urlibQuoteEncode(destinationBucket, safe=''),
                 'ifMetagenerationMatch': ifMetagenerationMatch,
                 'ifGenerationMatch': ifGenerationMatch,
-                'destinationObject': destinationObject,
+                'destinationObject': urlibQuoteEncode(destinationObject, safe=''),
                 'destinationPredefinedAcl': destinationPredefinedAcl,
             },
             'httpBodyParams': {
@@ -515,7 +517,7 @@ class Objects(Service):
                     'contentDisposition': contentDisposition,
                     'contentLanguage': contentLanguage,
                     'metageneration': metageneration,
-                    'kind': kind_,
+                    'kind': destination_kind,
                     'name': name,
                     'bucket': bucket,
                     'contentEncoding': contentEncoding,
@@ -544,8 +546,8 @@ class Objects(Service):
                 'ifGenerationNotMatch': ifGenerationNotMatch,
                 'generation': generation,
                 'ifMetagenerationMatch': ifMetagenerationMatch,
-                'object': object,
-                'bucket': bucket,
+                'object': urlibQuoteEncode(object, safe=''),
+                'bucket': urlibQuoteEncode(bucket, safe=''),
                 'ifGenerationMatch': ifGenerationMatch,
                 'ifMetagenerationNotMatch': ifMetagenerationNotMatch,
                 'projection': projection,
@@ -571,7 +573,7 @@ class Objects(Service):
                 'alt': alt,
                 'projection': projection,
                 'versions': versions,
-                'bucket': bucket,
+                'bucket': urlibQuoteEncode(bucket, safe=''),
                 'delimiter': delimiter,
                 'maxResults': maxResults,
                 'pageToken': pageToken,
@@ -582,7 +584,7 @@ class Objects(Service):
         }
         return self._request(queryParams)
 
-    def update(self, object, bucket, name, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, ifGenerationMatch=None, ifGenerationNotMatch=None, generation=None, ifMetagenerationMatch=None, predefinedAcl=None, ifMetagenerationNotMatch=None, projection=None, selfLink=None, generation_=None, componentCount=None, mediaLink=None, owner=None, cacheControl=None, acl=None, id=None, size=None, timeDeleted=None, md5Hash=None, crc32c=None, etag=None, metadata=None, updated=None, contentType=None, contentLanguage=None, metageneration=None, kind=None, bucket_=None, contentEncoding=None, storageClass=None, contentDisposition=None):
+    def update(self, object, bucket, name, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, ifGenerationMatch=None, ifGenerationNotMatch=None, generation=None, ifMetagenerationMatch=None, predefinedAcl=None, ifMetagenerationNotMatch=None, projection=None, selfLink=None, componentCount=None, mediaLink=None, owner=None, cacheControl=None, acl=None, id=None, size=None, timeDeleted=None, md5Hash=None, crc32c=None, etag=None, metadata=None, updated=None, contentType=None, contentLanguage=None, metageneration=None, kind=None, contentEncoding=None, storageClass=None, contentDisposition=None):
         '''Updates an object's metadata.'''
         queryParams = {
             'url': 'https://www.googleapis.com/storage/v1/b/{bucket}/o/{object}',
@@ -600,14 +602,14 @@ class Objects(Service):
                 'ifGenerationNotMatch': ifGenerationNotMatch,
                 'generation': generation,
                 'ifMetagenerationMatch': ifMetagenerationMatch,
-                'object': object,
-                'bucket': bucket,
+                'object': urlibQuoteEncode(object, safe=''),
+                'bucket': urlibQuoteEncode(bucket, safe=''),
                 'predefinedAcl': predefinedAcl,
                 'ifMetagenerationNotMatch': ifMetagenerationNotMatch,
                 'projection': projection,
             },
             'httpBodyParams': {
-                'generation': generation_,
+                'generation': generation,
                 'componentCount': componentCount,
                 'mediaLink': mediaLink,
                 'owner': owner,
@@ -627,7 +629,7 @@ class Objects(Service):
                 'metageneration': metageneration,
                 'kind': kind,
                 'name': name,
-                'bucket': bucket_,
+                'bucket': bucket,
                 'contentEncoding': contentEncoding,
                 'storageClass': storageClass,
                 'selfLink': selfLink,
@@ -635,7 +637,7 @@ class Objects(Service):
         }
         return self._request(queryParams)
 
-    def patch(self, object, bucket, name, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, ifGenerationMatch=None, ifGenerationNotMatch=None, generation=None, ifMetagenerationMatch=None, predefinedAcl=None, ifMetagenerationNotMatch=None, projection=None, selfLink=None, generation_=None, componentCount=None, mediaLink=None, owner=None, cacheControl=None, acl=None, id=None, size=None, timeDeleted=None, md5Hash=None, crc32c=None, etag=None, metadata=None, updated=None, contentType=None, contentLanguage=None, metageneration=None, kind=None, bucket_=None, contentEncoding=None, storageClass=None, contentDisposition=None):
+    def patch(self, object, bucket, name, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, ifGenerationMatch=None, ifGenerationNotMatch=None, generation=None, ifMetagenerationMatch=None, predefinedAcl=None, ifMetagenerationNotMatch=None, projection=None, selfLink=None, componentCount=None, mediaLink=None, owner=None, cacheControl=None, acl=None, id=None, size=None, timeDeleted=None, md5Hash=None, crc32c=None, etag=None, metadata=None, updated=None, contentType=None, contentLanguage=None, metageneration=None, kind=None, contentEncoding=None, storageClass=None, contentDisposition=None):
         '''Updates an object's metadata. This method supports patch semantics.'''
         queryParams = {
             'url': 'https://www.googleapis.com/storage/v1/b/{bucket}/o/{object}',
@@ -653,14 +655,14 @@ class Objects(Service):
                 'ifGenerationNotMatch': ifGenerationNotMatch,
                 'generation': generation,
                 'ifMetagenerationMatch': ifMetagenerationMatch,
-                'object': object,
-                'bucket': bucket,
+                'object': urlibQuoteEncode(object, safe=''),
+                'bucket': urlibQuoteEncode(bucket, safe=''),
                 'predefinedAcl': predefinedAcl,
                 'ifMetagenerationNotMatch': ifMetagenerationNotMatch,
                 'projection': projection,
             },
             'httpBodyParams': {
-                'generation': generation_,
+                'generation': generation,
                 'componentCount': componentCount,
                 'mediaLink': mediaLink,
                 'owner': owner,
@@ -680,7 +682,7 @@ class Objects(Service):
                 'metageneration': metageneration,
                 'kind': kind,
                 'name': name,
-                'bucket': bucket_,
+                'bucket': bucket,
                 'contentEncoding': contentEncoding,
                 'storageClass': storageClass,
                 'selfLink': selfLink,
@@ -703,7 +705,7 @@ class Objects(Service):
                 'userIp': userIp,
                 'alt': alt,
                 'ifSourceGenerationMatch': ifSourceGenerationMatch,
-                'sourceObject': sourceObject,
+                'sourceObject': urlibQuoteEncode(sourceObject, safe=''),
                 'ifGenerationMatch': ifGenerationMatch,
                 'ifGenerationNotMatch': ifGenerationNotMatch,
                 'ifSourceMetagenerationNotMatch': ifSourceMetagenerationNotMatch,
@@ -711,10 +713,10 @@ class Objects(Service):
                 'sourceGeneration': sourceGeneration,
                 'destinationPredefinedAcl': destinationPredefinedAcl,
                 'ifSourceGenerationNotMatch': ifSourceGenerationNotMatch,
-                'sourceBucket': sourceBucket,
+                'sourceBucket': urlibQuoteEncode(sourceBucket, safe=''),
                 'ifSourceMetagenerationMatch': ifSourceMetagenerationMatch,
-                'destinationBucket': destinationBucket,
-                'destinationObject': destinationObject,
+                'destinationBucket': urlibQuoteEncode(destinationBucket, safe=''),
+                'destinationObject': urlibQuoteEncode(destinationObject, safe=''),
                 'ifMetagenerationNotMatch': ifMetagenerationNotMatch,
                 'projection': projection,
             },
@@ -764,8 +766,8 @@ class Objects(Service):
                 'ifGenerationNotMatch': ifGenerationNotMatch,
                 'generation': generation,
                 'ifMetagenerationMatch': ifMetagenerationMatch,
-                'object': object,
-                'bucket': bucket,
+                'object': urlibQuoteEncode(object, safe=''),
+                'bucket': urlibQuoteEncode(bucket, safe=''),
                 'ifGenerationMatch': ifGenerationMatch,
                 'ifMetagenerationNotMatch': ifMetagenerationNotMatch,
             },
@@ -775,11 +777,11 @@ class Objects(Service):
         return self._request(queryParams)
 
 
-class ObjectAccessControls(Service):
-    def __init__(self, conn, *args, **kwargs):
-        super(ObjectAccessControls, self).__init__(conn, *args, **kwargs)
+class ObjectAccessControls(Resource):
+    def __init__(self, service, conn, *args, **kwargs):
+        super(ObjectAccessControls, self).__init__(service, conn, *args, **kwargs)
 
-    def insert(self, object, bucket, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, generation=None, domain=None, generation_=None, object_=None, bucket_=None, kind=None, entity=None, email=None, etag=None, role=None, entityId=None, projectTeam=None, id=None, selfLink=None):
+    def insert(self, object, bucket, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, generation=None, domain=None, kind=None, entity=None, email=None, etag=None, role=None, entityId=None, projectTeam=None, id=None, selfLink=None):
         '''Creates a new ACL entry on the specified object.'''
         queryParams = {
             'url': 'https://www.googleapis.com/storage/v1/b/{bucket}/o/{object}/acl',
@@ -794,14 +796,14 @@ class ObjectAccessControls(Service):
                 'userIp': userIp,
                 'alt': alt,
                 'generation': generation,
-                'object': object,
-                'bucket': bucket,
+                'object': urlibQuoteEncode(object, safe=''),
+                'bucket': urlibQuoteEncode(bucket, safe=''),
             },
             'httpBodyParams': {
                 'domain': domain,
-                'generation': generation_,
-                'object': object_,
-                'bucket': bucket_,
+                'generation': generation,
+                'object': object,
+                'bucket': bucket,
                 'kind': kind,
                 'entity': entity,
                 'etag': etag,
@@ -830,9 +832,9 @@ class ObjectAccessControls(Service):
                 'userIp': userIp,
                 'alt': alt,
                 'generation': generation,
-                'object': object,
-                'bucket': bucket,
-                'entity': entity,
+                'object': urlibQuoteEncode(object, safe=''),
+                'bucket': urlibQuoteEncode(bucket, safe=''),
+                'entity': urlibQuoteEncode(entity, safe=''),
             },
             'httpBodyParams': {
             },
@@ -854,15 +856,15 @@ class ObjectAccessControls(Service):
                 'userIp': userIp,
                 'alt': alt,
                 'generation': generation,
-                'object': object,
-                'bucket': bucket,
+                'object': urlibQuoteEncode(object, safe=''),
+                'bucket': urlibQuoteEncode(bucket, safe=''),
             },
             'httpBodyParams': {
             },
         }
         return self._request(queryParams)
 
-    def update(self, object, bucket, entity, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, generation=None, domain=None, generation_=None, object_=None, bucket_=None, kind=None, entity_=None, email=None, etag=None, role=None, entityId=None, projectTeam=None, id=None, selfLink=None):
+    def update(self, object, bucket, entity, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, generation=None, domain=None, kind=None, email=None, etag=None, role=None, entityId=None, projectTeam=None, id=None, selfLink=None):
         '''Updates an ACL entry on the specified object.'''
         queryParams = {
             'url': 'https://www.googleapis.com/storage/v1/b/{bucket}/o/{object}/acl/{entity}',
@@ -877,17 +879,17 @@ class ObjectAccessControls(Service):
                 'userIp': userIp,
                 'alt': alt,
                 'generation': generation,
-                'object': object,
-                'bucket': bucket,
-                'entity': entity,
+                'object': urlibQuoteEncode(object, safe=''),
+                'bucket': urlibQuoteEncode(bucket, safe=''),
+                'entity': urlibQuoteEncode(entity, safe=''),
             },
             'httpBodyParams': {
                 'domain': domain,
-                'generation': generation_,
-                'object': object_,
-                'bucket': bucket_,
+                'generation': generation,
+                'object': object,
+                'bucket': bucket,
                 'kind': kind,
-                'entity': entity_,
+                'entity': entity,
                 'etag': etag,
                 'role': role,
                 'id': id,
@@ -899,7 +901,7 @@ class ObjectAccessControls(Service):
         }
         return self._request(queryParams)
 
-    def patch(self, object, bucket, entity, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, generation=None, domain=None, generation_=None, object_=None, bucket_=None, kind=None, entity_=None, email=None, etag=None, role=None, entityId=None, projectTeam=None, id=None, selfLink=None):
+    def patch(self, object, bucket, entity, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, generation=None, domain=None, kind=None, email=None, etag=None, role=None, entityId=None, projectTeam=None, id=None, selfLink=None):
         '''Updates an ACL entry on the specified object. This method supports patch semantics.'''
         queryParams = {
             'url': 'https://www.googleapis.com/storage/v1/b/{bucket}/o/{object}/acl/{entity}',
@@ -914,17 +916,17 @@ class ObjectAccessControls(Service):
                 'userIp': userIp,
                 'alt': alt,
                 'generation': generation,
-                'object': object,
-                'bucket': bucket,
-                'entity': entity,
+                'object': urlibQuoteEncode(object, safe=''),
+                'bucket': urlibQuoteEncode(bucket, safe=''),
+                'entity': urlibQuoteEncode(entity, safe=''),
             },
             'httpBodyParams': {
                 'domain': domain,
-                'generation': generation_,
-                'object': object_,
-                'bucket': bucket_,
+                'generation': generation,
+                'object': object,
+                'bucket': bucket,
                 'kind': kind,
-                'entity': entity_,
+                'entity': entity,
                 'etag': etag,
                 'role': role,
                 'id': id,
@@ -951,9 +953,9 @@ class ObjectAccessControls(Service):
                 'userIp': userIp,
                 'alt': alt,
                 'generation': generation,
-                'object': object,
-                'bucket': bucket,
-                'entity': entity,
+                'object': urlibQuoteEncode(object, safe=''),
+                'bucket': urlibQuoteEncode(bucket, safe=''),
+                'entity': urlibQuoteEncode(entity, safe=''),
             },
             'httpBodyParams': {
             },
@@ -961,9 +963,9 @@ class ObjectAccessControls(Service):
         return self._request(queryParams)
 
 
-class Buckets(Service):
-    def __init__(self, conn, *args, **kwargs):
-        super(Buckets, self).__init__(conn, *args, **kwargs)
+class Buckets(Resource):
+    def __init__(self, service, conn, *args, **kwargs):
+        super(Buckets, self).__init__(service, conn, *args, **kwargs)
 
     def insert(self, project, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, predefinedAcl=None, projection=None, website=None, kind=None, logging=None, name=None, timeCreated=None, id=None, storageClass=None, projectNumber=None, acl=None, defaultObjectAcl=None, metageneration=None, versioning=None, cors=None, owner=None, etag=None, lifecycle=None, selfLink=None, location=None):
         '''Creates a new bucket.'''
@@ -1021,7 +1023,7 @@ class Buckets(Service):
                 'userIp': userIp,
                 'alt': alt,
                 'ifMetagenerationMatch': ifMetagenerationMatch,
-                'bucket': bucket,
+                'bucket': urlibQuoteEncode(bucket, safe=''),
                 'ifMetagenerationNotMatch': ifMetagenerationNotMatch,
                 'projection': projection,
             },
@@ -1070,7 +1072,7 @@ class Buckets(Service):
                 'alt': alt,
                 'ifMetagenerationMatch': ifMetagenerationMatch,
                 'predefinedAcl': predefinedAcl,
-                'bucket': bucket,
+                'bucket': urlibQuoteEncode(bucket, safe=''),
                 'ifMetagenerationNotMatch': ifMetagenerationNotMatch,
                 'projection': projection,
             },
@@ -1113,7 +1115,7 @@ class Buckets(Service):
                 'alt': alt,
                 'ifMetagenerationMatch': ifMetagenerationMatch,
                 'predefinedAcl': predefinedAcl,
-                'bucket': bucket,
+                'bucket': urlibQuoteEncode(bucket, safe=''),
                 'ifMetagenerationNotMatch': ifMetagenerationNotMatch,
                 'projection': projection,
             },
@@ -1155,7 +1157,7 @@ class Buckets(Service):
                 'userIp': userIp,
                 'alt': alt,
                 'ifMetagenerationMatch': ifMetagenerationMatch,
-                'bucket': bucket,
+                'bucket': urlibQuoteEncode(bucket, safe=''),
                 'ifMetagenerationNotMatch': ifMetagenerationNotMatch,
             },
             'httpBodyParams': {
@@ -1175,9 +1177,9 @@ class Storage(Service):
             self._scopes = self._DEFAULT_SCOPES
         conn.registerScopes(self._scopes)
         super(Storage, self).__init__(conn, *args, **kwargs)
-        self.defaultObjectAccessControls = DefaultObjectAccessControls(conn, *args, **kwargs)
-        self.bucketAccessControls = BucketAccessControls(conn, *args, **kwargs)
-        self.channels = Channels(conn, *args, **kwargs)
-        self.objects = Objects(conn, *args, **kwargs)
-        self.objectAccessControls = ObjectAccessControls(conn, *args, **kwargs)
-        self.buckets = Buckets(conn, *args, **kwargs)
+        self.defaultObjectAccessControls = DefaultObjectAccessControls(self, conn, *args, **kwargs)
+        self.bucketAccessControls = BucketAccessControls(self, conn, *args, **kwargs)
+        self.channels = Channels(self, conn, *args, **kwargs)
+        self.objects = Objects(self, conn, *args, **kwargs)
+        self.objectAccessControls = ObjectAccessControls(self, conn, *args, **kwargs)
+        self.buckets = Buckets(self, conn, *args, **kwargs)

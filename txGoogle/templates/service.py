@@ -15,7 +15,7 @@ class {{capFirst(resourceName)}}(Service):
         conn.registerScopes(self._scopes)
         super({{capFirst(resourceName)}}, self).__init__(conn, *args, **kwargs)
         {%for k in resourceDict.get('resources', {}).keys()%}
-        self.{{k}} = {{capFirst(k)}}(conn, *args, **kwargs)
+        self.{{k}} = {{capFirst(k)}}(self, conn, *args, **kwargs)
         {%endfor%}
         {%for v in methodsDict.values()%}
 {{v}}

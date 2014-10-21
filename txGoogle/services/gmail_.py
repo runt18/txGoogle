@@ -1,9 +1,11 @@
 from txGoogle.service import Service
+from urllib import quote as urlibQuoteEncode
+from txGoogle.resource import Resource
 
 
-class Attachments(Service):
-    def __init__(self, conn, *args, **kwargs):
-        super(Attachments, self).__init__(conn, *args, **kwargs)
+class Attachments(Resource):
+    def __init__(self, service, conn, *args, **kwargs):
+        super(Attachments, self).__init__(service, conn, *args, **kwargs)
 
     def get(self, userId, id, messageId, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None):
         '''Gets the specified message attachment.'''
@@ -19,9 +21,9 @@ class Attachments(Service):
                 'key': key,
                 'userIp': userIp,
                 'alt': alt,
-                'userId': userId,
-                'id': id,
-                'messageId': messageId,
+                'userId': urlibQuoteEncode(userId, safe=''),
+                'id': urlibQuoteEncode(id, safe=''),
+                'messageId': urlibQuoteEncode(messageId, safe=''),
             },
             'httpBodyParams': {
             },
@@ -29,10 +31,10 @@ class Attachments(Service):
         return self._request(queryParams)
 
 
-class Messages(Service):
-    def __init__(self, conn, *args, **kwargs):
-        super(Messages, self).__init__(conn, *args, **kwargs)
-        self.attachments = Attachments(conn)
+class Messages(Resource):
+    def __init__(self, service, conn, *args, **kwargs):
+        super(Messages, self).__init__(service, conn, *args, **kwargs)
+        self.attachments = Attachments(api, conn)
 
     def insert(self, userId, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, internalDateSource=None, historyId=None, id=None, snippet=None, raw=None, sizeEstimate=None, threadId=None, labelIds=None, attachmentId=None, data=None, size=None, mimeType=None, partId=None, filename=None, headers=None, parts=None):
         '''Directly inserts a message into only this user's mailbox similar to IMAP APPEND, bypassing most scanning and classification. Does not send a message.'''
@@ -49,7 +51,7 @@ class Messages(Service):
                 'userIp': userIp,
                 'alt': alt,
                 'internalDateSource': internalDateSource,
-                'userId': userId,
+                'userId': urlibQuoteEncode(userId, safe=''),
             },
             'httpBodyParams': {
                 'historyId': historyId,
@@ -89,8 +91,8 @@ class Messages(Service):
                 'key': key,
                 'userIp': userIp,
                 'alt': alt,
-                'userId': userId,
-                'id': id,
+                'userId': urlibQuoteEncode(userId, safe=''),
+                'id': urlibQuoteEncode(id, safe=''),
             },
             'httpBodyParams': {
             },
@@ -112,8 +114,8 @@ class Messages(Service):
                 'userIp': userIp,
                 'alt': alt,
                 'metadataHeaders': metadataHeaders,
-                'userId': userId,
-                'id': id,
+                'userId': urlibQuoteEncode(userId, safe=''),
+                'id': urlibQuoteEncode(id, safe=''),
                 'format': format,
             },
             'httpBodyParams': {
@@ -135,7 +137,7 @@ class Messages(Service):
                 'key': key,
                 'userIp': userIp,
                 'alt': alt,
-                'userId': userId,
+                'userId': urlibQuoteEncode(userId, safe=''),
                 'maxResults': maxResults,
                 'q': q,
                 'pageToken': pageToken,
@@ -161,8 +163,8 @@ class Messages(Service):
                 'key': key,
                 'userIp': userIp,
                 'alt': alt,
-                'userId': userId,
-                'id': id,
+                'userId': urlibQuoteEncode(userId, safe=''),
+                'id': urlibQuoteEncode(id, safe=''),
             },
             'httpBodyParams': {
                 'removeLabelIds': removeLabelIds,
@@ -185,7 +187,7 @@ class Messages(Service):
                 'key': key,
                 'userIp': userIp,
                 'alt': alt,
-                'userId': userId,
+                'userId': urlibQuoteEncode(userId, safe=''),
             },
             'httpBodyParams': {
                 'historyId': historyId,
@@ -226,7 +228,7 @@ class Messages(Service):
                 'userIp': userIp,
                 'alt': alt,
                 'internalDateSource': internalDateSource,
-                'userId': userId,
+                'userId': urlibQuoteEncode(userId, safe=''),
             },
             'httpBodyParams': {
                 'historyId': historyId,
@@ -266,8 +268,8 @@ class Messages(Service):
                 'key': key,
                 'userIp': userIp,
                 'alt': alt,
-                'userId': userId,
-                'id': id,
+                'userId': urlibQuoteEncode(userId, safe=''),
+                'id': urlibQuoteEncode(id, safe=''),
             },
             'httpBodyParams': {
             },
@@ -288,8 +290,8 @@ class Messages(Service):
                 'key': key,
                 'userIp': userIp,
                 'alt': alt,
-                'userId': userId,
-                'id': id,
+                'userId': urlibQuoteEncode(userId, safe=''),
+                'id': urlibQuoteEncode(id, safe=''),
             },
             'httpBodyParams': {
             },
@@ -297,9 +299,9 @@ class Messages(Service):
         return self._request(queryParams)
 
 
-class Labels(Service):
-    def __init__(self, conn, *args, **kwargs):
-        super(Labels, self).__init__(conn, *args, **kwargs)
+class Labels(Resource):
+    def __init__(self, service, conn, *args, **kwargs):
+        super(Labels, self).__init__(service, conn, *args, **kwargs)
 
     def get(self, userId, id, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None):
         '''Gets the specified label.'''
@@ -315,8 +317,8 @@ class Labels(Service):
                 'key': key,
                 'userIp': userIp,
                 'alt': alt,
-                'userId': userId,
-                'id': id,
+                'userId': urlibQuoteEncode(userId, safe=''),
+                'id': urlibQuoteEncode(id, safe=''),
             },
             'httpBodyParams': {
             },
@@ -337,7 +339,7 @@ class Labels(Service):
                 'key': key,
                 'userIp': userIp,
                 'alt': alt,
-                'userId': userId,
+                'userId': urlibQuoteEncode(userId, safe=''),
             },
             'httpBodyParams': {
                 'type': type,
@@ -363,7 +365,7 @@ class Labels(Service):
                 'key': key,
                 'userIp': userIp,
                 'alt': alt,
-                'userId': userId,
+                'userId': urlibQuoteEncode(userId, safe=''),
             },
             'httpBodyParams': {
             },
@@ -384,8 +386,8 @@ class Labels(Service):
                 'key': key,
                 'userIp': userIp,
                 'alt': alt,
-                'userId': userId,
-                'id': id,
+                'userId': urlibQuoteEncode(userId, safe=''),
+                'id': urlibQuoteEncode(id, safe=''),
             },
             'httpBodyParams': {
                 'type': type,
@@ -411,8 +413,8 @@ class Labels(Service):
                 'key': key,
                 'userIp': userIp,
                 'alt': alt,
-                'userId': userId,
-                'id': id,
+                'userId': urlibQuoteEncode(userId, safe=''),
+                'id': urlibQuoteEncode(id, safe=''),
             },
             'httpBodyParams': {
                 'type': type,
@@ -438,8 +440,8 @@ class Labels(Service):
                 'key': key,
                 'userIp': userIp,
                 'alt': alt,
-                'userId': userId,
-                'id': id,
+                'userId': urlibQuoteEncode(userId, safe=''),
+                'id': urlibQuoteEncode(id, safe=''),
             },
             'httpBodyParams': {
             },
@@ -447,9 +449,9 @@ class Labels(Service):
         return self._request(queryParams)
 
 
-class Threads(Service):
-    def __init__(self, conn, *args, **kwargs):
-        super(Threads, self).__init__(conn, *args, **kwargs)
+class Threads(Resource):
+    def __init__(self, service, conn, *args, **kwargs):
+        super(Threads, self).__init__(service, conn, *args, **kwargs)
 
     def untrash(self, userId, id, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None):
         '''Removes the specified thread from the trash.'''
@@ -465,8 +467,8 @@ class Threads(Service):
                 'key': key,
                 'userIp': userIp,
                 'alt': alt,
-                'userId': userId,
-                'id': id,
+                'userId': urlibQuoteEncode(userId, safe=''),
+                'id': urlibQuoteEncode(id, safe=''),
             },
             'httpBodyParams': {
             },
@@ -487,8 +489,8 @@ class Threads(Service):
                 'key': key,
                 'userIp': userIp,
                 'alt': alt,
-                'userId': userId,
-                'id': id,
+                'userId': urlibQuoteEncode(userId, safe=''),
+                'id': urlibQuoteEncode(id, safe=''),
             },
             'httpBodyParams': {
             },
@@ -509,7 +511,7 @@ class Threads(Service):
                 'key': key,
                 'userIp': userIp,
                 'alt': alt,
-                'userId': userId,
+                'userId': urlibQuoteEncode(userId, safe=''),
                 'maxResults': maxResults,
                 'q': q,
                 'pageToken': pageToken,
@@ -535,8 +537,8 @@ class Threads(Service):
                 'key': key,
                 'userIp': userIp,
                 'alt': alt,
-                'userId': userId,
-                'id': id,
+                'userId': urlibQuoteEncode(userId, safe=''),
+                'id': urlibQuoteEncode(id, safe=''),
             },
             'httpBodyParams': {
                 'removeLabelIds': removeLabelIds,
@@ -559,8 +561,8 @@ class Threads(Service):
                 'key': key,
                 'userIp': userIp,
                 'alt': alt,
-                'userId': userId,
-                'id': id,
+                'userId': urlibQuoteEncode(userId, safe=''),
+                'id': urlibQuoteEncode(id, safe=''),
             },
             'httpBodyParams': {
             },
@@ -581,8 +583,8 @@ class Threads(Service):
                 'key': key,
                 'userIp': userIp,
                 'alt': alt,
-                'userId': userId,
-                'id': id,
+                'userId': urlibQuoteEncode(userId, safe=''),
+                'id': urlibQuoteEncode(id, safe=''),
             },
             'httpBodyParams': {
             },
@@ -590,9 +592,9 @@ class Threads(Service):
         return self._request(queryParams)
 
 
-class Drafts(Service):
-    def __init__(self, conn, *args, **kwargs):
-        super(Drafts, self).__init__(conn, *args, **kwargs)
+class Drafts(Resource):
+    def __init__(self, service, conn, *args, **kwargs):
+        super(Drafts, self).__init__(service, conn, *args, **kwargs)
 
     def get(self, userId, id, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, format=None):
         '''Gets the specified draft.'''
@@ -608,8 +610,8 @@ class Drafts(Service):
                 'key': key,
                 'userIp': userIp,
                 'alt': alt,
-                'userId': userId,
-                'id': id,
+                'userId': urlibQuoteEncode(userId, safe=''),
+                'id': urlibQuoteEncode(id, safe=''),
                 'format': format,
             },
             'httpBodyParams': {
@@ -631,7 +633,7 @@ class Drafts(Service):
                 'key': key,
                 'userIp': userIp,
                 'alt': alt,
-                'userId': userId,
+                'userId': urlibQuoteEncode(userId, safe=''),
             },
             'httpBodyParams': {
                 'message': {
@@ -675,7 +677,7 @@ class Drafts(Service):
                 'userIp': userIp,
                 'alt': alt,
                 'pageToken': pageToken,
-                'userId': userId,
+                'userId': urlibQuoteEncode(userId, safe=''),
                 'maxResults': maxResults,
             },
             'httpBodyParams': {
@@ -697,8 +699,8 @@ class Drafts(Service):
                 'key': key,
                 'userIp': userIp,
                 'alt': alt,
-                'userId': userId,
-                'id': id,
+                'userId': urlibQuoteEncode(userId, safe=''),
+                'id': urlibQuoteEncode(id, safe=''),
             },
             'httpBodyParams': {
                 'message': {
@@ -741,7 +743,7 @@ class Drafts(Service):
                 'key': key,
                 'userIp': userIp,
                 'alt': alt,
-                'userId': userId,
+                'userId': urlibQuoteEncode(userId, safe=''),
             },
             'httpBodyParams': {
                 'message': {
@@ -784,8 +786,8 @@ class Drafts(Service):
                 'key': key,
                 'userIp': userIp,
                 'alt': alt,
-                'userId': userId,
-                'id': id,
+                'userId': urlibQuoteEncode(userId, safe=''),
+                'id': urlibQuoteEncode(id, safe=''),
             },
             'httpBodyParams': {
             },
@@ -793,9 +795,9 @@ class Drafts(Service):
         return self._request(queryParams)
 
 
-class History(Service):
-    def __init__(self, conn, *args, **kwargs):
-        super(History, self).__init__(conn, *args, **kwargs)
+class History(Resource):
+    def __init__(self, service, conn, *args, **kwargs):
+        super(History, self).__init__(service, conn, *args, **kwargs)
 
     def list(self, userId, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, pageToken=None, labelId=None, maxResults=None, startHistoryId=None):
         '''Lists the history of all changes to the given mailbox. History results are returned in chronological order (increasing historyId).'''
@@ -812,7 +814,7 @@ class History(Service):
                 'userIp': userIp,
                 'alt': alt,
                 'pageToken': pageToken,
-                'userId': userId,
+                'userId': urlibQuoteEncode(userId, safe=''),
                 'labelId': labelId,
                 'maxResults': maxResults,
                 'startHistoryId': startHistoryId,
@@ -823,14 +825,14 @@ class History(Service):
         return self._request(queryParams)
 
 
-class Users(Service):
-    def __init__(self, conn, *args, **kwargs):
-        super(Users, self).__init__(conn, *args, **kwargs)
-        self.messages = Messages(conn)
-        self.labels = Labels(conn)
-        self.threads = Threads(conn)
-        self.drafts = Drafts(conn)
-        self.history = History(conn)
+class Users(Resource):
+    def __init__(self, service, conn, *args, **kwargs):
+        super(Users, self).__init__(service, conn, *args, **kwargs)
+        self.messages = Messages(api, conn)
+        self.labels = Labels(api, conn)
+        self.threads = Threads(api, conn)
+        self.drafts = Drafts(api, conn)
+        self.history = History(api, conn)
 
 
 class Gmail(Service):
@@ -844,4 +846,4 @@ class Gmail(Service):
             self._scopes = self._DEFAULT_SCOPES
         conn.registerScopes(self._scopes)
         super(Gmail, self).__init__(conn, *args, **kwargs)
-        self.users = Users(conn, *args, **kwargs)
+        self.users = Users(self, conn, *args, **kwargs)

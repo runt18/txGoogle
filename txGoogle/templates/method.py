@@ -24,7 +24,11 @@
                 '{{k}}': {{k}},
                 {%endfor%}
                 {%for k in methodDict.get('parameters', {})%}
+                    {%if k in paramsToEncode%}
+                '{{k}}': urlibQuoteEncode({{k}}, safe=''),
+                    {%else%}
                 '{{k}}': {{k}},
+                    {%endif%}
                 {%endfor%}
             },
             'httpBodyParams': {

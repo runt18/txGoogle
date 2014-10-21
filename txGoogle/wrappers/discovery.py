@@ -15,6 +15,7 @@ from txGoogle.utils import leaveOutNulls
 from txGoogle.sharedConnection import SharedConnection
 from txGoogle.service import Service
 
+
 class Apis(Service):
     def __init__(self, conn, *args, **kwargs):
         super(Apis, self).__init__(conn, *args, **kwargs)
@@ -75,7 +76,6 @@ class Discovery(Service):
             self._scopes = self._DEFAULT_SCOPES
         conn.registerScopes(self._scopes)
         self.apis = Apis(conn)
-
 
 
 class DiscoveryWrapper(Discovery):
