@@ -72,6 +72,32 @@ result
 ]
 ```
 
+## GCD:
+
+Example to delete entities by key:
+
+```python
+from txGoogle.wrappers.datastore import DatastoreWrapper
+from txGoogle.sharedConnection import SharedConnection
+from twisted.internet import reactor
+from txGoogle.wrappers.gcd import setGlobalGcdServiceAndProjectId
+
+conn = SharedConnection('XXXXX.apps.googleusercontent.com', 'XXXXXX', 'myCredentials.json')
+gcd = DatastoreWrapper(conn)
+conn.connect()
+setGlobalGcdServiceAndProjectId(gcd, 'projectId') #this is used in batch operations. 
+
+def onEntitiesToRemove(entities):
+  for entity in entities:
+      self.gcd.batchOperations.delete(entity.key) # gcd allows for max 500 entities per "commit" so we batch them up
+        
+dfd = gcd.datasets.query(datasetId='over-sight', kinds=['Sample'], properties=['__key__'], limit=5000)
+dfd.addCallback(onEntitiesToRemove)
+
+reactor.run()
+  
+```
+
 
 ## GCS:
 
