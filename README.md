@@ -12,8 +12,9 @@ The main reasons for building this library:
 
 How this project is set up:
 
-- you can download service descriptions with: https://github.com/transceptor-technology/txGoogle/blob/master/txGoogle/wrappers/discovery.py
-- you can generate the service file. This is stored in txGoogle/services with: https://github.com/transceptor-technology/txGoogle/blob/master/txGoogle/asyncApisGenerator.py
+- you can download service descriptions with: [discovery.py](https://github.com/transceptor-technology/txGoogle/blob/master/txGoogle/wrappers/discovery.py)
+- you can generate the service file. This is stored in [txGoogle/services](https://github.com/transceptor-technology/txGoogle/tree/master/txGoogle/services) with: [asyncApisGenerator.py](https://github.com/transceptor-technology/txGoogle/blob/master/txGoogle/asyncApisGenerator.py)
+- then it's time to build a wrapper for the service. Google provides nice api calls but most likely you want it to be just a bit more than that. Wrappers are stored in [txGoogle/wrappers](https://github.com/transceptor-technology/txGoogle/tree/master/txGoogle/wrappers)
 
 
 
