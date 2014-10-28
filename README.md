@@ -38,7 +38,7 @@ This will open up a browser asking for the authorisation scopes that are require
 from txGoogle.sharedConnection import SharedConnection
 from txGoogle.asyncUtils import printCb
 from twisted.internet import reactor
-conn = SharedConnection('785509043543.apps.googleusercontent.com', 'Mhx2IjJLk78U9VyErHHIVbnw', 'apiFiles/asyncBqCredentials.json')
+conn = SharedConnection('XXXXX.apps.googleusercontent.com', 'XXXXXX', 'myCredentials.json')
 abq = BigQueryWrapper(conn)
 conn.connect()
 
