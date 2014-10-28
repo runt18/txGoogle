@@ -13,8 +13,8 @@ The main reasons for building this library:
 How this project is set up:
 
 - you can download service descriptions with: https://github.com/transceptor-technology/txGoogle/blob/master/txGoogle/wrappers/discovery.py
-- you can generate the service files (stored in txGoogle/services) with: https://github.com/transceptor-technology/txGoogle/blob/master/txGoogle/asyncApisGenerator.py
-- 
+- you can generate the service file. This is stored in txGoogle/services with: https://github.com/transceptor-technology/txGoogle/blob/master/txGoogle/asyncApisGenerator.py
+
 
 
 ## setting up a connection:
