@@ -10,6 +10,7 @@ from twisted.internet.error import TimeoutError
 from twisted.python import log
 from twisted.internet.task import LoopingCall
 from twisted.internet.defer import Deferred
+from txGoogle.asyncUtils import waitTime, ignoreFirstArg
 
 
 class SharedConnection(object):
@@ -31,6 +32,14 @@ class SharedConnection(object):
         self._emptyQueueDfd = None
 
     def waitForEmptyQueue(self):
+        if self._emptyQueueDfd is None:
+            # make sure we wait long enough for the queue to fill
+            dfd = waitTime(self.REQUEST_RESEND_CHECK_INTERVAL * 2)
+            dfd.addCallback(ignoreFirstArg, self._createEmptyQueueDfd)
+            return dfd
+        return self._emptyQueueDfd
+
+    def _createEmptyQueueDfd(self):
         if self._emptyQueueDfd is None:
             self._emptyQueueDfd = Deferred()
         return self._emptyQueueDfd
