@@ -17,7 +17,11 @@ class GcdResponseHandler(GoogleResponseHandler):
     def _loadValues(self, valueDcts):
         for dct in valueDcts:
             if 'entity' in dct:
-                yield Entity(dct['entity'], fromSerialized=True)
+                try:
+                    yield Entity(dct['entity'], fromSerialized=True)
+                except:
+                    log.err()
+                    yield 'Failed to load entity'
             if 'key' in dct:
                 yield Key(dct['key'])
 
@@ -30,13 +34,15 @@ class GcdResponseHandler(GoogleResponseHandler):
             self._result['deferred'].extend(self._loadValues(loaded['deferred']))
         if loaded['missing']:
             self._result['missing'].extend(self._loadValues(loaded['missing']))
-            
+
     def _loadResults_RunQueryResponse(self, loaded):
         if self._result is None:
             self._result = []
-        batchRes = loaded.get('batch', {})
-        self._result.extend(self._loadValues(batchRes.get('entityResults', [])))
-        self._result.extend(self._loadValues(batchRes.get('keyResults', [])))
-        if batchRes.get('skippedResults'):
-            log.msg('Skipped Results found', logLevel=logging.WARNING)
+        if loaded:
+            batchRes = loaded.get('batch', {})
+            self._result.extend(self._loadValues(batchRes.get('entityResults', [])))
+            self._result.extend(self._loadValues(batchRes.get('keyResults', [])))
+            if batchRes.get('skippedResults'):
+                log.msg('Skipped Results found', logLevel=logging.WARNING)
+                raise Exception('skippedResults found? {}'.format(loaded))
 

@@ -85,7 +85,11 @@ class AsyncOAuthConnectionHandler(AsyncHttp):
 
     def handleToken(self, responseObj, refreshToken):
         log.msg('Received token dict', logLevel=logging.INFO)
-        self._credentialsDct = json.loads(responseObj.msg)
+        loaded = json.loads(responseObj.msg)
+        if 'error' in loaded:
+            self._getAccessCredsDfd.errback(loaded['error'])
+        self._credentialsDct = loaded
+        self._credentialsDct['scopes'] = self._grantKwargs['scope'].split(' ')
         self._credentialsDct['expirationTimestamp'] = int(time.time()) + self._credentialsDct['expires_in']
         if refreshToken and 'refresh_token' not in self._credentialsDct:
             self._credentialsDct['refresh_token'] = refreshToken
@@ -94,12 +98,25 @@ class AsyncOAuthConnectionHandler(AsyncHttp):
             os.makedirs(parentFolder)
         fl = open(self._credentialsFileName, 'w')
         json.dump(self._credentialsDct, fl)
-        self._getAccessCredsDfd.callback('Ok')
         fl.close()
+        self._getAccessCredsDfd.callback('Ok')
         return 'Ok'
 
+    def _credentialsDictIsValid(self):
+        if set(self._credentialsDct.get('scopes', [])) != set(self._grantKwargs['scope'].split(' ')):
+            if 'refresh_token' in self._credentialsDct:
+                del self._credentialsDct['refresh_token']
+            if 'access_token' in self._credentialsDct:
+                del self._credentialsDct['access_token']
+            return False
+        if 'expirationTimestamp' not in self._credentialsDct:
+            return False
+        if 'refresh_token' not in self._credentialsDct:
+            return False
+        return True
+
     def _checkCredentialsDct(self):
-        if 'expirationTimestamp' not in self._credentialsDct or 'refresh_token' not in self._credentialsDct:
+        if not self._credentialsDictIsValid():
             log.msg('Missing expirationTimestamp or refresh_token', logLevel=logging.INFO)
             return self._getAccessCredentials()
         elif self._credentialsDct['expirationTimestamp'] < int(time.time() - 60):

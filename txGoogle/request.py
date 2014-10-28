@@ -65,6 +65,9 @@ class Request(object):
         self._jsonEncode = jsonEncode
         self._dfd = None
 
+    def __repr__(self):
+        return self._url + str(self._bodyParams)
+
     def run(self, agent):
         self._startTs = time.time()
         self._dfd = Deferred()
@@ -73,6 +76,14 @@ class Request(object):
         bodyParams = simpleDeepCopy(self._bodyParams)
         urlParams = simpleDeepCopy(self._urlParams)
         return self._run(agent, headers, self._method, bodyParams, urlParams, self._url)
+
+    @property
+    def maxResults(self):
+        if 'maxResults' in self._bodyParams:
+            return self._bodyParams['maxResults']
+        if 'maxResults' in self._urlParams:
+            return self._urlParams['maxResults']
+        return None
 
     def setAcceptGzip(self):
         self.setHeaderField('Accept-Encoding', ['gzip'])
@@ -89,7 +100,10 @@ class Request(object):
         if not urlParams:
             urlParams = {}
         if len(urlParams) > 0:
-            encoded = urlencode(urlParams)
+            try:
+                encoded = urlencode(urlParams)
+            except Exception as ex:
+                raise ex
             url += '?' + encoded
             if self._formEncode:
                 self._upsertContentType(headers, 'application/x-www-form-urlencoded')
@@ -102,7 +116,6 @@ class Request(object):
                 # headers['Content-Length'] = [len(encoded)]
                 dataProducer = StringProducer(encoded)
         url = url.encode('ascii', 'ignore')
-        print 'fetching {}'.format(url)
         log.msg('fetching {}'.format(url), logLevel=logging.DEBUG)
         return agent.request(method, url, Headers(headers), dataProducer)
 

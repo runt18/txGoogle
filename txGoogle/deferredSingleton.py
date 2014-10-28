@@ -3,7 +3,7 @@ from twisted.internet import defer
 
 class DeferredSingleton(type):
     # http://blogs.fluidinfo.com/terry/2008/11/03/a-python-metaclass-for-twisted-allowing-__init__-to-return-a-deferred/
-    
+
     _instances = {}
 
     def __call__(cls, *args, **kwargs): # @NoSelf
@@ -21,9 +21,11 @@ class DeferredSingleton(type):
             origInit = classdict['__init__']
         except KeyError:
             origInit = lambda self: None
+
         def newInit(self, *args, **kw):
             hiddenDict = dict(args=args, kw=kw, __init__=origInit)
             setattr(self, hidden, hiddenDict)
+
         def _instantiate(self, DUMMY=None):
             def addSelf(result):
                 return (self, result)

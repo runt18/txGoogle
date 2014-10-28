@@ -22,10 +22,12 @@ class ResponseHandler(object):
         return self._dfd
 
     def onFailed(self, faillure, requestObj):
+        log.msg('Failed request {}'.format(requestObj))
         self._dfd.errback(faillure)
 
     def _logErr(self, fail):
-        log.err()
+        log.err(fail)
+        print fail
         raise fail
 
     def _hasErrback(self):
@@ -41,6 +43,8 @@ class ResponseHandler(object):
             self._ebAdded = True
 
     def onResponse(self, response, requestObj):
+        if response is None:
+            self._dfd.errback(Exception('None response'))
         self._checkForExistingEbs()
         if response.contentType == 'application/json':
             try:

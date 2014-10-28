@@ -530,7 +530,7 @@ class Objects(Resource):
         return self._request(queryParams)
 
     def get(self, object, bucket, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, ifGenerationNotMatch=None, generation=None, ifMetagenerationMatch=None, ifGenerationMatch=None, ifMetagenerationNotMatch=None, projection=None):
-        '''Retrieves objects or their metadata.'''
+        '''Retrieves an object or its metadata.'''
         queryParams = {
             'url': 'https://www.googleapis.com/storage/v1/b/{bucket}/o/{object}',
             'method': 'GET',
@@ -1168,7 +1168,7 @@ class Buckets(Resource):
 
 class Storage(Service):
     '''Lets you store and retrieve potentially-large, immutable data objects.'''
-    _DEFAULT_SCOPES = [u'https://www.googleapis.com/auth/devstorage.read_only', u'https://www.googleapis.com/auth/devstorage.read_write', u'https://www.googleapis.com/auth/devstorage.full_control']
+    _DEFAULT_SCOPES = [u'https://www.googleapis.com/auth/devstorage.read_only', u'https://www.googleapis.com/auth/devstorage.read_write', u'https://www.googleapis.com/auth/cloud-platform', u'https://www.googleapis.com/auth/devstorage.full_control']
 
     def __init__(self, conn=None, scopes=None, *args, **kwargs):
         if scopes is not None:

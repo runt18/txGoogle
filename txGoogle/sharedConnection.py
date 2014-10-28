@@ -8,12 +8,14 @@ from twisted.internet import reactor
 import time
 from twisted.internet.error import TimeoutError
 from twisted.python import log
+from twisted.internet.task import LoopingCall
+from twisted.internet.defer import Deferred
 
 
 class SharedConnection(object):
 
-    MAX_CONCURRENT_QUERIES = 20 - 5  # subtracting 5 because I saw connection closings when doing multiple requests
-    REQUEST_RESEND_CHECK_INTERVAL = 2
+    MAX_CONCURRENT_QUERIES = 20 - 3 # subtracting 3 because I saw connection closings when doing multiple requests
+    REQUEST_RESEND_CHECK_INTERVAL = 0.06
     AUTH_URL = 'https://accounts.google.com/o/oauth2/auth'
     TOKEN_URL = 'https://accounts.google.com/o/oauth2/token'
 
@@ -23,15 +25,25 @@ class SharedConnection(object):
         self._credentialsFileName = credentialsFileName
         self._runningReqs = []
         self._connHandler = None
+        self._checkLoop = LoopingCall(self._checkTodos)
+        self._checkLoop.start(self.REQUEST_RESEND_CHECK_INTERVAL, now=False)
+        self._todos = []
+        self._emptyQueueDfd = None
+
+    def waitForEmptyQueue(self):
+        if self._emptyQueueDfd is None:
+            self._emptyQueueDfd = Deferred()
+        return self._emptyQueueDfd
 
     def registerScopes(self, scopes):
         if not hasattr(self, '_SCOPE'):
             self._SCOPE = ' '.join(scopes)
         else:
-            self._SCOPE = ' '.join(self._SCOPE.split(' ') + scopes)
+            self._SCOPE = ' '.join(set(self._SCOPE.split(' ')).union(set(scopes)))
 
     def connect(self):
         self._connHandler = AsyncOAuthConnectionHandler(self.AUTH_URL, self.TOKEN_URL, clientId=self._clientId, clientSecret=self._clientSecret, credentialsFileName=self._credentialsFileName, scope=self._SCOPE, approval_prompt='force', access_type='offline', response_type='code')
+        return self._connHandler._loadCredentials()
 
     def request(self, requestObj, responseHandler):
         if self._connHandler is None:
@@ -42,19 +54,36 @@ class SharedConnection(object):
             dfdRequest.addCallback(self._handleResponse, requestObj, responseHandler)
             dfdRequest.addErrback(self._handleFailed, requestObj, responseHandler)
         else:
-            hundredSecsAgo = time.time() -100
-            for req in list(self._runningReqs):
-                if req._startTs < hundredSecsAgo:
-                    try:
-                        if not req._dfd.called:
-                            self._runningReqs.remove(req)
-                            req._dfd.errback(TimeoutError())
-                    except:
-                        log.err()
-                else:
-                    break # no use continueing because items are appended
-            reactor.callLater(self.REQUEST_RESEND_CHECK_INTERVAL, self.request, requestObj, responseHandler)
+            self._todos.append((requestObj, responseHandler))
         return responseHandler.dfd
+
+    def _checkTodos(self):
+        hundredSecsAgo = time.time() - 100
+        for req in list(self._runningReqs):
+            if req._startTs < hundredSecsAgo:
+                try:
+                    if not req._dfd.called:
+                        self._runningReqs.remove(req)
+                        req._dfd.errback(TimeoutError())
+                except:
+                    log.err()
+            else:
+                break  # no use continueing because items are appended in order
+        if self._todos:
+            roomLeft = self.MAX_CONCURRENT_QUERIES - len(self._runningReqs)
+            for _ in range(roomLeft):
+                if self._todos:
+                    requestObj, responseHandler = self._todos.pop(0)
+                    dfdRequest = self._connHandler.request(requestObj)
+                    self._runningReqs.append(requestObj)
+                    dfdRequest.addCallback(self._handleResponse, requestObj, responseHandler)
+                    dfdRequest.addErrback(self._handleFailed, requestObj, responseHandler)
+                else:
+                    break
+        else:
+            if self._emptyQueueDfd is not None and not self._runningReqs:
+                self._emptyQueueDfd.callback('Empty')
+                self._emptyQueueDfd = None
 
     def _handleResponse(self, response, requestObj, responseHandler):
         self._runningReqs.remove(requestObj)

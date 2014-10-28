@@ -4,6 +4,7 @@ Created on 15 aug. 2014
 @author: sjuul
 '''
 import os
+from twisted.python import log
 
 
 def dictGet(dct, keys, default):
@@ -36,13 +37,15 @@ def preparePathForFile(filePathName):
 
 
 def deepCopyList(inp):
+    output = []
     for vl in inp:
         if isinstance(vl, list):
-            yield list(deepCopyList(vl))
+            output.append(deepCopyList(vl))
         elif isinstance(vl, dict):
-            yield deepCopyDict(vl)
+            output.append(deepCopyDict(vl))
         else:
-            yield vl
+            output.append(vl)
+    return output
 
 
 def deepCopyDict(inp):
@@ -51,7 +54,7 @@ def deepCopyDict(inp):
         if isinstance(vl, dict):
             outp[ky] = deepCopyDict(vl)
         elif isinstance(vl, list):
-            outp[ky] = list(deepCopyList(vl))
+            outp[ky] = deepCopyList(vl)
     return outp
 
 
@@ -63,18 +66,8 @@ def simpleDeepCopy(inp):
     return inp
 
 
-def getChunk(genIn, maxLen):
-    cnt = 0
-    for item in genIn:
-        yield item
-        cnt += 1
-        if cnt >= maxLen:
-            raise Exception('maxLen reached')
-
-def getChunks(genIn, maxLen):
-    try:
-        while True:
-            yield getChunk(genIn, maxLen)
-    except StopIteration:
-        pass # exhausted the generator, exception is normal
-    
+def chunks(lst, maxItems):
+    ''' Yield successive n-sized chunks from l.
+    '''
+    for i in xrange(0, len(lst), maxItems):
+        yield lst[i:i + maxItems]

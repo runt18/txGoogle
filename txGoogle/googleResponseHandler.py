@@ -24,9 +24,22 @@ class GoogleResponseHandler(ResponseHandler):
         else:
             self._onResponse(loaded, requestObj)
 
+    def _maxResultsReached(self, requestObj):
+        maxResults = requestObj.maxResults
+        if maxResults and self._result is not None:
+            if hasattr(self, '_getResultLen_' + self._resultType):
+                curCntFun = getattr(self, '_getResultLen_' + self._resultType)
+                return curCntFun() >= maxResults
+            elif hasattr(self._result, '__len__'):
+                return len(self._result) >= maxResults
+            else:
+                return False
+        return False
+
     def _onResponse(self, loaded, requestObj):
         self._loadResults(loaded, requestObj)
-        if 'nextPageToken' in loaded:
+
+        if 'nextPageToken' in loaded and not self._maxResultsReached(requestObj):
             requestObj.setUrlParam('pageToken', unquote(loaded['nextPageToken']))
             self._connection.request(requestObj, self)
         else:

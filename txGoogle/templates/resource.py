@@ -7,7 +7,7 @@ class {{capFirst(resourceName)}}(Resource):
     def __init__(self, service, conn, *args, **kwargs):
         super({{capFirst(resourceName)}}, self).__init__(service, conn, *args, **kwargs)
         {%for k in resourceDict.get('resources', {}).keys()%}
-        self.{{k}} = {{capFirst(k)}}(api, conn)
+        self.{{k}} = {{capFirst(k)}}(service, conn)
         {%endfor%}
         {%for v in methodsDict.values()%}
 {{v}}

@@ -13,6 +13,7 @@ from txGoogle.services.storage_ import DefaultObjectAccessControls
 import os
 from txGoogle.utils import preparePathForFile
 from txGoogle.wrappers.gcsResponseHandler import GcsResponseHandler
+from txGoogle.asyncUtils import mapFunToItems
 
 
 class ObjectsWrapper(Objects):
@@ -48,6 +49,16 @@ class ObjectsWrapper(Objects):
         dfd.addCallback(self._download, destPath, destParentFolder)
         return dfd
 
+    def emptyFolder(self, bucket, path):
+        dfdL = self.list(bucket=bucket, prefix=path)
+        dfdL.addCallback(self._extractFileNames)
+        dfdL.addCallback(mapFunToItems, self.delete, bucket=bucket)
+        return dfdL
+
+    def _extractFileNames(self, res):
+        files = res['items']
+        return [fileItem['name'] for fileItem in files]
+
 
 class StorageWrapper(Storage):
 
@@ -58,7 +69,7 @@ class StorageWrapper(Storage):
             self._scopes = self._DEFAULT_SCOPES
         kwargs['responseCls'] = GcsResponseHandler
         conn.registerScopes(self._scopes)
-        super(StorageWrapper, self).__init__(self, conn, *args, **kwargs)
+        super(StorageWrapper, self).__init__(conn, *args, **kwargs)
         self.objects = ObjectsWrapper(self, conn, *args, **kwargs)
 
 

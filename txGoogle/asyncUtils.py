@@ -10,6 +10,7 @@ from twisted.internet.defer import Deferred
 import json
 import types
 from twisted.python import log
+from twisted.internet import reactor
 
 
 def trueCb(dummy):
@@ -59,7 +60,10 @@ def addPrintCbs(dfds):
 
 
 def ignoreFirstArg(dummy, fun, *args, **kwargs):
-    return fun(*args, **kwargs)
+    try:
+        return fun(*args, **kwargs)
+    except Exception as ex:
+        log.err(ex)
 
 
 def ignoreAllArgs(dummy, fun, *args, **kwargs):
@@ -127,14 +131,46 @@ def loggedException(function):
             log.err()
     return wrapper
 
+
 def wrapInList(item):
     return [item]
 
-def hasListItems(lst):
-    if lst:
+
+def hasItems(lst):
+    try:
+        next(iter(lst))
         return True
-    else:
+    except StopIteration:
         return False
+
+
+def pickFirst(lst):
+    try:
+        return next(iter(lst))
+    except StopIteration:
+        return None
+
+
+def extractResultsFromDfdL(results):
+    output = []
+    for res in results:
+        if res[0]:
+            output.append(res[1])
+    return output
+
+
+def mergeResults(results):
+    output = []
+    for res in results:
+        output.extend(res)
+    return output
+
 
 def buildDeferredList(*args):
     return DeferredList(args)
+
+
+def waitTime(spanInSec):
+    dfd = Deferred()
+    reactor.callLater(spanInSec, dfd.callback, 'Done')
+    return dfd

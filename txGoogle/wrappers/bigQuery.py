@@ -135,7 +135,7 @@ class BigQueryWrapper(Bigquery):
             self._scopes = self._DEFAULT_SCOPES
         conn.registerScopes(self._scopes)
         kwargs['responseCls'] = BigQueryResponseHandler
-        super(Bigquery, self).__init__(self, conn, *args, **kwargs)
+        super(Bigquery, self).__init__(conn, *args, **kwargs)
         self.tables = TablesWrapper(self, conn, *args, **kwargs)
         self.datasets = DatasetsWrapper(self, conn, *args, **kwargs)
         self.jobs = JobsWrapper(self, conn, *args, **kwargs)

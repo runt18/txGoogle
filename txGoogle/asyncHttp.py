@@ -78,10 +78,14 @@ class AsyncHttp(object):
             response.deliverBody(receiver)
             return dfdResponse
 
+    def _logErr(self, fail):
+        log.err(fail)
+
     def asyncHttpRequest(self, request):
         try:
             dfdReq = request.run(self._agent)
             dfdReq.addCallback(self._handleResponse, request)
+            dfdReq.addErrback(self._logErr)
             return dfdReq
         except Exception as ex:
             log.err()

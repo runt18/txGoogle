@@ -34,7 +34,7 @@ class Attachments(Resource):
 class Messages(Resource):
     def __init__(self, service, conn, *args, **kwargs):
         super(Messages, self).__init__(service, conn, *args, **kwargs)
-        self.attachments = Attachments(api, conn)
+        self.attachments = Attachments(service, conn)
 
     def insert(self, userId, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, internalDateSource=None, historyId=None, id=None, snippet=None, raw=None, sizeEstimate=None, threadId=None, labelIds=None, attachmentId=None, data=None, size=None, mimeType=None, partId=None, filename=None, headers=None, parts=None):
         '''Directly inserts a message into only this user's mailbox similar to IMAP APPEND, bypassing most scanning and classification. Does not send a message.'''
@@ -325,7 +325,7 @@ class Labels(Resource):
         }
         return self._request(queryParams)
 
-    def create(self, userId, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, messageListVisibility=None, labelListVisibility=None, type=None, id=None, name=None):
+    def create(self, userId, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, name=None, messagesTotal=None, messageListVisibility=None, messagesUnread=None, threadsTotal=None, labelListVisibility=None, threadsUnread=None, type=None, id=None):
         '''Creates a new label.'''
         queryParams = {
             'url': 'https://www.googleapis.com/gmail/v1/users/{userId}/labels',
@@ -342,10 +342,14 @@ class Labels(Resource):
                 'userId': urlibQuoteEncode(userId, safe=''),
             },
             'httpBodyParams': {
-                'type': type,
-                'messageListVisibility': messageListVisibility,
-                'labelListVisibility': labelListVisibility,
                 'name': name,
+                'messagesTotal': messagesTotal,
+                'type': type,
+                'threadsUnread': threadsUnread,
+                'threadsTotal': threadsTotal,
+                'labelListVisibility': labelListVisibility,
+                'messagesUnread': messagesUnread,
+                'messageListVisibility': messageListVisibility,
                 'id': id,
             },
         }
@@ -372,7 +376,7 @@ class Labels(Resource):
         }
         return self._request(queryParams)
 
-    def update(self, userId, id, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, messageListVisibility=None, labelListVisibility=None, type=None, id_=None, name=None):
+    def update(self, userId, id, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, name=None, messagesTotal=None, messageListVisibility=None, messagesUnread=None, threadsTotal=None, labelListVisibility=None, threadsUnread=None, type=None, id_=None):
         '''Updates the specified label.'''
         queryParams = {
             'url': 'https://www.googleapis.com/gmail/v1/users/{userId}/labels/{id}',
@@ -390,16 +394,20 @@ class Labels(Resource):
                 'id': urlibQuoteEncode(id, safe=''),
             },
             'httpBodyParams': {
-                'type': type,
-                'messageListVisibility': messageListVisibility,
-                'labelListVisibility': labelListVisibility,
                 'name': name,
+                'messagesTotal': messagesTotal,
+                'type': type,
+                'threadsUnread': threadsUnread,
+                'threadsTotal': threadsTotal,
+                'labelListVisibility': labelListVisibility,
+                'messagesUnread': messagesUnread,
+                'messageListVisibility': messageListVisibility,
                 'id': id_,
             },
         }
         return self._request(queryParams)
 
-    def patch(self, userId, id, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, messageListVisibility=None, labelListVisibility=None, type=None, id_=None, name=None):
+    def patch(self, userId, id, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, name=None, messagesTotal=None, messageListVisibility=None, messagesUnread=None, threadsTotal=None, labelListVisibility=None, threadsUnread=None, type=None, id_=None):
         '''Updates the specified label. This method supports patch semantics.'''
         queryParams = {
             'url': 'https://www.googleapis.com/gmail/v1/users/{userId}/labels/{id}',
@@ -417,10 +425,14 @@ class Labels(Resource):
                 'id': urlibQuoteEncode(id, safe=''),
             },
             'httpBodyParams': {
-                'type': type,
-                'messageListVisibility': messageListVisibility,
-                'labelListVisibility': labelListVisibility,
                 'name': name,
+                'messagesTotal': messagesTotal,
+                'type': type,
+                'threadsUnread': threadsUnread,
+                'threadsTotal': threadsTotal,
+                'labelListVisibility': labelListVisibility,
+                'messagesUnread': messagesUnread,
+                'messageListVisibility': messageListVisibility,
                 'id': id_,
             },
         }
@@ -475,7 +487,7 @@ class Threads(Resource):
         }
         return self._request(queryParams)
 
-    def get(self, userId, id, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None):
+    def get(self, userId, id, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, metadataHeaders=None, format=None):
         '''Gets the specified thread.'''
         queryParams = {
             'url': 'https://www.googleapis.com/gmail/v1/users/{userId}/threads/{id}',
@@ -489,8 +501,10 @@ class Threads(Resource):
                 'key': key,
                 'userIp': userIp,
                 'alt': alt,
+                'metadataHeaders': metadataHeaders,
                 'userId': urlibQuoteEncode(userId, safe=''),
                 'id': urlibQuoteEncode(id, safe=''),
+                'format': format,
             },
             'httpBodyParams': {
             },
@@ -828,11 +842,32 @@ class History(Resource):
 class Users(Resource):
     def __init__(self, service, conn, *args, **kwargs):
         super(Users, self).__init__(service, conn, *args, **kwargs)
-        self.messages = Messages(api, conn)
-        self.labels = Labels(api, conn)
-        self.threads = Threads(api, conn)
-        self.drafts = Drafts(api, conn)
-        self.history = History(api, conn)
+        self.messages = Messages(service, conn)
+        self.labels = Labels(service, conn)
+        self.threads = Threads(service, conn)
+        self.drafts = Drafts(service, conn)
+        self.history = History(service, conn)
+
+    def getProfile(self, userId, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None):
+        '''Gets the current user's Gmail profile.'''
+        queryParams = {
+            'url': 'https://www.googleapis.com/gmail/v1/users/{userId}/profile',
+            'method': 'GET',
+            'resultType': 'Profile',
+            'httpUrlParams': {
+                'prettyPrint': prettyPrint,
+                'fields': fields,
+                'quotaUser': quotaUser,
+                'oauth_token': oauth_token,
+                'key': key,
+                'userIp': userIp,
+                'alt': alt,
+                'userId': urlibQuoteEncode(userId, safe=''),
+            },
+            'httpBodyParams': {
+            },
+        }
+        return self._request(queryParams)
 
 
 class Gmail(Service):

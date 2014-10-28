@@ -220,7 +220,7 @@ class Datasets(Resource):
 
 class Datastore(Service):
     '''API for accessing Google Cloud Datastore.'''
-    _DEFAULT_SCOPES = [u'https://www.googleapis.com/auth/userinfo.email', u'https://www.googleapis.com/auth/datastore']
+    _DEFAULT_SCOPES = [u'https://www.googleapis.com/auth/userinfo.email', u'https://www.googleapis.com/auth/datastore', u'https://www.googleapis.com/auth/cloud-platform']
 
     def __init__(self, conn=None, scopes=None, *args, **kwargs):
         if scopes is not None:

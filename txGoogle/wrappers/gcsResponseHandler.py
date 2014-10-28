@@ -15,3 +15,6 @@ class GcsResponseHandler(GoogleResponseHandler):
             self._result['items'].extend(loaded['items'])
         if 'prefixes' in loaded:
             self._result['prefixes'].extend(loaded['prefixes'])
+
+    def _getResultLen_Objects(self):
+        return len(self._result['items']) + len(self._result['prefixes'])
