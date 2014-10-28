@@ -10,7 +10,7 @@ The main reasons for building this library:
 - googles api for python generates code but it wasn't inspectable by reading files.
 
 
-How this project is set up:
+## How this project is set up:
 
 - you can download service descriptions with: [discovery.py](https://github.com/transceptor-technology/txGoogle/blob/master/txGoogle/wrappers/discovery.py)
 - you can generate the service file. This is stored in [txGoogle/services](https://github.com/transceptor-technology/txGoogle/tree/master/txGoogle/services) with: [asyncApisGenerator.py](https://github.com/transceptor-technology/txGoogle/blob/master/txGoogle/asyncApisGenerator.py)
