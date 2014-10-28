@@ -4,8 +4,8 @@ txGoogle
 Twisted implementations of Google JSON API's
 
 The main reasons for building this library:
-- we wanted to use twisted
-- httplib is not thread safe
+- we wanted to use twisted (if you don't this library might not be for you)
+- pythons httplib is not thread safe and googles library is built on top of httplib
 - we wanted to have autocompletion in eclipse 
 - googles api for python generates code but it wasn't inspectable by reading files.
 
@@ -111,6 +111,10 @@ result
 ```
 
 ## GCD:
+
+Nice features we've built:
+
+- Serialisation and de-serialisation from and to objects in python
 
 Example to delete entities by key:
 
