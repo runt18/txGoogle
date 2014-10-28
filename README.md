@@ -31,6 +31,48 @@ reactor.run()
 ```
 This will open up a browser asking for the authorisation scopes that are required
 
+
+## BQ:
+
+```python
+from txGoogle.sharedConnection import SharedConnection
+from txGoogle.asyncUtils import printCb
+from twisted.internet import reactor
+conn = SharedConnection('785509043543.apps.googleusercontent.com', 'Mhx2IjJLk78U9VyErHHIVbnw', 'apiFiles/asyncBqCredentials.json')
+abq = BigQueryWrapper(conn)
+conn.connect()
+
+dfd = abq.jobs.query(projectId=projectId, datasetId='samples', query='SELECT * FROM [publicdata:samples.shakespeare]')
+dfd.addCallback(printCb)
+```
+
+result
+
+```json
+[
+  [
+    "brave", 
+    6, 
+    "titusandronicus", 
+    1593
+  ], 
+  [
+    "fealty", 
+    1, 
+    "titusandronicus", 
+    1593
+  ], 
+  [
+    "dimm'd", 
+    1, 
+    "titusandronicus", 
+    1593
+  ],
+  ...
+]
+```
+
+
 ## GCS:
 
 I've used the follwing script to bulk-delete thousands of files. Please be carefull when using @inlineCallbacks. If an exception raises, you might not know it. 
