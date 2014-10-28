@@ -3,6 +3,20 @@ txGoogle
 
 Twisted implementations of Google JSON API's
 
+The main reasons for building this library:
+- we wanted to use twisted
+- httplib is not thread safe
+- we wanted to have autocompletion in eclipse 
+- googles api for python generates code but it wasn't inspectable by reading files.
+
+
+How this project is set up:
+
+- you can download service descriptions with: https://github.com/transceptor-technology/txGoogle/blob/master/txGoogle/wrappers/discovery.py
+- you can generate the service files (stored in txGoogle/services) with: https://github.com/transceptor-technology/txGoogle/blob/master/txGoogle/asyncApisGenerator.py
+- 
+
+
 ## setting up a connection:
 
 ```python
@@ -33,6 +47,17 @@ This will open up a browser asking for the authorisation scopes that are require
 
 
 ## BQ:
+
+This is the usecase where it all started: http://stackoverflow.com/questions/23810923/google-cloud-big-queries-cost-big-memory
+Furthermore I was using deferToThread to use the google api's. I wanted to use the json api and go full async
+
+Nice features:
+ - Records will be returned in list of lists is stead of the bulky json format Google uses. And they are converted to the corresponding python values
+ - csv support is possible but not yet fully develloped (this should allow for quicker requests)
+ - implemented rename table (does copy and delete under the hood)
+ - handles pagination out of the box. So even if you have thousands of tables and you do tables.list you will get called back when all the results are in.
+ - lower memory footprint than the original library because we avoid json.loading the rows. In stead we use line-splitting since the format doesn't change.
+
 
 ```python
 from txGoogle.sharedConnection import SharedConnection
