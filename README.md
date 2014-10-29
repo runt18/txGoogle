@@ -133,7 +133,7 @@ def onEntitiesToRemove(entities):
   for entity in entities:
       self.gcd.batchOperations.delete(entity.key) # gcd allows for max 500 entities per "commit" so we batch them up
         
-dfd = gcd.datasets.query(datasetId='over-sight', kinds=['Sample'], properties=['__key__'], limit=5000)
+dfd = gcd.datasets.query(datasetId='DATA_SET_ID', kinds=['Sample'], properties=['__key__'], limit=5000)
 dfd.addCallback(onEntitiesToRemove)
 
 reactor.run()
