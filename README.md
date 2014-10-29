@@ -210,3 +210,9 @@ def sendMail(self, fromAddress, toAddress, subject, body, cc=None, bcc=None, use
   print raw
   return self.users.messages.send(userId=userId, raw=raw)
 ```
+
+Sending mail should be as simple as:
+
+```python
+dfd = gmail.sendMail('from@somewhere.com', ['to1@somewhere.com', 'to2@somewhere.com'], 'test', 'This is a test')
+```
