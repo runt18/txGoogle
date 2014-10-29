@@ -115,6 +115,18 @@ result
 Nice features we've built:
 
 - Serialisation and de-serialisation from and to objects in python
+- Uses the same method to make urlSafe string representation as App Engine. This allows for interop with AE
+- Entities can be constructed by:
+ - Giving the serialised json representation that the JSON api uses
+ - Giving a python dict and a key. This allows for a smaller transport format than the JSON api uses. Please note some data will get lost:
+  - which properties are indexed
+  - types are deducted from their json representation
+ - Keys can be constructed by:
+  - Giving the serialised json representation that the JSON api uses
+  - Giving key pairs just like in NDB `Key('Parent', 'Dad', 'Person', 'Bob')`
+  - Giving the urlsafe string `Key('urlsafeStringHere')`
+ - A small ORM is included which allows for App Engine like models. This feature is quite new so expect changes to happen here
+ - Aggregating entities to be updated in one single batch is possible. Example: `gcd.batchOperations.upsert(entity, 60)` will make sure the entity is saved within 60 seconds. If other entities are saved as well they will be saved in `commit`s of 500 entities. This way you don't have to worry about making commits that are to large for GCD
 
 Example to delete entities by key:
 
