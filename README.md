@@ -8,6 +8,7 @@ The main reasons for building this library:
 - pythons httplib is not thread safe and googles library is built on top of httplib
 - we wanted to have autocompletion in eclipse 
 - googles api for python generates code but it wasn't inspectable by reading files.
+- usign boto is not straight forward.
 
 
 ## The following services already have wrappers:
