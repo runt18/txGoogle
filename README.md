@@ -65,7 +65,7 @@ This is the usecase where it all started: http://stackoverflow.com/questions/238
 Furthermore I was using deferToThread to use the google api's. I wanted to use the json api and go full async
 
 Nice features:
- - Records will be returned in list of lists is stead of the bulky json format Google uses. And they are converted to the corresponding python values
+ - Records will be returned in list of lists in stead of the bulky json format Google uses. And they are converted to the corresponding python values
  - csv support is possible but not yet fully develloped (this should allow for quicker requests)
  - implemented rename table (does copy and delete under the hood)
  - handles pagination out of the box. So even if you have thousands of tables and you do tables.list you will get called back when all the results are in.
