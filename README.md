@@ -189,3 +189,24 @@ log.startLogging(sys.stdout)
 dfd.addCallback(ignoreFirstArg, cleanup, 'BUCKET_NAME', 'FOLDER_NAME')
 reactor.run()
 ```
+
+## Gmail
+
+The gmail wrapper contains the following method so that you don't have to build it:
+
+```python
+def sendMail(self, fromAddress, toAddress, subject, body, cc=None, bcc=None, userId=None):
+  if userId is None:
+   userId = fromAddress
+  message = MIMEText(body)
+  message['to'] = ', '.join(toAddress)
+  message['from'] = fromAddress
+  message['subject'] = subject
+  if cc is not None:
+   message['cc'] = cc
+  if bcc is not None:
+   message['bcc'] = bcc
+  raw = base64.urlsafe_b64encode(message.as_string())
+  print raw
+  return self.users.messages.send(userId=userId, raw=raw)
+```
