@@ -56,7 +56,7 @@ class ObjectsWrapper(Objects):
         return dfdL
 
     def _extractFileNames(self, res):
-        files = res['items']
+        files = res.get('items', [])
         return [fileItem['name'] for fileItem in files]
 
 

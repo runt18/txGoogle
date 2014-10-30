@@ -4,7 +4,7 @@ Created on 22 aug. 2014
 @author: sjuul
 '''
 import simplejson as json
-from twisted.internet.defer import Deferred
+from twisted.internet.defer import Deferred, logError
 from twisted.internet.defer import passthru
 from twisted.python import log
 
@@ -39,7 +39,7 @@ class ResponseHandler(object):
 
     def _checkForExistingEbs(self):
         if not self._hasErrback():
-            self._dfd.addErrback(self._logErr)
+            self._dfd.addErrback(logError)
             self._ebAdded = True
 
     def onResponse(self, response, requestObj):

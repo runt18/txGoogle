@@ -125,6 +125,9 @@ class BigQueryResponseHandler(GoogleResponseHandler):
                 self._result.append(newRow)
             del results['rows']
 
+    _loadResults_QueryResponse = _loadResults_QueryRequest
+
+
     '''
     def _multipleResultsPossible(self, resultType):
         return resultType in ['tables', 'rows']

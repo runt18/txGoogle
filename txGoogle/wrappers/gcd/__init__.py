@@ -1,5 +1,8 @@
 import datetime
 
+class SerializationException(Exception):
+    pass
+
 
 class GcdObjectWithApiBackReference(object):
 
@@ -68,7 +71,7 @@ def determineValueKind(value):
         valueKind = 'entityValue'
     else:
         value = None
-        raise Exception('Not supported: ' + str(type(value)))
+        valueKind = None
     return valueKind, value
 
 

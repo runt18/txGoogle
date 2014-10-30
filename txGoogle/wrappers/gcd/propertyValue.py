@@ -11,6 +11,7 @@ from txGoogle.wrappers.gcd import makeSureIsPropertyValue
 from txGoogle.wrappers.gcd import makeSureIsKey
 from txGoogle.wrappers.gcd import buildEntity
 from txGoogle.wrappers.gcd import unpackSerializedPropertyValues
+from txGoogle.wrappers.gcd import SerializationException
 
 
 class PropertyValue(object):
@@ -56,16 +57,22 @@ class PropertyValue(object):
         elif self.valueKind == 'entityValue':
             value = self.value.serialize(outputKey=False)
         elif self.valueKind == 'listValue':
-            value = [item.serialize() for item in self.value]
+            if self.value:
+                value = [item.serialize() for item in self.value]
+            else:
+                value = None
         elif self.valueKind == 'dateTimeValue':
             value = datetimeToTimestamp(value) * 1000000
         elif self.valueKind == 'keyValue':
             value = self.value.serialize()
         else:
             value = self.value
+        output = {}
         if self.indexed is not None:
-            return {self.valueKind: value, 'indexed': self.indexed}
-        return {self.valueKind: value}
+            output['indexed'] = self.indexed
+        if value is not None:
+            output[self.valueKind] = value
+        return output
 
     def __repr__(self):
         return str(self.value)

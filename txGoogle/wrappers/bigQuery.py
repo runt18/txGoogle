@@ -145,42 +145,12 @@ class BigQueryWrapper(Bigquery):
 
 if __name__ == '__main__':
     from txGoogle.sharedConnection import SharedConnection
-    from generic.twistedUtils import printCb
+    from txGoogle.asyncUtils import printCb
     from twisted.internet import reactor
     conn = SharedConnection('785509043543.apps.googleusercontent.com', 'Mhx2IjJLk78U9VyErHHIVbnw', 'apiFiles/asyncBqCredentials.json')
     abq = BigQueryWrapper(conn)
     conn.connect()
-
-    prod = True
-    if prod:
-        projectId = 'detect-analyze-notify-01a'
-        datasetId = 'cust_711f9f25ed85'
-        tableId = 'perf_201406_005056ad452d'
-    else:
-        projectId = 'over-sight'
-        datasetId = 'cust_e6b3265a8031'
-        tableId = 'log_201407'
-
-    # queryStr = "SELECT probeName, checkName, type, itemName, propertyName, value, timestamp\n        FROM TABLE_QUERY(cust_23eb8fd09fbc, 'table_id CONTAINS \"perf_\" AND table_id CONTAINS \"_1e0895f63693\" AND INTEGER(SUBSTR(table_id, 6, 6)) >= 201408 AND INTEGER(SUBSTR(table_id, 6, 6)) <= 201408')\n        WHERE timestamp > 1407315364000000\n        AND timestamp < 1408006564000000\n        ORDER BY probeName, checkName, type, itemName, propertyName, timestamp"
-    # queryStr = "SELECT * FROM TABLE_QUERY(cust_23eb8fd09fbc, 'table_id CONTAINS \"log_\" AND INTEGER(SUBSTR(table_id, 5, 6)) >= 201308 AND INTEGER(SUBSTR(table_id, 5, 6)) <= 201408') WHERE (LogType = 8)"
-
-    '''dfd = abq.tables.insert(projectId, 'cust_23eb8fd09fbc', 'removeMeTable', schema_fields=[
-        {"name":"HostUuid", "type":"STRING"},
-        {"name":"ProbeName", "type":"STRING"},
-        {"name":"CheckName", "type":"STRING"},
-        {"name":"Type", "type":"STRING"},
-        {"name":"ItemName", "type":"STRING"},
-        {"name":"PropertyName", "type":"STRING"},
-        {"name":"Value", "type":"FLOAT"},
-        {"name":"TimeStamp", "type":"TIMESTAMP"}
-    ])
-    dfd.addCallback(printCb)
-    dfd.addErrback(printCb)
-    dfd.addCallback(abq.tables.delete, projectId, 'removeMeTable', 'cust_23eb8fd09fbc')'''
-    #dfd = abq.tabledata.list(projectId, 'perf_201410_005056ad452d', 'cust_711f9f25ed85', alt='csv', maxResults=10)
-
-    #dfd = abq.tables.getSize(projectId, datasetId, tableId)
-    dfd = abq.datasets.getSize(projectId=projectId, datasetId='cust_e428109a7be1')
+    dfd = abq.jobs.query(projectId='detect-analyze-notify-01a', datasetId='samples', query='SELECT * FROM [publicdata:samples.shakespeare] limit 10', maxResults=100)
     dfd.addCallback(printCb)
     dfd.addErrback(printCb)
     reactor.run()

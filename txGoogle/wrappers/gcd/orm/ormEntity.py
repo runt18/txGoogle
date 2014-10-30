@@ -16,7 +16,6 @@ from txGoogle.wrappers.gcd.orm.autoStore import AutoStore
 
 class OrmEntity(object):
 
-    mapToDict = False
     autoStoreTime = None
     autoForget = False
 
@@ -25,13 +24,19 @@ class OrmEntity(object):
         obj.__class__.registerMappedProps()
         obj.__dict__['_localOrmProperties'] = {}
         obj.__dict__['_forget'] = False
+        obj.__dict__['_deleted'] = False
+        obj.__dict__['_changes'] = False
         if self.autoStoreTime is not None and self.autoStoreTime >= 1:
             AutoStore().addEntity(obj, self.autoStoreTime)
         return obj
 
-    def __init__(self, entity=None, ks=None, key=None, *args, **kwargs):
-        self._entity = self._loadEntity(entity, ks, key)
+    def __init__(self, entity=None, ks=None, key=None, isNew=None, *args, **kwargs):
+        self._entity = self._loadEntity(entity, ks, key, isNew)
         self._copyEntValsToSelf()
+        if isNew is None and isinstance(entity, dict):
+            isNew = True
+        if isNew:
+            self._changes = True
         self._ks = ks
 
     def __setattr__(self, name, value):
@@ -53,33 +58,25 @@ class OrmEntity(object):
     def getKeyLen(self):
         return self._entity.getKeyLen()
 
-    def _loadEntity(self, entity=None, ks=None, key=None):
-        if self.mapToDict:
-            if isinstance(entity, dict):
-                ent = entity
-            elif entity is None:
-                ent = {}
-            else:
-                raise Exception('Unexpected mapping: {}'.format(entity))
+    def _loadEntity(self, entity=None, ks=None, key=None, isNew=None):
+        if isinstance(entity, Entity):
+            ent = entity
+        elif isinstance(entity, dict):
+            entity = simpleDeepCopy(entity)
+            if 'ks' in entity:
+                if ks is not None:
+                    raise Exception('Duplicate key inputs')
+                ks = entity.pop('ks')
+            if ks:
+                if key is not None:
+                    raise Exception('Duplicate key inputs')
+                key = Key(ks)
+            for propertyName, mapping in self.__class__.ormProperties.iteritems():
+                if propertyName in entity:
+                    entity[propertyName] = PropertyValue(mapping.onUnloadValue(entity[propertyName]), indexed=mapping.indexed)
+            ent = Entity(entity, key=key)
         else:
-            if isinstance(entity, Entity):
-                ent = entity
-            elif isinstance(entity, dict):
-                entity = simpleDeepCopy(entity)
-                if 'ks' in entity:
-                    if ks is not None:
-                        raise Exception('Duplicate key inputs')
-                    ks = entity.pop('ks')
-                if ks:
-                    if key is not None:
-                        raise Exception('Duplicate key inputs')
-                    key = Key(ks)
-                for propertyName, mapping in self.__class__.ormProperties.iteritems():
-                    if propertyName in entity:
-                        entity[propertyName] = PropertyValue(mapping.onUnloadValue(entity[propertyName]), indexed=mapping.indexed)
-                ent = Entity(entity, key=key)
-            else:
-                raise NotImplementedError()
+            raise NotImplementedError()
         return ent
 
     def onUpdateFromDictOrDb(self, entity):
@@ -103,20 +100,13 @@ class OrmEntity(object):
                 del self._entity[propertyName]
             return
         if self._entity.get(propertyName) != value:
-            if value is None and not self.mapToDict:
-                raise Exception('entity values shouldnt be none')
-            if self.mapToDict:
-                self._entity[propertyName] = value
-            else:
-                self._entity.setProperty(propertyName, value, mapping.indexed)
+            self._entity.setProperty(propertyName, value, mapping.indexed)
 
     def preFlush(self):
         pass
 
     def _updateEntityWithCurrentValues(self):
         self.preFlush()
-        if not self.mapToDict and not hasattr(self, 'getKey'):
-            raise Exception('When mapping to entity, a getKey method has to be provided')
         for propertyName, mapping in self.__class__.ormProperties.iteritems():
             self._writeProperty(propertyName, mapping)
         for propertyName, mapping in self._localOrmProperties.iteritems():
@@ -125,13 +115,11 @@ class OrmEntity(object):
     def flush(self):
         if self._changes and not self._deleted:
             self._updateEntityWithCurrentValues()
+            self._changes = False
 
     def toDict(self):
         self._updateEntityWithCurrentValues()  # we can skip this step if we want and just construct a dict
-        if self.mapToDict:
-            return self._entity
-        else:
-            return self._entity.toValue()
+        return self._entity.toValue()
 
     def _copyEntValsToSelf(self):
         handledProperties = set()
@@ -205,3 +193,6 @@ class OrmEntity(object):
     @property
     def entity(self):
         return self._entity
+
+    def put(self):
+        self._changes = True

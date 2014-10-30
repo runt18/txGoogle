@@ -38,10 +38,15 @@ class AutoStore(object):
                 self._agcdW.batchOperations.delete(ent.key, loopTime)
                 self._registeredEntities.remove(ent)
             elif ent.hasChanges:
-                ent.flush()
-                loopTime = self._registeredEntities[ent]
-                self._agcdW.batchOperations.upsert(ent.entity, loopTime)
-                if ent.autoForget:
+                try:
+                    ent.flush()
+                    loopTime = self._registeredEntities[ent]
+                    self._agcdW.batchOperations.upsert(ent.entity, loopTime)
+                    if ent.autoForget:
+                        del self._registeredEntities[ent]
+                except:
+                    log.err()
+                    log.msg('Removing entity from autoStore so that we dont keep looping')
                     del self._registeredEntities[ent]
 
     def stop(self):

@@ -6,6 +6,9 @@ Created on Oct 21, 2014
 from txGoogle.wrappers.gcd import GcdObjectWithApiBackReference
 from txGoogle.wrappers.gcd import PropertyValue
 from txGoogle.wrappers.gcd import Key
+from twisted.python import log
+from twisted.internet.defer import logError
+import logging
 
 
 class Entity(GcdObjectWithApiBackReference):
@@ -29,7 +32,7 @@ class Entity(GcdObjectWithApiBackReference):
                     firstKey = next(iter(vl))
                     self.properties[ky] = PropertyValue(vl[firstKey], valueKind=firstKey, indexed=indexed, fromSerialized=fromSerialized)
                 else:
-                    self.properties[ky] = PropertyValue(None, valueKind='None', fromSerialized=fromSerialized)
+                    self.properties[ky] = PropertyValue(None, valueKind='None', indexed=indexed, fromSerialized=fromSerialized)
             if 'key' in dct:
                 self.key = Key(dct['key'])
         else:
@@ -53,6 +56,11 @@ class Entity(GcdObjectWithApiBackReference):
         if self.key.path:
             return self.key.path[-1].name
 
+    @property
+    def id(self):
+        if self.key.path:
+            return self.key.path[-1].id
+
     def toValue(self):
         dct = {ky: vl.toValue() for ky, vl in self.properties.iteritems()}
         dct['ks'] = self.ks
@@ -62,10 +70,7 @@ class Entity(GcdObjectWithApiBackReference):
         raise Exception('Deprecated')
 
     def __getitem__(self, key):
-        val = self.properties.get(key)
-        if val is None:
-            return None
-        return val.value
+        return self.getProperty(key)
 
     def iteritems(self):
         for ky, vl in self.properties.iteritems():
@@ -96,18 +101,20 @@ class Entity(GcdObjectWithApiBackReference):
         if outputKey:
             output['key'] = self.key.serialize()
         for propName, propValue in self.properties.iteritems():
-            properties[propName] = propValue.serialize()
+            valDct = propValue.serialize()
+            if valDct:
+                properties[propName] = valDct
         return output
 
     def getKeyLen(self):
         if self.key:
-            return self.key.getLen()
+            return len(self.key)
         return 0
 
     def hasKey(self):
         if not self.key:
             return False
-        return self.key.getLen() > 0
+        return len(self.key) > 0
 
     def __str__(self, *args, **kwargs):
         return str(self.toValue())
@@ -123,5 +130,7 @@ class Entity(GcdObjectWithApiBackReference):
     def put(self):
         if self.getKeyLen() == 0:
             raise Exception('Cannot save entity without key')
-        return self._globalGcdWrapper.datasets.commit(self.key.datasetId or self._defaultProjectId, upsert=[self])
+        dfd = self._globalGcdWrapper.datasets.commit(self.key.datasetId or self._defaultProjectId, upsert=[self])
+        dfd.addErrback(logError)
+        return dfd
 

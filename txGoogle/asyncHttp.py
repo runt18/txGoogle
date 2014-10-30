@@ -5,7 +5,7 @@ Created on Aug 4, 2014
 '''
 from twisted.internet.protocol import Protocol
 from twisted.web.client import RedirectAgent
-from twisted.internet.defer import succeed
+from twisted.internet.defer import succeed, logError
 from twisted.internet.defer import Deferred
 from twisted.internet.defer import fail
 from twisted.web.client import Agent
@@ -78,14 +78,11 @@ class AsyncHttp(object):
             response.deliverBody(receiver)
             return dfdResponse
 
-    def _logErr(self, fail):
-        log.err(fail)
-
     def asyncHttpRequest(self, request):
         try:
             dfdReq = request.run(self._agent)
             dfdReq.addCallback(self._handleResponse, request)
-            dfdReq.addErrback(self._logErr)
+            dfdReq.addErrback(logError)
             return dfdReq
         except Exception as ex:
             log.err()

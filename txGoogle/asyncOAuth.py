@@ -49,6 +49,7 @@ class AsyncOAuthConnectionHandler(AsyncHttp):
             raise Exception('No credentialsFileName is specified')
         self._getAccessCredsDfd = None
         self._credentialsDct = None
+        self._scopesCompared = False
         self._loadCredentials()
 
     def _getAccessCredentials(self, authCode=None, refreshToken=None):
@@ -103,21 +104,25 @@ class AsyncOAuthConnectionHandler(AsyncHttp):
         return 'Ok'
 
     def _credentialsDictIsValid(self):
-        if set(self._credentialsDct.get('scopes', [])) != set(self._grantKwargs['scope'].split(' ')):
-            if 'refresh_token' in self._credentialsDct:
-                del self._credentialsDct['refresh_token']
-            if 'access_token' in self._credentialsDct:
-                del self._credentialsDct['access_token']
-            return False
+        if not self._scopesCompared:
+            self._scopesCompared = True
+            if set(self._credentialsDct.get('scopes', [])) != set(self._grantKwargs['scope'].split(' ')):
+                if 'refresh_token' in self._credentialsDct:
+                    del self._credentialsDct['refresh_token']
+                if 'access_token' in self._credentialsDct:
+                    del self._credentialsDct['access_token']
+                log.msg('Required scopes have changed', logLevel=logging.INFO)
+                return False
         if 'expirationTimestamp' not in self._credentialsDct:
+            log.msg('Missing expirationTimestamp', logLevel=logging.INFO)
             return False
         if 'refresh_token' not in self._credentialsDct:
+            log.msg('Missing refresh_token', logLevel=logging.INFO)
             return False
         return True
 
     def _checkCredentialsDct(self):
         if not self._credentialsDictIsValid():
-            log.msg('Missing expirationTimestamp or refresh_token', logLevel=logging.INFO)
             return self._getAccessCredentials()
         elif self._credentialsDct['expirationTimestamp'] < int(time.time() - 60):
             if self._getAccessCredsDfd is None or self._getAccessCredsDfd.called:

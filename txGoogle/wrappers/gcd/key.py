@@ -38,7 +38,7 @@ class Key(GcdObjectWithApiBackReference):
             self.path = kwargs['ancestor'].path + self.path
 
     def getLen(self):
-        return len(self.path)
+        raise Exception('deprecated')
 
     def _fromPairs(self, pairs):
         self.path = []
@@ -133,6 +133,9 @@ class Key(GcdObjectWithApiBackReference):
 
     def __eq__(self, other):
         return self.path == other.path
+
+    def __len__(self):
+        return len(self.path)
 
     @property
     def nameId(self):
