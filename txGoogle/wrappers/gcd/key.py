@@ -31,7 +31,7 @@ class Key(GcdObjectWithApiBackReference):
             elif isinstance(inp, list):
                 self.path = inp
             else:
-                raise Exception('unknown key instantiation')
+                raise Exception('unknown key instantiation {}, {}'.format(inpTup, kwargs))
         else:
             self._fromPairs(enumerateKeypairs(inpTup))
         if 'ancestor' in kwargs:

@@ -1076,5 +1076,7 @@ def getPairsFromUrlSafe(urlSafe):
 
 
 def urlSafeFromPairs(datasetId, pairs):
+    if not datasetId.startswith('s~'):
+        datasetId = 's~' + datasetId
     ndbKeyNew = Key(app=datasetId, pairs=pairs)
     return ndbKeyNew.urlsafe()

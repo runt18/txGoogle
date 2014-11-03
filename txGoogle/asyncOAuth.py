@@ -89,10 +89,12 @@ class AsyncOAuthConnectionHandler(AsyncHttp):
         loaded = json.loads(responseObj.msg)
         if 'error' in loaded:
             self._getAccessCredsDfd.errback(loaded['error'])
+        if 'id_token' in loaded:
+            print 'found id token'
         self._credentialsDct = loaded
         self._credentialsDct['scopes'] = self._grantKwargs['scope'].split(' ')
         self._credentialsDct['expirationTimestamp'] = int(time.time()) + self._credentialsDct['expires_in']
-        if refreshToken and 'refresh_token' not in self._credentialsDct:
+        if refreshToken:
             self._credentialsDct['refresh_token'] = refreshToken
         parentFolder = os.path.dirname(self._credentialsFileName)
         if parentFolder and not os.path.exists(parentFolder):
@@ -124,7 +126,7 @@ class AsyncOAuthConnectionHandler(AsyncHttp):
     def _checkCredentialsDct(self):
         if not self._credentialsDictIsValid():
             return self._getAccessCredentials()
-        elif self._credentialsDct['expirationTimestamp'] < int(time.time() - 60):
+        elif self._credentialsDct['expirationTimestamp'] < int(time.time() - 300):
             if self._getAccessCredsDfd is None or self._getAccessCredsDfd.called:
                 self._getAccessCredsDfd = None
                 log.msg('Grant expired, refreshing', logLevel=logging.INFO)

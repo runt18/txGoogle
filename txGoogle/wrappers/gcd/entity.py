@@ -20,8 +20,6 @@ class Entity(GcdObjectWithApiBackReference):
         self.properties = {}
         if fromSerialized:
             for ky, vl in dct.get('properties', {}).iteritems():  # queries can result in entity with only a key property
-                if ky == 'probes':
-                    print vl
                 if 'indexed' in vl:
                     indexed = vl['indexed']
                     vl = vl.copy()  # take a copy so that we can remove 'indexed'
@@ -37,7 +35,9 @@ class Entity(GcdObjectWithApiBackReference):
                 self.key = Key(dct['key'])
         else:
             if 'ks' in dct:
-                self.key = Key(dct.pop('ks'))
+                ks = dct.pop('ks')
+                if ks:
+                    self.key = Key(ks)
             for ky, vl in dct.iteritems():
                 if not isinstance(vl, PropertyValue):
                     # it is better to create property values in advance, this way you can force properties to be indexed or not

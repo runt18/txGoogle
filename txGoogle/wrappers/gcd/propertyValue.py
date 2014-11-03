@@ -22,9 +22,11 @@ class PropertyValue(object):
             self.valueKind, value = determineValueKind(value)
         else:
             self.valueKind = valueKind
-        if self.valueKind == 'dateTimeValue':
-            value = timestampToDateTime(value / 1000000)
+        if self.valueKind == 'dateTimeValue' and value is not None:
+            value = timestampToDateTime(float(value) / 1000000)
         elif self.valueKind == 'entityValue':
+            if indexed is None:
+                indexed = False
             value = buildEntity(value, fromSerialized=fromSerialized)
         elif self.valueKind == 'listValue':
             if fromSerialized:
@@ -39,6 +41,8 @@ class PropertyValue(object):
                 if mod:
                     value += '=' * (4 - mod)
                 value = base64.decodestring(value.replace('-', '+').replace('_', '/'))
+        elif self.valueKind == 'integerValue' and value is not None:
+            value = int(value)
         self.value = value
 
     def toValue(self):
@@ -54,7 +58,10 @@ class PropertyValue(object):
     def serialize(self):
         if self.valueKind == 'blobValue':
             value = base64.encodestring(self.value).replace('+', '-').replace('/', '_').strip().rstrip('=')
+            if len(value) > 500:
+                self.indexed = False
         elif self.valueKind == 'entityValue':
+            self.indexed = False
             value = self.value.serialize(outputKey=False)
         elif self.valueKind == 'listValue':
             if self.value:

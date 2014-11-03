@@ -19,10 +19,16 @@ class TestGcd(unittest.TestCase):
 
     def setUp(self, *args, **kwargs):
         conn = SharedConnection('785509043543.apps.googleusercontent.com', 'Mhx2IjJLk78U9VyErHHIVbnw', 'apiFiles/GcdCredentials.json')
-        gcd = DatastoreWrapper(conn)
+        gcd = DatastoreWrapper(conn, projectId='over-sight')
         conn.connect()
         # getEntities(kind='Host', keysOnly=True, parentCore_eq=coreUuid)
         setGlobalGcdServiceAndProjectId(gcd, 'over-sight')
+
+    def test_urlSafe(self):
+        ks1 = 'agxzfm92ZXItc2lnaHRyJgsSCEN1c3RvbWVyIghzeXNhZG1pbgwLEglDb25kaXRpb24Ylk4M'
+        key1 = Key(ks1)
+        self.assert_(len(key1) == 2)
+        self.assertEqual(key1.ks, ks1)
 
     @inlineCallbacks
     def xtest_Key_getDescendants(self):
@@ -37,7 +43,7 @@ class TestGcd(unittest.TestCase):
         self.assertIsInstance(cust, Entity, 'Expected Customer')
 
     @inlineCallbacks
-    def test_KeyWithId_get(self):
+    def xtest_KeyWithId_get(self):
         key = Key('Customer', 'sysadmin', 'Label', 5)
         lbl = yield key.get()
         self.assertIsInstance(lbl, Entity, 'Expected Label')
