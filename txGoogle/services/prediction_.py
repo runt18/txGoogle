@@ -1,9 +1,9 @@
-from txGoogle.service import Service
+from txGoogle.googleService import GoogleService
 from urllib import quote as urlibQuoteEncode
-from txGoogle.resource import Resource
+from txGoogle.googleResource import GoogleResource
 
 
-class Trainedmodels(Resource):
+class Trainedmodels(GoogleResource):
     def __init__(self, service, conn, *args, **kwargs):
         super(Trainedmodels, self).__init__(service, conn, *args, **kwargs)
 
@@ -173,7 +173,7 @@ class Trainedmodels(Resource):
         return self._request(queryParams)
 
 
-class Hostedmodels(Resource):
+class Hostedmodels(GoogleResource):
     def __init__(self, service, conn, *args, **kwargs):
         super(Hostedmodels, self).__init__(service, conn, *args, **kwargs)
 
@@ -201,7 +201,7 @@ class Hostedmodels(Resource):
         return self._request(queryParams)
 
 
-class Prediction(Service):
+class Prediction(GoogleService):
     '''Lets you access a cloud hosted machine learning service that makes it easy to build smart apps'''
     _DEFAULT_SCOPES = [u'https://www.googleapis.com/auth/devstorage.read_only', u'https://www.googleapis.com/auth/devstorage.read_write', u'https://www.googleapis.com/auth/devstorage.full_control', u'https://www.googleapis.com/auth/prediction']
 

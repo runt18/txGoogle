@@ -5,6 +5,7 @@ Created on 26 jun. 2014
 '''
 from txGoogle.asyncUtils import mapFunToItems
 from txGoogle.asyncUtils import addPrintCbs
+from urllib import quote as urlibQuoteEncode
 from txGoogle.asyncUtils import mapFunToItemsSequentially
 from txGoogle.services.bigquery_ import Bigquery
 from txGoogle.services.bigquery_ import Tables
@@ -47,7 +48,7 @@ class TablesWrapper(Tables):
             }
         }
         queryParams = {
-            'projectId': projectId,
+            'projectId': dstProjectId,
             'method': 'POST',
             'httpBodyParams': jobData,
             'resultType': 'job',
@@ -106,6 +107,50 @@ class JobsWrapper(Jobs):
         dfd = Jobs.query(self, projectId, query, prettyPrint, fields, quotaUser, oauth_token, key, userIp, alt, timeoutMs, kind, dryRun, useQueryCache, projectId_, datasetId, maxResults, preserveNulls)
         return dfd
 
+    def extract(self, projectId, datasetId, tableId, bucket, filePath, compress=False):
+        if compress:
+            compression = 'GZIP'
+        else:
+            compression = None
+        extract = {
+            'sourceTable': {
+               'projectId': projectId,
+               'datasetId': datasetId,
+               'tableId': tableId
+             },
+            'destinationUris': ['gs://{bucket}/{filePath}'.format(bucket=bucket, filePath=filePath)],
+            'compression': compression
+        }
+        return self.insert(projectId, extract=extract)
+
+    def insert(self, projectId, prettyPrint=None, fields=None, quotaUser=None, oauth_token=None, key=None, userIp=None, alt=None, load=None, dryRun=None, link=None, copy=None, extract=None, jobId=None):
+        '''Starts a new asynchronous job.'''
+        queryParams = {
+            'url': 'https://www.googleapis.com/bigquery/v2/projects/{projectId}/jobs',
+            'method': 'POST',
+            'resultType': 'Job',
+            'httpUrlParams': {
+                'prettyPrint': prettyPrint,
+                'fields': fields,
+                'quotaUser': quotaUser,
+                'oauth_token': oauth_token,
+                'key': key,
+                'userIp': userIp,
+                'alt': alt,
+                'projectId': urlibQuoteEncode(projectId, safe=''),
+            },
+            'httpBodyParams': {
+                'configuration': {
+                    'load': load,
+                    'dryRun': dryRun,
+                    'link': link,
+                    'copy': copy,
+                    'extract': extract,
+                }
+            },
+        }
+        return self._request(queryParams)
+
 
 class DatasetsWrapper(Datasets):
 
@@ -144,10 +189,10 @@ class BigQueryWrapper(Bigquery):
 
 
 if __name__ == '__main__':
-    from txGoogle.sharedConnection import SharedConnection
+    from txGoogle.sharedOauthConnection import SharedOauthConnection
     from txGoogle.asyncUtils import printCb
     from twisted.internet import reactor
-    conn = SharedConnection('785509043543.apps.googleusercontent.com', 'Mhx2IjJLk78U9VyErHHIVbnw', 'apiFiles/asyncBqCredentials.json')
+    conn = SharedOauthConnection('785509043543.apps.googleusercontent.com', 'Mhx2IjJLk78U9VyErHHIVbnw', 'apiFiles/asyncBqCredentials.json')
     abq = BigQueryWrapper(conn)
     conn.connect()
     dfd = abq.jobs.query(projectId='detect-analyze-notify-01a', datasetId='samples', query='SELECT * FROM [publicdata:samples.shakespeare] limit 10', maxResults=100)

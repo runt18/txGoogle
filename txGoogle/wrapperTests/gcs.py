@@ -4,7 +4,7 @@ Created on 24 okt. 2014
 @author: Sjuul
 '''
 from twisted.trial import unittest
-from txGoogle.sharedConnection import SharedConnection
+from txGoogle.sharedOauthConnection import SharedOauthConnection
 from twisted.internet.defer import inlineCallbacks
 import simplejson as json
 from txGoogle.wrappers.storage import StorageWrapper
@@ -13,7 +13,7 @@ from txGoogle.wrappers.storage import StorageWrapper
 class TestGcd(unittest.TestCase):
 
     def setUp(self, *args, **kwargs):
-        conn = SharedConnection('785509043543.apps.googleusercontent.com', 'Mhx2IjJLk78U9VyErHHIVbnw', 'apiFiles/GcsCredentials.json')
+        conn = SharedOauthConnection('785509043543.apps.googleusercontent.com', 'Mhx2IjJLk78U9VyErHHIVbnw', 'apiFiles/GcsCredentials.json')
         self.gcs = StorageWrapper(conn)
         conn.connect()
 

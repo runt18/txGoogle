@@ -3,28 +3,29 @@ Created on 6 okt. 2014
 
 @author: sjuul
 '''
-from txGoogle.request import Request
-from txGoogle.responseHandler import ResponseHandler
-from txGoogle.service import Service
+from txGoogle.utils import leaveOutNulls
+from txGoogle.googleServiceRequest import GoogleServiceRequest
+from txGoogle.googleResponseHandler import GoogleResponseHandler
+from txGoogle.googleService import GoogleService
 
 
-class Resource(object):
+class GoogleResource(object):
 
     def __init__(self, service, conn, *args, **kwargs):
-        assert isinstance(service, Service)
+        assert isinstance(service, GoogleService)
         self._conn = conn
         self._service = service
         if 'requestCls' in kwargs:
             self._requestCls = kwargs['requestCls']
         else:
-            self._requestCls = Request
+            self._requestCls = GoogleServiceRequest
         if 'responseCls' in kwargs:
             self._responseCls = kwargs['responseCls']
         else:
-            self._responseCls = ResponseHandler
+            self._responseCls = GoogleResponseHandler
 
     def _request(self, requestParams):
         responseHandler = self._responseCls(self._conn, requestParams.pop('resultType'))
-        reqObj = self._requestCls(**requestParams)
+        reqObj = self._requestCls(**leaveOutNulls(requestParams))
         self._conn.request(reqObj, responseHandler)
         return responseHandler.dfd

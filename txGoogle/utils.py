@@ -5,6 +5,8 @@ Created on 15 aug. 2014
 '''
 import os
 from twisted.python import log
+from os import walk
+from os.path import getsize
 
 
 def dictGet(dct, keys, default):
@@ -71,3 +73,23 @@ def chunks(lst, maxItems):
     '''
     for i in xrange(0, len(lst), maxItems):
         yield lst[i:i + maxItems]
+
+
+def getFilesInFolder(folderPath, topdown=True, minFileSize=None, stripExtension=None):
+    if stripExtension:
+        extLen = len(stripExtension)
+    for root, _, files in walk(folderPath, topdown=topdown):
+        for fileName in files:
+            filePath = os.path.join(root, fileName)
+            if minFileSize is not None:
+                sz = getsize(filePath)
+                if sz < minFileSize:
+                    try:
+                        os.remove(filePath)
+                    except:
+                        pass
+                    continue
+            joined = os.path.relpath(filePath, folderPath)
+            if stripExtension and joined.endswith(stripExtension):
+                joined = joined[:-extLen]
+            yield joined

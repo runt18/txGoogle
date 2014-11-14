@@ -1,29 +1,24 @@
 '''
-Created on 15 jul. 2014
+Created on Nov 4, 2014
 
 @author: sjuul
 '''
-from asyncOAuth import AsyncOAuthConnectionHandler
 from twisted.internet import reactor
 import time
 from twisted.internet.error import TimeoutError
 from twisted.python import log
 from twisted.internet.task import LoopingCall
 from twisted.internet.defer import Deferred
-from txGoogle.asyncUtils import waitTime, ignoreFirstArg
+from txGoogle.asyncUtils import waitTime
+from txGoogle.asyncUtils import ignoreFirstArg
 
 
 class SharedConnection(object):
 
     MAX_CONCURRENT_QUERIES = 20 - 3 # subtracting 3 because I saw connection closings when doing multiple requests
     REQUEST_RESEND_CHECK_INTERVAL = 0.06
-    AUTH_URL = 'https://accounts.google.com/o/oauth2/auth'
-    TOKEN_URL = 'https://accounts.google.com/o/oauth2/token'
 
-    def __init__(self, clientId=None, clientSecret=None, credentialsFileName=None):
-        self._clientId = clientId
-        self._clientSecret = clientSecret
-        self._credentialsFileName = credentialsFileName
+    def __init__(self):
         self._runningReqs = []
         self._connHandler = None
         self._checkLoop = LoopingCall(self._checkTodos)
@@ -43,16 +38,6 @@ class SharedConnection(object):
         if self._emptyQueueDfd is None:
             self._emptyQueueDfd = Deferred()
         return self._emptyQueueDfd
-
-    def registerScopes(self, scopes):
-        if not hasattr(self, '_SCOPE'):
-            self._SCOPE = ' '.join(scopes)
-        else:
-            self._SCOPE = ' '.join(set(self._SCOPE.split(' ')).union(set(scopes)))
-
-    def connect(self):
-        self._connHandler = AsyncOAuthConnectionHandler(self.AUTH_URL, self.TOKEN_URL, clientId=self._clientId, clientSecret=self._clientSecret, credentialsFileName=self._credentialsFileName, scope=self._SCOPE, approval_prompt='force', access_type='offline', response_type='code')
-        return self._connHandler._loadCredentials()
 
     def request(self, requestObj, responseHandler):
         if self._connHandler is None:
@@ -77,7 +62,7 @@ class SharedConnection(object):
                 except:
                     log.err()
             else:
-                break  # no use continueing because items are appended in order
+                break # no use continueing because items are appended in order
         if self._todos:
             roomLeft = self.MAX_CONCURRENT_QUERIES - len(self._runningReqs)
             for _ in range(roomLeft):
@@ -95,8 +80,15 @@ class SharedConnection(object):
                 self._emptyQueueDfd = None
 
     def _handleResponse(self, response, requestObj, responseHandler):
-        self._runningReqs.remove(requestObj)
         responseHandler.onResponse(response, requestObj)
+        try:
+            self._runningReqs.remove(requestObj)
+        except:
+            pass
 
     def _handleFailed(self, faillure, requestObj, responseHandler):
         responseHandler.onFailed(faillure, requestObj)
+        try:
+            self._runningReqs.remove(requestObj)
+        except:
+            pass

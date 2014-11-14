@@ -11,9 +11,12 @@ from txGoogle.services.storage_ import ObjectAccessControls
 from txGoogle.services.storage_ import Buckets
 from txGoogle.services.storage_ import DefaultObjectAccessControls
 import os
-from txGoogle.utils import preparePathForFile
+from txGoogle.utils import preparePathForFile, getFilesInFolder
 from txGoogle.wrappers.gcsResponseHandler import GcsResponseHandler
 from txGoogle.asyncUtils import mapFunToItems
+from twisted.internet.defer import DeferredList
+from twisted.python import log
+import logging
 
 
 class ObjectsWrapper(Objects):
@@ -31,12 +34,13 @@ class ObjectsWrapper(Objects):
             }
             dfd = self._request(requestParams)
             dfd.addCallback(self._saveFile, fileName)
+            return dfd
         else:
             return fileKey
 
     def _saveFile(self, data, fileName):
         preparePathForFile(fileName)
-        fl = open(fileName, 'w')
+        fl = open(fileName, 'wb')
         fl.write(data)
         fl.close()
 
@@ -59,6 +63,29 @@ class ObjectsWrapper(Objects):
         files = res.get('items', [])
         return [fileItem['name'] for fileItem in files]
 
+    def syncFolder(self, bucket, gcsFolderName, localPath, direction, stripLocalExtension=None):
+        assert direction in ('down', 'up', 'both')
+        dfd = self.list(bucket=bucket, prefix=gcsFolderName)
+        dfd.addCallback(self._onFilesToSync, gcsFolderName, localPath, direction, stripLocalExtension)
+        return dfd
+
+    def _onFilesToSync(self, gcsFiles, gcsFolderName, localPath, direction, stripLocalExtension):
+        dfds = []
+        localFiles = getFilesInFolder(localPath, minFileSize=100, stripExtension=stripLocalExtension)
+        if direction in ('down', 'both'):
+            localFilesIdx = set(localFiles)
+            for item in gcsFiles['items']:
+                relName = os.path.relpath(item['name'], gcsFolderName)
+                if relName not in localFilesIdx:
+                    msg = 'Downloading {}'.format(relName)
+                    print msg
+                    log.msg(msg, logLevel=logging.INFO)
+                    destPath = os.path.join(localPath, relName)
+                    dfds.append(self._download(item, destPath, None))
+        if direction in ('up', 'both'):
+            raise NotImplementedError()
+        return DeferredList(dfds)
+
 
 class StorageWrapper(Storage):
 
@@ -74,13 +101,12 @@ class StorageWrapper(Storage):
 
 
 if __name__ == '__main__':
-    from txGoogle.sharedConnection import SharedConnection
+    from txGoogle.sharedOauthConnection import SharedOauthConnection
     from txGoogle.asyncUtils import printCb
-    from twisted.python import log
     import sys
     from twisted.internet import reactor
     log.startLogging(sys.stdout)
-    conn = SharedConnection('785509043543.apps.googleusercontent.com', 'Mhx2IjJLk78U9VyErHHIVbnw', 'apiFiles/GcdCredentials.json')
+    conn = SharedOauthConnection('785509043543.apps.googleusercontent.com', 'Mhx2IjJLk78U9VyErHHIVbnw', 'apiFiles/GcdCredentials.json')
     gcs = StorageWrapper(conn=conn)
     conn.connect()
     dfd = gcs.objects.list(bucket='oversight', prefix='23eb8fd09fbc/23eb8fd09fbc-007f7d813bb6/')

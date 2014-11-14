@@ -44,19 +44,3 @@ class GoogleResponseHandler(ResponseHandler):
             self._connection.request(requestObj, self)
         else:
             self._dfd.callback(self._result)
-
-    def _loadResults(self, loaded, requestObj):
-        loadFunName = '_loadResults_' + self._resultType
-        if hasattr(self, loadFunName):
-            loadFun = getattr(self, loadFunName)
-            loadFun(loaded)
-        else:
-            self._result = loaded
-
-    def _loadResults_multi(self, loaded):
-        if self._result is None:
-            self._result = []
-        if loaded != 'Not Found':
-            for v in loaded.itervalues():
-                if isinstance(v, list):
-                    self._result.extend(v)

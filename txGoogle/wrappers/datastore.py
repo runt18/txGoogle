@@ -5,18 +5,19 @@ Created on 21 aug. 2014
 '''
 from txGoogle.services.datastore_ import Datastore
 from txGoogle.services.datastore_ import Datasets
-from txGoogle.sharedConnection import SharedConnection
+from txGoogle.sharedOauthConnection import SharedOauthConnection
 from txGoogle.wrappers.gcdResponseHandler import GcdResponseHandler
 from txGoogle.wrappers.gcd import checkKindsFormat
 from txGoogle.wrappers.gcd import trySerialize
 from urllib import quote as urlibQuoteEncode
-from txGoogle.resource import Resource
+from txGoogle.googleResource import GoogleResource
 from twisted.internet.task import LoopingCall
 from txGoogle.wrappers.gcd import Key
 from txGoogle.utils import chunks
 import time
 from twisted.python import log
 import logging
+from txGoogle.wrappers.gcd.entity import Entity
 
 
 MAX_ITEMS_PER_COMMIT = 500
@@ -134,6 +135,7 @@ class BatchOperationTimeHandler(object):
                 if ops:
                     startTs = time.time()
                     try:
+                        self._logOps(ops)
                         dfd = self._service.datasets.commit(self._projectId, **ops)
                         dfd.addCallback(self._onSuccess, cnt, startTs)
                         dfd.addErrback(self._onFail)
@@ -141,11 +143,21 @@ class BatchOperationTimeHandler(object):
                         log.err()
         self._OrmOperations = {}
 
+    def _reprVals(self, vals):
+        for val in vals:
+            if isinstance(val, Entity):
+                yield repr(val.key)
+            else:
+                yield repr(val)
+
+    def _logOps(self, ops):
+        for op, vals in ops.iteritems():
+            log.msg('{} {}'.format(op, ','.join(self._reprVals(vals))), logLevel=logging.DEBUG)
+
     def _onSuccess(self, result, cnt, startTs):
         delta = time.time() - startTs
         indexUpdates = result.get('mutationResult', {}).get('indexUpdates', 0)
         msg = 'updates: {} indexUpdates: {} execution time: {:.3f} sec'.format(cnt, indexUpdates, delta)
-        print msg
         log.msg(msg, logLevel=logging.INFO)
 
     def _onFail(self, fail):
@@ -166,12 +178,12 @@ class BatchOperationTimeHandler(object):
             self._loopingCall.stop()
 
 
-class BatchOperations(Resource):
+class BatchOperations(GoogleResource):
     def __init__(self, service, conn, loopTimes=None, projectId=None, *args, **kwargs):
         super(BatchOperations, self).__init__(service, conn, *args, **kwargs)
         self._batchOperationTimeHandlers = {}
         if loopTimes is None:
-            loopTimes = [1, 20, 60, 300]
+            loopTimes = [1, 5, 20, 60, 300]
         for loopTime in loopTimes:
             self._batchOperationTimeHandlers[loopTime] = BatchOperationTimeHandler(service, projectId, loopTime)
 
@@ -227,7 +239,7 @@ if __name__ == '__main__':
     from txGoogle.wrappers.gcd import QueryFilter
     from txGoogle.wrappers.gcd import setGlobalGcdServiceAndProjectId
     from txGoogle.asyncUtils import printCb
-    conn = SharedConnection('785509043543.apps.googleusercontent.com', 'Mhx2IjJLk78U9VyErHHIVbnw', 'apiFiles/GcdCredentials.json')
+    conn = SharedOauthConnection('785509043543.apps.googleusercontent.com', 'Mhx2IjJLk78U9VyErHHIVbnw', 'apiFiles/GcdCredentials.json')
     gcd = DatastoreWrapper(conn)
     conn.connect()
     # getEntities(kind='Host', keysOnly=True, parentCore_eq=coreUuid)

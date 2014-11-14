@@ -1,9 +1,9 @@
-from txGoogle.service import Service
+from txGoogle.googleService import GoogleService
 from urllib import quote as urlibQuoteEncode
-from txGoogle.resource import Resource
+from txGoogle.googleResource import GoogleResource
 
 
-class TimeseriesDescriptors(Resource):
+class TimeseriesDescriptors(GoogleResource):
     def __init__(self, service, conn, *args, **kwargs):
         super(TimeseriesDescriptors, self).__init__(service, conn, *args, **kwargs)
 
@@ -37,7 +37,7 @@ class TimeseriesDescriptors(Resource):
         return self._request(queryParams)
 
 
-class Timeseries(Resource):
+class Timeseries(GoogleResource):
     def __init__(self, service, conn, *args, **kwargs):
         super(Timeseries, self).__init__(service, conn, *args, **kwargs)
 
@@ -71,7 +71,7 @@ class Timeseries(Resource):
         return self._request(queryParams)
 
 
-class MetricDescriptors(Resource):
+class MetricDescriptors(GoogleResource):
     def __init__(self, service, conn, *args, **kwargs):
         super(MetricDescriptors, self).__init__(service, conn, *args, **kwargs)
 
@@ -101,7 +101,7 @@ class MetricDescriptors(Resource):
         return self._request(queryParams)
 
 
-class Cloudmonitoring(Service):
+class Cloudmonitoring(GoogleService):
     '''API for accessing Google Cloud and API monitoring data.'''
     _DEFAULT_SCOPES = [u'https://www.googleapis.com/auth/monitoring.readonly']
 

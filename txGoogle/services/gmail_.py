@@ -1,9 +1,9 @@
-from txGoogle.service import Service
+from txGoogle.googleService import GoogleService
 from urllib import quote as urlibQuoteEncode
-from txGoogle.resource import Resource
+from txGoogle.googleResource import GoogleResource
 
 
-class Attachments(Resource):
+class Attachments(GoogleResource):
     def __init__(self, service, conn, *args, **kwargs):
         super(Attachments, self).__init__(service, conn, *args, **kwargs)
 
@@ -31,7 +31,7 @@ class Attachments(Resource):
         return self._request(queryParams)
 
 
-class Messages(Resource):
+class Messages(GoogleResource):
     def __init__(self, service, conn, *args, **kwargs):
         super(Messages, self).__init__(service, conn, *args, **kwargs)
         self.attachments = Attachments(service, conn)
@@ -299,7 +299,7 @@ class Messages(Resource):
         return self._request(queryParams)
 
 
-class Labels(Resource):
+class Labels(GoogleResource):
     def __init__(self, service, conn, *args, **kwargs):
         super(Labels, self).__init__(service, conn, *args, **kwargs)
 
@@ -461,7 +461,7 @@ class Labels(Resource):
         return self._request(queryParams)
 
 
-class Threads(Resource):
+class Threads(GoogleResource):
     def __init__(self, service, conn, *args, **kwargs):
         super(Threads, self).__init__(service, conn, *args, **kwargs)
 
@@ -606,7 +606,7 @@ class Threads(Resource):
         return self._request(queryParams)
 
 
-class Drafts(Resource):
+class Drafts(GoogleResource):
     def __init__(self, service, conn, *args, **kwargs):
         super(Drafts, self).__init__(service, conn, *args, **kwargs)
 
@@ -809,7 +809,7 @@ class Drafts(Resource):
         return self._request(queryParams)
 
 
-class History(Resource):
+class History(GoogleResource):
     def __init__(self, service, conn, *args, **kwargs):
         super(History, self).__init__(service, conn, *args, **kwargs)
 
@@ -839,7 +839,7 @@ class History(Resource):
         return self._request(queryParams)
 
 
-class Users(Resource):
+class Users(GoogleResource):
     def __init__(self, service, conn, *args, **kwargs):
         super(Users, self).__init__(service, conn, *args, **kwargs)
         self.messages = Messages(service, conn)
@@ -870,7 +870,7 @@ class Users(Resource):
         return self._request(queryParams)
 
 
-class Gmail(Service):
+class Gmail(GoogleService):
     '''The Gmail REST API.'''
     _DEFAULT_SCOPES = [u'https://www.googleapis.com/auth/gmail.compose', u'https://mail.google.com/', u'https://www.googleapis.com/auth/gmail.modify', u'https://www.googleapis.com/auth/gmail.readonly']
 

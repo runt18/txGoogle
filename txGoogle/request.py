@@ -15,6 +15,7 @@ from txGoogle.utils import simpleDeepCopy
 from twisted.python import log
 import logging
 from string import Formatter
+import base64
 
 
 class StringProducer(object):
@@ -91,7 +92,7 @@ class Request(object):
     def _run(self, agent, headers, method, bodyParams, urlParams, url):
         dataProducer = None
         if method in ('POST'):
-            if self._jsonEncode and isinstance(bodyParams, dict) and len(bodyParams) > 0:
+            if self._jsonEncode and isinstance(bodyParams, (dict, list)) and len(bodyParams) > 0:
                 self._upsertContentType(headers, 'application/json')
                 data = json.dumps(bodyParams).encode('ascii', 'ignore')
                 dataProducer = StringProducer(data)
@@ -127,6 +128,12 @@ class Request(object):
 
     def setToken(self, token):
         self.setHeaderField('Authorization', ['Bearer {}'.format(token)])
+
+    def setBasicCredentials(self, userName, password):
+        if userName is None or password is None:
+            raise Exception('No credentials specified')
+        raw = "%s:%s" % (userName, password)
+        self.setHeaderField('Authorization', ['Basic %s' % base64.b64encode(raw).strip()])
 
     def setHeaderField(self, fieldName, fieldValue):
         self._headers[fieldName] = fieldValue

@@ -1,9 +1,9 @@
-from txGoogle.service import Service
+from txGoogle.googleService import GoogleService
 from urllib import quote as urlibQuoteEncode
-from txGoogle.resource import Resource
+from txGoogle.googleResource import GoogleResource
 
 
-class Topics(Resource):
+class Topics(GoogleResource):
     def __init__(self, service, conn, *args, **kwargs):
         super(Topics, self).__init__(service, conn, *args, **kwargs)
 
@@ -119,7 +119,7 @@ class Topics(Resource):
         return self._request(queryParams)
 
 
-class Subscriptions(Resource):
+class Subscriptions(GoogleResource):
     def __init__(self, service, conn, *args, **kwargs):
         super(Subscriptions, self).__init__(service, conn, *args, **kwargs)
 
@@ -306,7 +306,7 @@ class Subscriptions(Resource):
         return self._request(queryParams)
 
 
-class Pubsub(Service):
+class Pubsub(GoogleService):
     '''Provides reliable, many-to-many, asynchronous messaging between applications.'''
     _DEFAULT_SCOPES = [u'https://www.googleapis.com/auth/cloud-platform', u'https://www.googleapis.com/auth/pubsub']
 

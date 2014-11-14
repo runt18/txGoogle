@@ -4,6 +4,8 @@ Created on 16 jul. 2014
 @author: Sjuul
 '''
 from twisted.internet.defer import DeferredList
+from twisted.internet.defer import returnValue
+from twisted.internet.defer import inlineCallbacks
 from twisted.internet.defer import fail
 from twisted.internet.defer import succeed
 from twisted.internet.defer import Deferred
@@ -43,14 +45,13 @@ def mapFunToItems(items, fun, *args, **kwargs):
         return succeed(results)
 
 
+@inlineCallbacks
 def mapFunToItemsSequentially(items, fun, *args, **kwargs):
     results = []
     for item in items:
-        print item
-        print fun, args, kwargs
-        funRes = fun(item, *args, **kwargs)
+        funRes = yield fun(item, *args, **kwargs)
         results.append(funRes)
-    return results
+    returnValue(results)
 
 
 def addPrintCbs(dfds):

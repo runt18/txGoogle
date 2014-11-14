@@ -29,7 +29,10 @@ class Key(GcdObjectWithApiBackReference):
                 self.path = [PathPart(**part) for part in inp.get('path', [])]
                 self.partitionId = inp.get('partitionId', {})
             elif isinstance(inp, list):
-                self.path = inp
+                if inp and isinstance(inp[0], tuple):
+                    self._fromPairs(inp)
+                else:
+                    self.path = inp
             else:
                 raise Exception('unknown key instantiation {}, {}'.format(inpTup, kwargs))
         else:
@@ -132,6 +135,11 @@ class Key(GcdObjectWithApiBackReference):
         return 'Empty key'
 
     def __eq__(self, other):
+        if not isinstance(other, Key):
+            try:
+                other = Key(other)
+            except:
+                return False
         return self.path == other.path
 
     def __len__(self):

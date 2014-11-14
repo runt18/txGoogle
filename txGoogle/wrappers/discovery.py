@@ -12,11 +12,11 @@ import json
 from twisted.internet.defer import DeferredList
 from txGoogle.asyncApisGenerator import generateCode
 from txGoogle.utils import leaveOutNulls
-from txGoogle.sharedConnection import SharedConnection
-from txGoogle.service import Service
+from txGoogle.sharedOauthConnection import SharedOauthConnection
+from txGoogle.googleService import GoogleService
 
 
-class Apis(Service):
+class Apis(GoogleService):
     def __init__(self, conn, *args, **kwargs):
         super(Apis, self).__init__(conn, *args, **kwargs)
 
@@ -65,7 +65,7 @@ class Apis(Service):
         return self._request(leaveOutNulls(queryParams))
 
 
-class Discovery(Service):
+class Discovery(GoogleService):
     '''Lets you discover information about other Google APIs, such as what APIs are available, the resource and method details for each API.'''
     _DEFAULT_SCOPES = ['']
 
@@ -116,7 +116,7 @@ class DiscoveryWrapper(Discovery):
 
 if __name__ == '__main__':
     from twisted.internet import reactor
-    conn = SharedConnection('785509043543.apps.googleusercontent.com', 'Mhx2IjJLk78U9VyErHHIVbnw', '../AsyncAllCredentials.json')
+    conn = SharedOauthConnection('785509043543.apps.googleusercontent.com', 'Mhx2IjJLk78U9VyErHHIVbnw', '../AsyncAllCredentials.json')
     downloader = DiscoveryWrapper(conn)
     conn.connect()
     serviceList = ['bigquery', 'cloudmonitoring', 'datastore', 'gmail', 'pubsub', 'storage']

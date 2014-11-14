@@ -100,7 +100,7 @@ class OrmEntity(object):
                 del self._entity[propertyName]
             return
         if self._entity.get(propertyName) != value:
-            self._entity.setProperty(propertyName, value, mapping.indexed)
+            self._entity.setProperty(propertyName, value, indexed=mapping.indexed)
 
     def preFlush(self):
         pass
@@ -131,7 +131,7 @@ class OrmEntity(object):
             elif propertyName not in self._localOrmProperties:
                 self._localOrmProperties[propertyName] = MappedProperty(allowNone=True)
             try:
-                if not hasattr(self, propertyName) or not isinstance(getattr(type(self), propertyName), property):
+                if not hasattr(self, propertyName) or not hasattr(type(self), propertyName) or not isinstance(getattr(type(self), propertyName), property):
                     self.__dict__[propertyName] = workableValue
             except:
                 log.msg('propertyName: {} propertyValue {} couldnt be set on: '.format(propertyName, workableValue, self), logLevel=logging.ERROR)

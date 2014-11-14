@@ -3,7 +3,7 @@
 {%- endmacro %}
 
 
-class {{capFirst(resourceName)}}(Service):
+class {{capFirst(resourceName)}}(GoogleService):
     '''{{resourceDict.get('description', '')}}'''
     _DEFAULT_SCOPES = {{scopes}}
 

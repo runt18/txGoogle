@@ -14,11 +14,13 @@ from txGoogle.singleton import Singleton
 
 class GmailWrapper(Gmail):
 
-    def sendMail(self, fromAddress, toAddress, subject, body, cc=None, bcc=None, userId=None):
+    def sendMail(self, fromAddress, toAddresses, subject, body, cc=None, bcc=None, userId=None):
         if userId is None:
             userId = fromAddress
+        if not isinstance(toAddresses, list):
+            toAddresses = [toAddresses]
         message = MIMEText(body)
-        message['to'] = ', '.join(toAddress)
+        message['to'] = ','.join(toAddresses)
         message['from'] = fromAddress
         message['subject'] = subject
         if cc is not None:
@@ -36,9 +38,9 @@ class GmailSingleton(GmailWrapper):
 
 
 if __name__ == '__main__':
-    from txGoogle.sharedConnection import SharedConnection
+    from txGoogle.sharedOauthConnection import SharedOauthConnection
     from twisted.internet import reactor
-    conn = SharedConnection('785509043543.apps.googleusercontent.com', 'Mhx2IjJLk78U9VyErHHIVbnw', 'apiFiles/AsyncAllCredentials.json')
+    conn = SharedOauthConnection('785509043543.apps.googleusercontent.com', 'Mhx2IjJLk78U9VyErHHIVbnw', 'apiFiles/AsyncAllCredentials.json')
     gmail = GmailWrapper(conn)
     conn.connect()
     for i in range(1):

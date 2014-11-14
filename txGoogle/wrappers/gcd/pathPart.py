@@ -29,9 +29,9 @@ class PathPart(object):
     def __repr__(self):
         try:
             if self.name is None:
-                return '{}, {}'.format(self.kind, self.id)
+                return "('{}', {})".format(self.kind, self.id)
             else:
-                return '{}, {}'.format(self.kind, self.name)
+                return "('{}', '{}')".format(self.kind, self.name)
         except:
             return 'KEY?'
 

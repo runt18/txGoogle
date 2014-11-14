@@ -77,13 +77,13 @@ def testPatTraindata():
 
 
 if __name__ == '__main__':
-    from txGoogle.sharedConnection import SharedConnection
+    from txGoogle.sharedOauthConnection import SharedOauthConnection
     from txGoogle.asyncUtils import printCb
     from twisted.internet import reactor
 
     projectId = 'detect-analyze-notify-01a'
     
-    conn = SharedConnection('785509043543.apps.googleusercontent.com', 'Mhx2IjJLk78U9VyErHHIVbnw', 'apiFiles/GcdCredentials.json')
+    conn = SharedOauthConnection('785509043543.apps.googleusercontent.com', 'Mhx2IjJLk78U9VyErHHIVbnw', 'apiFiles/GcdCredentials.json')
     pred = PredictionWrapper(conn=conn, projectId='detect-analyze-notify-01a')
     conn.connect()
     

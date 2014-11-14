@@ -3,7 +3,7 @@
 {%- endmacro %}
 
 
-class {{capFirst(resourceName)}}(Resource):
+class {{capFirst(resourceName)}}(GoogleResource):
     def __init__(self, service, conn, *args, **kwargs):
         super({{capFirst(resourceName)}}, self).__init__(service, conn, *args, **kwargs)
         {%for k in resourceDict.get('resources', {}).keys()%}

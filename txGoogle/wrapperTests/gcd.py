@@ -9,7 +9,7 @@ from txGoogle.wrappers.gcd import Entity
 from txGoogle.wrappers.gcd import QueryFilter
 from txGoogle.wrappers.gcd import setGlobalGcdServiceAndProjectId
 from txGoogle.asyncUtils import printCb
-from txGoogle.sharedConnection import SharedConnection
+from txGoogle.sharedOauthConnection import SharedOauthConnection
 from txGoogle.wrappers.datastore import DatastoreWrapper
 from twisted.internet.defer import inlineCallbacks
 import simplejson as json
@@ -18,7 +18,7 @@ import simplejson as json
 class TestGcd(unittest.TestCase):
 
     def setUp(self, *args, **kwargs):
-        conn = SharedConnection('785509043543.apps.googleusercontent.com', 'Mhx2IjJLk78U9VyErHHIVbnw', 'apiFiles/GcdCredentials.json')
+        conn = SharedOauthConnection('785509043543.apps.googleusercontent.com', 'Mhx2IjJLk78U9VyErHHIVbnw', 'apiFiles/GcdCredentials.json')
         gcd = DatastoreWrapper(conn, projectId='over-sight')
         conn.connect()
         # getEntities(kind='Host', keysOnly=True, parentCore_eq=coreUuid)

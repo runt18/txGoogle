@@ -3,6 +3,7 @@ Created on Oct 20, 2014
 
 @author: sjuul
 '''
+from txGoogle.utils import simpleDeepCopy
 
 
 class MappedProperty(object):
@@ -16,7 +17,7 @@ class MappedProperty(object):
     @property
     def default(self):
         if self._default is not None:
-            return self._default
+            return simpleDeepCopy(self._default)
         if self.repeated:
             return []
         return None

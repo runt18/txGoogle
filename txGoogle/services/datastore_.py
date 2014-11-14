@@ -1,9 +1,9 @@
-from txGoogle.service import Service
+from txGoogle.googleService import GoogleService
 from urllib import quote as urlibQuoteEncode
-from txGoogle.resource import Resource
+from txGoogle.googleResource import GoogleResource
 
 
-class Datasets(Resource):
+class Datasets(GoogleResource):
     def __init__(self, service, conn, *args, **kwargs):
         super(Datasets, self).__init__(service, conn, *args, **kwargs)
 
@@ -218,7 +218,7 @@ class Datasets(Resource):
         return self._request(queryParams)
 
 
-class Datastore(Service):
+class Datastore(GoogleService):
     '''API for accessing Google Cloud Datastore.'''
     _DEFAULT_SCOPES = [u'https://www.googleapis.com/auth/userinfo.email', u'https://www.googleapis.com/auth/datastore', u'https://www.googleapis.com/auth/cloud-platform']
 

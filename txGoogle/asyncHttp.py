@@ -14,6 +14,10 @@ from twisted.python import log
 from StringIO import StringIO
 from gzip import GzipFile
 from txGoogle.response import Response
+from twisted.web import client
+
+
+client._HTTP11ClientFactory.noisy = False
 
 
 class ResponseReceiver(Protocol):

@@ -4,7 +4,8 @@ Created on 22 aug. 2014
 @author: sjuul
 '''
 import simplejson as json
-from twisted.internet.defer import Deferred, logError
+from twisted.internet.defer import Deferred
+from twisted.internet.defer import logError
 from twisted.internet.defer import passthru
 from twisted.python import log
 
@@ -60,7 +61,7 @@ class ResponseHandler(object):
             self._dfd.callback(response.msg)
 
     def handleLoaded(self, loaded, requestObj):
-        self._dfd.callback(loaded)
+        self._onResponse(loaded, requestObj)
 
     def loadJson(self, response):
         if response.charset:
@@ -72,3 +73,23 @@ class ResponseHandler(object):
     def loadCsv(self, response):
         return [[cell for cell in line.split(',')] for line in response.msg.split('\n')[:-1]]
         # return [cell for line in response.msg.split('\n') for cell in line.split(',')]
+
+    def _loadResults(self, loaded, requestObj):
+        loadFunName = '_loadResults_' + self._resultType
+        if hasattr(self, loadFunName):
+            loadFun = getattr(self, loadFunName)
+            loadFun(loaded)
+        else:
+            self._result = loaded
+
+    def _loadResults_multi(self, loaded):
+        if self._result is None:
+            self._result = []
+        if loaded != 'Not Found':
+            for v in loaded.itervalues():
+                if isinstance(v, list):
+                    self._result.extend(v)
+
+    def _onResponse(self, loaded, requestObj):
+        self._loadResults(loaded, requestObj)
+        self._dfd.callback(self._result)

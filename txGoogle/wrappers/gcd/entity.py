@@ -63,7 +63,8 @@ class Entity(GcdObjectWithApiBackReference):
 
     def toValue(self):
         dct = {ky: vl.toValue() for ky, vl in self.properties.iteritems()}
-        dct['ks'] = self.ks
+        if self.key and len(self.key) > 0:
+            dct['ks'] = self.ks
         return dct
 
     def toDict(self):
@@ -99,7 +100,10 @@ class Entity(GcdObjectWithApiBackReference):
             'properties': properties
         }
         if outputKey:
-            output['key'] = self.key.serialize()
+            if self.key:
+                output['key'] = self.key.serialize()
+            else:
+                print 'Im keyless'
         for propName, propValue in self.properties.iteritems():
             valDct = propValue.serialize()
             if valDct:

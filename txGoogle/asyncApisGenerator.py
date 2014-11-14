@@ -131,7 +131,7 @@ def generatePyCode(apiName, apiDict):
         functionCode += resourceLines
         return functionCode
 
-    functionCode = 'from txGoogle.service import Service\nfrom urllib import quote as urlibQuoteEncode\nfrom txGoogle.resource import Resource\n'
+    functionCode = 'from txGoogle.googleService import Service\nfrom urllib import quote as urlibQuoteEncode\nfrom txGoogle.googleResource import Resource\n'
     if 'auth' in apiDict:
         scopes = apiDict['auth']['oauth2']['scopes'].keys()
     else:

@@ -1,9 +1,9 @@
-from txGoogle.service import Service
+from txGoogle.googleService import GoogleService
 from urllib import quote as urlibQuoteEncode
-from txGoogle.resource import Resource
+from txGoogle.googleResource import GoogleResource
 
 
-class DefaultObjectAccessControls(Resource):
+class DefaultObjectAccessControls(GoogleResource):
     def __init__(self, service, conn, *args, **kwargs):
         super(DefaultObjectAccessControls, self).__init__(service, conn, *args, **kwargs)
 
@@ -179,7 +179,7 @@ class DefaultObjectAccessControls(Resource):
         return self._request(queryParams)
 
 
-class BucketAccessControls(Resource):
+class BucketAccessControls(GoogleResource):
     def __init__(self, service, conn, *args, **kwargs):
         super(BucketAccessControls, self).__init__(service, conn, *args, **kwargs)
 
@@ -347,7 +347,7 @@ class BucketAccessControls(Resource):
         return self._request(queryParams)
 
 
-class Channels(Resource):
+class Channels(GoogleResource):
     def __init__(self, service, conn, *args, **kwargs):
         super(Channels, self).__init__(service, conn, *args, **kwargs)
 
@@ -382,7 +382,7 @@ class Channels(Resource):
         return self._request(queryParams)
 
 
-class Objects(Resource):
+class Objects(GoogleResource):
     def __init__(self, service, conn, *args, **kwargs):
         super(Objects, self).__init__(service, conn, *args, **kwargs)
 
@@ -777,7 +777,7 @@ class Objects(Resource):
         return self._request(queryParams)
 
 
-class ObjectAccessControls(Resource):
+class ObjectAccessControls(GoogleResource):
     def __init__(self, service, conn, *args, **kwargs):
         super(ObjectAccessControls, self).__init__(service, conn, *args, **kwargs)
 
@@ -963,7 +963,7 @@ class ObjectAccessControls(Resource):
         return self._request(queryParams)
 
 
-class Buckets(Resource):
+class Buckets(GoogleResource):
     def __init__(self, service, conn, *args, **kwargs):
         super(Buckets, self).__init__(service, conn, *args, **kwargs)
 
@@ -1166,7 +1166,7 @@ class Buckets(Resource):
         return self._request(queryParams)
 
 
-class Storage(Service):
+class Storage(GoogleService):
     '''Lets you store and retrieve potentially-large, immutable data objects.'''
     _DEFAULT_SCOPES = [u'https://www.googleapis.com/auth/devstorage.read_only', u'https://www.googleapis.com/auth/devstorage.read_write', u'https://www.googleapis.com/auth/cloud-platform', u'https://www.googleapis.com/auth/devstorage.full_control']
 

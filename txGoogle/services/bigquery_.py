@@ -1,9 +1,9 @@
-from txGoogle.service import Service
+from txGoogle.googleService import GoogleService
 from urllib import quote as urlibQuoteEncode
-from txGoogle.resource import Resource
+from txGoogle.googleResource import GoogleResource
 
 
-class Tables(Resource):
+class Tables(GoogleResource):
     def __init__(self, service, conn, *args, **kwargs):
         super(Tables, self).__init__(service, conn, *args, **kwargs)
 
@@ -188,7 +188,7 @@ class Tables(Resource):
         return self._request(queryParams)
 
 
-class Datasets(Resource):
+class Datasets(GoogleResource):
     def __init__(self, service, conn, *args, **kwargs):
         super(Datasets, self).__init__(service, conn, *args, **kwargs)
 
@@ -348,7 +348,7 @@ class Datasets(Resource):
         return self._request(queryParams)
 
 
-class Jobs(Resource):
+class Jobs(GoogleResource):
     def __init__(self, service, conn, *args, **kwargs):
         super(Jobs, self).__init__(service, conn, *args, **kwargs)
 
@@ -568,7 +568,7 @@ class Jobs(Resource):
         return self._request(queryParams)
 
 
-class Tabledata(Resource):
+class Tabledata(GoogleResource):
     def __init__(self, service, conn, *args, **kwargs):
         super(Tabledata, self).__init__(service, conn, *args, **kwargs)
 
@@ -624,7 +624,7 @@ class Tabledata(Resource):
         return self._request(queryParams)
 
 
-class Projects(Resource):
+class Projects(GoogleResource):
     def __init__(self, service, conn, *args, **kwargs):
         super(Projects, self).__init__(service, conn, *args, **kwargs)
 
@@ -651,7 +651,7 @@ class Projects(Resource):
         return self._request(queryParams)
 
 
-class Bigquery(Service):
+class Bigquery(GoogleService):
     '''A data platform for customers to create, manage, share and query data.'''
     _DEFAULT_SCOPES = [u'https://www.googleapis.com/auth/devstorage.full_control', u'https://www.googleapis.com/auth/devstorage.read_only', u'https://www.googleapis.com/auth/devstorage.read_write', u'https://www.googleapis.com/auth/cloud-platform', u'https://www.googleapis.com/auth/bigquery.insertdata', u'https://www.googleapis.com/auth/bigquery']
 
